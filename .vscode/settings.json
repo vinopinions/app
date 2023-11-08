@@ -1,8 +1,0 @@
-{
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "prettier.jsxSingleQuote": true,
-    "prettier.singleAttributePerLine": true,
-    "prettier.singleQuote": true,
-    "prettier.tabWidth": 4,
-    "prettier.useTabs": true
-}
