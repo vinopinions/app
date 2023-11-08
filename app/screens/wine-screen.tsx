@@ -1,11 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text } from 'react-native';
 
 const WineScreen = () => {
-    return(
+    return (
         <View>
             <Text>This the the wine screen</Text>
         </View>
-    )
-}
+    );
+};
 
 export default WineScreen;

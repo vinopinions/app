@@ -1,11 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text } from 'react-native';
 
 const StoreScreen = () => {
-    return(
+    return (
         <View>
             <Text>This the the store screen</Text>
         </View>
-    )
-}
+    );
+};
 
 export default StoreScreen;
