@@ -4,7 +4,7 @@ import homeScreenStyle from './styles/home-screen-style';
 const HomeScreen = () => {
     return (
         <View style={homeScreenStyle.container}>
-            <Text>This the the Home screen</Text>
+            <Text>This is the the Home screen</Text>
         </View>
     );
 };

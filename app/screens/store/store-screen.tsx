@@ -4,7 +4,7 @@ import storeScreenStyle from './styles/store-screen-style';
 const StoreScreen = () => {
     return (
         <View style={storeScreenStyle.container}>
-            <Text>This the the store screen</Text>
+            <Text>This is the the store screen</Text>
         </View>
     );
 };
