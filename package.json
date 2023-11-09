@@ -1,7 +1,7 @@
 {
   "name": "vinopinionsapp",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "./app/App.tsx",
   "scripts": {
     "start": "expo start --tunnel",
     "android": "expo start --android",
@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/drawer": "^6.6.6",
+    "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "expo": "~49.0.15",
     "expo-blur": "~12.4.1",
@@ -19,7 +20,8 @@
     "expo-template-tabs": "^49.0.26",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "react-native-gesture-handler": "~2.12.0"
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-reanimated": "~3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

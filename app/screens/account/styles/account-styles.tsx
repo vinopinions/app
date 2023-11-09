@@ -6,16 +6,16 @@ export default StyleSheet.create({
     },
     coverPhoto: {
         width: '100%',
-        height: 150
+        height: 250
     },
     profileContainer: {
         alignItems: 'center',
         marginTop: -50
     },
     profilePicture: {
-        width: 100,
-        height: 100,
-        borderRadius: 50
+        width: 150,
+        height: 150,
+        borderRadius: 75
     },
     userName: {
         marginTop: 10,

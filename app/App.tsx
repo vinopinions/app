@@ -1,19 +1,20 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './app/screens/home/home-screen';
-import AccountScreen from './app/screens/account/account-screen';
-import WineScreen from './app/screens/wine/wine-screen';
-import StoreScreen from './app/screens/store/store-screen';
+import HomeScreen from './screens/home/home-screen';
+import WineScreen from './screens/wine/wine-screen';
+import StoreScreen from './screens/store/store-screen';
 import { FontAwesome5 } from '@expo/vector-icons';
-import FriendsScreen from './app/screens/friends/friends-screen';
+import FriendsScreen from './screens/friends/friends-screen';
+import { registerRootComponent } from 'expo';
+import AccountDrawer from './screens/account/account-drawer';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
     return (
         <NavigationContainer>
-            <Tab.Navigator initialRouteName="Home">
+            <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
                 <Tab.Screen
                     name="Home"
                     component={HomeScreen}
@@ -48,7 +49,7 @@ export default function App() {
                 />
                 <Tab.Screen
                     name="Account"
-                    component={AccountScreen}
+                    component={AccountDrawer}
                     options={{
                         tabBarLabel: 'Account',
                         tabBarIcon: ({ color, size }) => <FontAwesome5 name="user-alt" color={color} size={size} />
@@ -58,3 +59,5 @@ export default function App() {
         </NavigationContainer>
     );
 }
+
+registerRootComponent(App);
