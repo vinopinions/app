@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './app/screens/home-screen';
-import AccountScreen from './app/screens/account-screen';
-import WineScreen from './app/screens/wine-screen';
-import StoreScreen from './app/screens/store-screen';
+import HomeScreen from './app/screens/home/home-screen';
+import AccountScreen from './app/screens/account/account-screen';
+import WineScreen from './app/screens/wine/wine-screen';
+import StoreScreen from './app/screens/store/store-screen';
 import { FontAwesome5 } from '@expo/vector-icons';
+import FriendsScreen from './app/screens/friends/friends-screen';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,14 @@ export default function App() {
                     options={{
                         tabBarLabel: 'Stores',
                         tabBarIcon: ({ color, size }) => <FontAwesome5 name="store-alt" color={color} size={size} />
+                    }}
+                />
+                <Tab.Screen
+                    name="Friends"
+                    component={FriendsScreen}
+                    options={{
+                        tabBarLabel: 'Friends',
+                        tabBarIcon: ({ color, size }) => <FontAwesome5 name="user-friends" color={color} size={size} />
                     }}
                 />
                 <Tab.Screen
