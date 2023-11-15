@@ -1,44 +1,45 @@
 {
-  "name": "vinopinionsapp",
-  "version": "1.0.0",
-  "main": "./app/App.tsx",
-  "scripts": {
-    "start": "expo start --tunnel",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "@react-navigation/bottom-tabs": "^6.5.11",
-    "@react-navigation/drawer": "^6.6.6",
-    "@react-navigation/native": "^6.1.9",
-    "@react-navigation/stack": "^6.3.20",
-    "expo": "~49.0.15",
-    "expo-blur": "~12.4.1",
-    "expo-image": "~1.3.5",
-    "expo-status-bar": "~1.6.0",
-    "expo-template-tabs": "^49.0.26",
-    "react": "18.2.0",
-    "react-native": "0.72.6",
-    "react-native-elements": "^3.4.3",
-    "react-native-gesture-handler": "~2.12.0",
-    "react-native-reanimated": "~3.3.0",
-    "react-native-vector-icons": "^10.0.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/react": "~18.2.14",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "eslint": "^8.53.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-standard-with-typescript": "^39.1.1",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-n": "^16.3.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.33.2",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
-  },
-  "private": true
+    "name": "vinopinionsapp",
+    "version": "1.0.0",
+    "main": "./app/App.tsx",
+    "scripts": {
+        "start": "expo start --tunnel",
+        "android": "expo start --android",
+        "ios": "expo start --ios",
+        "web": "expo start --web"
+    },
+    "dependencies": {
+        "@react-navigation/bottom-tabs": "^6.5.11",
+        "@react-navigation/drawer": "^6.6.6",
+        "@react-navigation/native": "^6.1.9",
+        "@react-navigation/stack": "^6.3.20",
+        "expo": "~49.0.15",
+        "expo-blur": "~12.4.1",
+        "expo-image": "~1.3.5",
+        "expo-status-bar": "~1.6.0",
+        "expo-template-tabs": "^49.0.26",
+        "react": "18.2.0",
+        "react-native": "0.72.6",
+        "react-native-elements": "^3.4.3",
+        "react-native-gesture-handler": "^2.13.4",
+        "react-native-reanimated": "3.3.0",
+        "react-native-ui-lib": "^7.10.0",
+        "react-native-vector-icons": "^10.0.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.20.0",
+        "@types/react": "~18.2.14",
+        "@typescript-eslint/eslint-plugin": "^6.10.0",
+        "eslint": "^8.53.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-standard-with-typescript": "^39.1.1",
+        "eslint-plugin-import": "^2.29.0",
+        "eslint-plugin-n": "^16.3.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-react": "^7.33.2",
+        "prettier": "^3.0.3",
+        "typescript": "^5.2.2"
+    },
+    "private": true
 }
