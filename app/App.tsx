@@ -18,7 +18,6 @@ const App = () => {
         Appearance.addChangeListener(themeChangeListener);
     }, [themeChangeListener]);
 
-    console.log(theme);
     return (
         <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
             <AppNavigator />
