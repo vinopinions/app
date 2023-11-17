@@ -22,34 +22,47 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 const TabNavigator = () => (
-    <Navigator tabBar={props => <BottomTabBar {...props} />}>
+    <Navigator tabBar={props => <BottomTabBar {...props} />} screenOptions={{ headerShown: false }}>
         <Screen
             name="Home"
             component={HomeScreen}
-            options={{ tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => <Icon name={'home'} color={color} size={size} /> }}
+            options={{ tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => <Icon name={'home'} color={color} size={size} />, headerShown: false }}
         />
         <Screen
             name="Wines"
             component={WineScreen}
-            options={{ tabBarLabel: 'Wines', tabBarIcon: ({ color, size }) => <Icon name={'wine-glass-alt'} color={color} size={size} /> }}
+            options={{
+                tabBarLabel: 'Wines',
+                tabBarIcon: ({ color, size }) => <Icon name={'wine-glass-alt'} color={color} size={size} />,
+                headerShown: false
+            }}
         />
         <Screen
             name="Stores"
             component={StoreScreen}
             options={{
                 tabBarLabel: 'Stores',
-                tabBarIcon: ({ color, size }) => <Icon name={'store-alt'} pack="FontAwesome5" color={color} size={size} />
+                tabBarIcon: ({ color, size }) => <Icon name={'store-alt'} pack="FontAwesome5" color={color} size={size} />,
+                headerShown: false
             }}
         />
         <Screen
             name="Friends"
             component={FriendsScreen}
-            options={{ tabBarLabel: 'Friends', tabBarIcon: ({ color, size }) => <Icon name={'user-friends'} color={color} size={size} /> }}
+            options={{
+                tabBarLabel: 'Friends',
+                tabBarIcon: ({ color, size }) => <Icon name={'user-friends'} color={color} size={size} />,
+                headerShown: false
+            }}
         />
         <Screen
             name="Account"
             component={AccountDrawer}
-            options={{ tabBarLabel: 'Account', tabBarIcon: ({ color, size }) => <FontAwesome5 name={'user-alt'} color={color} size={size} /> }}
+            options={{
+                tabBarLabel: 'Account',
+                tabBarIcon: ({ color, size }) => <FontAwesome5 name={'user-alt'} color={color} size={size} />,
+                headerShown: false
+            }}
         />
     </Navigator>
 );

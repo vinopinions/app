@@ -37,7 +37,7 @@ const RecentWineRatings = () => {
     );
 
     return (
-        <View style={recentWineRatingsStyles.container}>
+        <View style={[recentWineRatingsStyles.container]}>
             <Text style={recentWineRatingsStyles.heading}>Recent Wine Ratings</Text>
             <FlatList data={testWineItems} keyExtractor={item => item.id.toString()} renderItem={renderWineItem} />
         </View>
