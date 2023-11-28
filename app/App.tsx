@@ -93,12 +93,22 @@ const App = () => {
                 dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
             },
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
-            signUp: async data => {
-                // In a production app, we need to send user data to server and get a token
-                // We will also need to handle errors if sign up failed
-                // After getting token, we need to persist the token using `SecureStore`
-                // In the example, we'll use a dummy token
-
+            signUp: async (data: AuthProps) => {
+                fetch('https://api.vinopinions.spots.host/v0/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: data.username,
+                        password: data.password
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    });
                 dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
             }
         }),
@@ -118,7 +128,7 @@ const App = () => {
             <IconRegistry icons={EvaIconsPack} />
             <AuthContext.Provider value={authContext}>
                 <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
-                    <LoginScreen />
+                    {state.userToken == null ? <LoginScreen /> : <AppNavigator />}
                 </ApplicationProvider>
             </AuthContext.Provider>
         </>
