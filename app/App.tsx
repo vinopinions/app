@@ -7,6 +7,7 @@ import { Appearance, ColorSchemeName } from 'react-native';
 import { NativeModules } from 'react-native';
 import LoginScreen from './auth/login-screen';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import SignUpScreen from './auth/signup-screen';
 
 const App = () => {
     const colorScheme = Appearance.getColorScheme();
@@ -25,7 +26,7 @@ const App = () => {
         <>
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
-                <LoginScreen />
+                <SignUpScreen />
             </ApplicationProvider>
         </>
     );

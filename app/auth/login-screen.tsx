@@ -1,26 +1,13 @@
-import { Button, Input, IconElement, Icon } from '@ui-kitten/components';
+import { Button, Input } from '@ui-kitten/components';
 import { useState } from 'react';
-import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
-
-const AlterIcon = (props): IconElement => <Icon {...props} name="alert-circle-outline" />;
+import { SafeAreaView } from 'react-native';
+import PasswordField from './password-masking/password-field';
 
 const LoginScreen = () => {
     const [state, setState] = useState({
         username: '',
         password: ''
     });
-
-    const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-    const toggleSecureEntry = () => {
-        setSecureTextEntry(!secureTextEntry);
-    };
-
-    const renderIcon = (props): React.ReactElement => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-            <Icon {...props} name={secureTextEntry ? 'eye-off-outline' : 'eye-outline'} />
-        </TouchableWithoutFeedback>
-    );
 
     const login = () => {
         fetch('https://api.vinopinions.spots.host/v0/auth/login', {
@@ -43,14 +30,7 @@ const LoginScreen = () => {
     return (
         <SafeAreaView>
             <Input placeholder="username" id="username" onChangeText={username => setState({ ...state, username })} />
-            <Input
-                value={state.password}
-                placeholder="password"
-                id="password"
-                onChangeText={password => setState({ ...state, password })}
-                accessoryRight={renderIcon}
-                secureTextEntry={secureTextEntry}
-            />
+            <PasswordField value={state.password} onChangeText={password => setState({ ...state, password })} />
             <Button onPress={login}>Login</Button>
         </SafeAreaView>
     );
