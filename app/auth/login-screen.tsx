@@ -1,7 +1,8 @@
 import { Button, Input } from '@ui-kitten/components';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import PasswordField from './password-masking/password-field';
+import { AuthContext } from '../App';
 
 const LoginScreen = () => {
     const [state, setState] = useState({
@@ -9,29 +10,13 @@ const LoginScreen = () => {
         password: ''
     });
 
-    const login = () => {
-        fetch('https://api.vinopinions.spots.host/v0/auth/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: state.username,
-                password: state.password
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
-    };
+    const { signIn } = useContext(AuthContext);
 
     return (
         <SafeAreaView>
             <Input placeholder="username" id="username" onChangeText={username => setState({ ...state, username })} />
             <PasswordField value={state.password} onChangeText={password => setState({ ...state, password })} />
-            <Button onPress={login}>Login</Button>
+            <Button onPress={() => signIn(state.username, state.password)}>Login</Button>
         </SafeAreaView>
     );
 };
