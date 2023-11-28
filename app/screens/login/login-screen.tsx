@@ -2,7 +2,7 @@ import { Input, Button } from '@ui-kitten/components';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { AuthContext } from '../../App';
-import PasswordField from '../../auth/password-masking/password-field';
+import PasswordField from '../../auth/components/password-field';
 
 const LoginScreen = () => {
     const [state, setState] = useState({

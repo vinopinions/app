@@ -7,7 +7,6 @@ import { Appearance, ColorSchemeName } from 'react-native';
 import { NativeModules } from 'react-native';
 import LoginScreen from './auth/login-screen';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import SignUpScreen from './auth/signup-screen';
 import * as SecureStore from 'expo-secure-store';
 
 export const AuthContext = createContext(undefined);

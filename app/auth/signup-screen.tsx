@@ -1,6 +1,6 @@
 import { Button, Input } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native';
-import PasswordField from './password-masking/password-field';
+import PasswordField from './components/password-field';
 import { useState } from 'react';
 import React from 'react';
 import { AuthContext } from '../App';
