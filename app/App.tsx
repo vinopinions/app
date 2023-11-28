@@ -1,11 +1,12 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { registerRootComponent } from 'expo';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { AppNavigator } from './navigation/bottom-tab-navigator';
 import * as eva from '@eva-design/eva';
 import { Appearance, ColorSchemeName } from 'react-native';
 import { NativeModules } from 'react-native';
 import LoginScreen from './auth/login-screen';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 const App = () => {
     const colorScheme = Appearance.getColorScheme();
@@ -21,9 +22,12 @@ const App = () => {
     }, [themeChangeListener]);
 
     return (
-        <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
-            <LoginScreen />
-        </ApplicationProvider>
+        <>
+            <IconRegistry icons={EvaIconsPack} />
+            <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
+                <LoginScreen />
+            </ApplicationProvider>
+        </>
     );
 };
 
