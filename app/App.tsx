@@ -27,7 +27,7 @@ const App = () => {
     const [isLogin, setIsLogin] = useState(true);
 
     const [state, dispatch] = useReducer(
-        (prevState: AuthState, action: AuthAction) => {
+        (prevState: AuthState, action: AuthAction): AuthState => {
             switch (action.type) {
                 case 'RESTORE_TOKEN':
                     return {
