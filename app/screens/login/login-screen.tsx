@@ -5,7 +5,11 @@ import PasswordField from '../../auth/components/password-field';
 import { AuthContext } from '../../App';
 import loginStyles from './styles/login-styles';
 
-const LoginScreen = () => {
+interface LoginProps {
+    switchToSignUp: () => void;
+}
+
+const LoginScreen = ({ switchToSignUp }: LoginProps) => {
     const [state, setState] = useState({
         username: '',
         password: ''
@@ -35,6 +39,7 @@ const LoginScreen = () => {
             >
                 Login
             </Button>
+            <Button onPress={() => switchToSignUp()}>Sign up</Button>
         </SafeAreaView>
     );
 };
