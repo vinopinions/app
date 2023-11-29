@@ -1,20 +1,19 @@
-import React, { createContext, useCallback, useEffect, useReducer, useState } from 'react';
-import { registerRootComponent } from 'expo';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { AppNavigator } from './navigation/bottom-tab-navigator';
 import * as eva from '@eva-design/eva';
-import { Appearance, ColorSchemeName } from 'react-native';
-import { NativeModules } from 'react-native';
-import LoginScreen from './screens/login/login-screen';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { registerRootComponent } from 'expo';
 import * as SecureStore from 'expo-secure-store';
+import React, { createContext, useReducer, useState } from 'react';
+import { NativeModules, useColorScheme } from 'react-native';
+import { AppNavigator } from './navigation/bottom-tab-navigator';
+import LoginScreen from './screens/login/login-screen';
 import SignUpScreen from './screens/signup/signup-screen';
 
 export const AuthContext = createContext(undefined);
 
 const App = () => {
-    const colorScheme = Appearance.getColorScheme();
-    const [theme, setTheme] = useState<ColorSchemeName>();
+    const colorScheme = useColorScheme();
+    console.log(colorScheme);
 
     const [state, dispatch] = useReducer(
         (prevState, action) => {
@@ -108,14 +107,6 @@ const App = () => {
         }),
         []
     );
-
-    const themeChangeListener = useCallback(() => {
-        setTheme(Appearance.getColorScheme());
-    }, []);
-
-    useEffect(() => {
-        Appearance.addChangeListener(themeChangeListener);
-    }, [themeChangeListener]);
 
     const [isLogin, setIsLogin] = useState(true);
 
