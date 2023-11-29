@@ -1,8 +1,9 @@
-import { Input, Button } from '@ui-kitten/components';
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { AuthContext } from '../../App';
+import { Button, Input, Text } from '@ui-kitten/components';
+import { useContext, useState } from 'react';
+import { SafeAreaView, View } from 'react-native';
 import PasswordField from '../../auth/components/password-field';
+import { AuthContext } from '../../App';
+import loginStyles from './styles/login-styles';
 
 const LoginScreen = () => {
     const [state, setState] = useState({
@@ -10,14 +11,31 @@ const LoginScreen = () => {
         password: ''
     });
 
-    const { signIn } = React.useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
 
     return (
-        <View>
-            <Input placeholder="username" />
-            <PasswordField onChangeText={password => setState({ ...state, password })} value={state.password} />
-            <Button onPress={() => signIn(state.username, state.password)} />
-        </View>
+        <SafeAreaView style={loginStyles.container}>
+            <Text style={loginStyles.title}>Login</Text>
+            <View style={loginStyles.inputView}>
+                <Input
+                    value={state.username}
+                    style={loginStyles.inputText}
+                    placeholder="username"
+                    id="username"
+                    onChangeText={username => setState({ ...state, username })}
+                />
+            </View>
+            <View style={loginStyles.inputView}>
+                <PasswordField style={loginStyles.inputText} value={state.password} onChangeText={password => setState({ ...state, password })} />
+            </View>
+            <Button
+                onPress={() => {
+                    signIn(state.username, state.password);
+                }}
+            >
+                Login
+            </Button>
+        </SafeAreaView>
     );
 };
 

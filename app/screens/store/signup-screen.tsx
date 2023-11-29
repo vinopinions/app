@@ -1,9 +1,9 @@
 import { Button, Input } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native';
-import PasswordField from './components/password-field';
+import PasswordField from '../../auth/components/password-field';
 import { useState } from 'react';
 import React from 'react';
-import { AuthContext } from '../App';
+import { AuthContext } from '../../App';
 
 const SignUpScreen = () => {
     const [state, setState] = useState({

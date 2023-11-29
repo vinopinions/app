@@ -1,10 +1,11 @@
 import { Icon, Input } from '@ui-kitten/components';
 import { useState } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, TouchableWithoutFeedback } from 'react-native';
 
 interface PasswordFieldProps {
     value: string;
     onChangeText: (value: string) => void;
+    style?: StyleProp<TextStyle>;
 }
 
 const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
