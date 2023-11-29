@@ -11,35 +11,46 @@ import SignUpScreen from './screens/signup/signup-screen';
 
 export const AuthContext = createContext(undefined);
 
+interface AuthAction {
+    type: 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
+    token: string;
+}
+
+interface AuthState {
+    isLoading: boolean;
+    isSignOut: boolean;
+    userToken: string | null;
+}
+
 const App = () => {
     const colorScheme = useColorScheme();
-    console.log(colorScheme);
+    const [isLogin, setIsLogin] = useState(true);
 
     const [state, dispatch] = useReducer(
-        (prevState, action) => {
+        (prevState: AuthState, action: AuthAction) => {
             switch (action.type) {
                 case 'RESTORE_TOKEN':
                     return {
                         ...prevState,
-                        token: action.token
+                        userToken: action.token
                     };
                 case 'SIGN_IN':
                     return {
                         ...prevState,
-                        isSignout: false,
+                        isSignOut: false,
                         userToken: action.token
                     };
                 case 'SIGN_OUT':
                     return {
                         ...prevState,
-                        isSignout: true,
+                        isSignOut: true,
                         userToken: null
                     };
             }
         },
         {
             isLoading: true,
-            isSignout: true,
+            isSignOut: true,
             userToken: null
         }
     );
@@ -85,7 +96,7 @@ const App = () => {
                         dispatch({ type: 'SIGN_IN', token: data.access_token });
                     });
             },
-            signOut: () => dispatch({ type: 'SIGN_OUT' }),
+            signOut: () => dispatch({ type: 'SIGN_OUT', token: null }),
             signUp: async (username: string, password: string) => {
                 fetch('https://api-t.vinopinions.spots.host/v0/auth/signup', {
                     method: 'POST',
@@ -107,8 +118,6 @@ const App = () => {
         }),
         []
     );
-
-    const [isLogin, setIsLogin] = useState(true);
 
     return (
         <>
