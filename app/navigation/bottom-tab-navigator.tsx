@@ -6,7 +6,7 @@ import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/friends-screen';
 import HomeScreen from '../screens/home/home-screen';
 import StoreScreen from '../screens/store/store-screen';
-import WineScreen from '../screens/wine/wine-screen';
+import WinesScreen from '../screens/wines/wines-screen';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -29,7 +29,7 @@ const TabNavigator = () => (
         />
         <Screen
             name="Wines"
-            component={WineScreen}
+            component={WinesScreen}
             options={{
                 tabBarLabel: 'Wines',
                 tabBarIcon: ({ color, size }) => <Icon name={'wine-glass-alt'} color={color} size={size} />,
