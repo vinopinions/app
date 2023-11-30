@@ -1,13 +1,12 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigationTab, BottomNavigation, Icon } from '@ui-kitten/components';
-import HomeScreen from '../screens/home/home-screen';
-import WineScreen from '../screens/wine/wine-screen';
-import StoreScreen from '../screens/store/store-screen';
-import FriendsScreen from '../screens/friends/friends-screen';
-import { NavigationContainer } from '@react-navigation/native';
-import { AccountDrawer } from '../screens/account/account-drawer';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
+import React from 'react';
+import { AccountDrawer } from '../screens/account/account-drawer';
+import FriendsScreen from '../screens/friends/friends-screen';
+import HomeScreen from '../screens/home/home-screen';
+import StoreScreen from '../screens/store/store-screen';
+import WineScreen from '../screens/wine/wine-screen';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -68,9 +67,5 @@ const TabNavigator = () => (
 );
 
 export const AppNavigator = () => {
-    return (
-        <NavigationContainer>
-            <TabNavigator />
-        </NavigationContainer>
-    );
+    return <TabNavigator />;
 };

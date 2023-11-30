@@ -15,7 +15,10 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "userInterfaceStyle": "automatic"
+            "userInterfaceStyle": "automatic",
+            "config": {
+                "UserNonExemptEncryption": false
+            }
         },
         "android": {
             "adaptiveIcon": {
