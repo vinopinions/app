@@ -1,45 +1,38 @@
 import { Button, Input, Text } from '@ui-kitten/components';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
+import { Credentials, useAuth } from '../../auth/AuthContext';
 import PasswordField from '../../auth/components/password-field';
-import { AuthContext } from '../../App';
 import loginStyles from './styles/login-styles';
 
-interface LoginProps {
-    switchToSignUp: () => void;
-}
-
-const LoginScreen = ({ switchToSignUp }: LoginProps) => {
-    const [state, setState] = useState({
+const LoginScreen = () => {
+    const [credentials, setCredentials] = useState<Credentials>({
         username: '',
         password: ''
     });
 
-    const { signIn } = useContext(AuthContext);
-
+    const { login, register } = useAuth();
     return (
         <SafeAreaView style={loginStyles.container}>
             <Text style={loginStyles.title}>Login</Text>
             <View style={loginStyles.inputView}>
                 <Input
-                    value={state.username}
+                    value={credentials.username}
                     style={loginStyles.inputText}
                     placeholder="username"
                     id="username"
-                    onChangeText={username => setState({ ...state, username })}
+                    onChangeText={username => setCredentials({ ...credentials, username })}
                 />
             </View>
             <View style={loginStyles.inputView}>
-                <PasswordField style={loginStyles.inputText} value={state.password} onChangeText={password => setState({ ...state, password })} />
+                <PasswordField
+                    style={loginStyles.inputText}
+                    value={credentials.password}
+                    onChangeText={password => setCredentials({ ...credentials, password })}
+                />
             </View>
-            <Button
-                onPress={() => {
-                    signIn(state.username, state.password);
-                }}
-            >
-                Login
-            </Button>
-            <Button onPress={() => switchToSignUp()}>Sign up</Button>
+            <Button onPress={() => login(credentials)}>Login</Button>
+            <Button onPress={() => register(credentials)}>Sign up</Button>
         </SafeAreaView>
     );
 };
