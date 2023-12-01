@@ -1,11 +1,10 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { AUTH_ENDPOINT } from '../constants/UrlConstants';
 import useApi from '../hooks/useApi';
 
-export const API_BASE_URL = 'https://api-t.vinopinions.spots.host/v0';
 const TOKEN_KEY = 'api-jwt';
-const AUTH_ENDPOINT = '/auth';
 
 interface AuthState {
     token: string | null;

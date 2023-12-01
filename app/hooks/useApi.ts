@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, HttpStatusCode } from 'axios';
-import { API_BASE_URL } from '../auth/AuthContext';
+import { API_BASE_URL } from '../constants/UrlConstants';
 
 const useApi = () => {
     const post = async (endpoint: string, data?: object, validateResponse: boolean = true): Promise<AxiosResponse<unknown, unknown>> => {

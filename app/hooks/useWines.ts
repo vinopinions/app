@@ -1,7 +1,6 @@
+import { WINES_ENDPOINT } from '../constants/UrlConstants';
 import Wine, { isWine, isWineArray } from '../models/Wine';
 import useApi from './useApi';
-
-const WINES_ENDPOINT = '/wines';
 
 const useWine = () => {
     const { post, get } = useApi();
