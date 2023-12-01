@@ -1,9 +1,11 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import useApi from '../hooks/useApi';
 
 export const API_BASE_URL = 'https://api-t.vinopinions.spots.host/v0';
 const TOKEN_KEY = 'api-jwt';
+const AUTH_ENDPOINT = '/auth';
 
 interface AuthState {
     token: string | null;
@@ -16,19 +18,20 @@ export interface Credentials {
 }
 
 interface AuthProps {
-    authState?: AuthState;
-    register?: (credentials: Credentials) => Promise<unknown>;
-    login?: (credentials: Credentials) => Promise<unknown>;
-    logout?: () => Promise<unknown>;
+    authState: AuthState;
+    register: (credentials: Credentials) => Promise<unknown>;
+    login: (credentials: Credentials) => Promise<unknown>;
+    logout: () => Promise<unknown>;
 }
 
-const AuthContext = createContext<AuthProps>({});
+const AuthContext = createContext<AuthProps>(null);
 
 export const useAuth = (): AuthProps => {
     return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }) => {
+    const { post } = useApi();
     const [authState, setAuthState] = useState<AuthState>({
         token: null,
         authenticated: false
@@ -49,11 +52,11 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
         };
 
         loadTokenFromSecureStore();
-    });
+    }, []);
 
     const register = async (credentials: Credentials) => {
         try {
-            return await axios.post(`${API_BASE_URL}/auth/signup`, credentials);
+            return await post(`${AUTH_ENDPOINT}/signup`, credentials);
         } catch (e) {
             console.log(e);
             console.log(typeof e);
@@ -64,7 +67,11 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
 
     const login = async (credentials: Credentials) => {
         try {
-            const result = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
+            const result = await post(`${AUTH_ENDPOINT}/login`, credentials);
+            if (!(typeof result.data == 'object')) return;
+            if (!('access_token' in result.data)) return;
+            if (!(typeof result.data.access_token == 'string')) return;
+
             const token = result.data.access_token;
             setAuthState({
                 token,
@@ -74,7 +81,6 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             await SecureStore.setItemAsync(TOKEN_KEY, token);
-            console.log(token);
             return result;
         } catch (e) {
             console.log(e);
