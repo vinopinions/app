@@ -7,8 +7,9 @@ import FriendsScreen from '../screens/friends/friends-screen';
 import HomeScreen from '../screens/home/home-screen';
 import StoreScreen from '../screens/store/store-screen';
 import WinesScreen from '../screens/wines/wines-screen';
+import { HomeIcon, WineIcon } from '../utils/icons';
 
-const { Navigator, Screen } = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation selectedIndex={state.index} onSelect={index => navigation.navigate(state.routeNames[index])}>
@@ -21,22 +22,22 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 const TabNavigator = () => (
-    <Navigator tabBar={props => <BottomTabBar {...props} />} screenOptions={{ headerShown: false }}>
-        <Screen
+    <Tab.Navigator tabBar={props => <BottomTabBar {...props} />} screenOptions={{ headerShown: false }}>
+        <Tab.Screen
             name="Home"
             component={HomeScreen}
-            options={{ tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => <Icon name={'home'} color={color} size={size} />, headerShown: false }}
+            options={{ tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />, headerShown: false }}
         />
-        <Screen
+        <Tab.Screen
             name="Wines"
             component={WinesScreen}
             options={{
-                tabBarLabel: 'Wines',
-                tabBarIcon: ({ color, size }) => <Icon name={'wine-glass-alt'} color={color} size={size} />,
+                tabBarLabel: 'Test',
+                tabBarIcon: ({ color, size }) => <WineIcon color={color} size={size} />,
                 headerShown: false
             }}
         />
-        <Screen
+        <Tab.Screen
             name="Stores"
             component={StoreScreen}
             options={{
@@ -45,7 +46,7 @@ const TabNavigator = () => (
                 headerShown: false
             }}
         />
-        <Screen
+        <Tab.Screen
             name="Friends"
             component={FriendsScreen}
             options={{
@@ -54,7 +55,7 @@ const TabNavigator = () => (
                 headerShown: false
             }}
         />
-        <Screen
+        <Tab.Screen
             name="Account"
             component={AccountDrawer}
             options={{
@@ -63,7 +64,7 @@ const TabNavigator = () => (
                 headerShown: false
             }}
         />
-    </Navigator>
+    </Tab.Navigator>
 );
 
 export const AppNavigator = () => {

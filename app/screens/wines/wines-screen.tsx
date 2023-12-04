@@ -5,7 +5,7 @@ import Wine from '../../models/Wine';
 
 const WinesScreen = () => {
     const { getAll } = useWines();
-    const [wines, setWines] = useState<Wine[]>([]);
+    const [wines, setWines] = useState<Wine[]>(null);
 
     useEffect(() => {
         const getAllWines = async () => {
@@ -15,11 +15,7 @@ const WinesScreen = () => {
     }, []);
 
     console.log(wines);
-    return (
-        <View>
-            <Text>This is the the wine screen</Text>
-        </View>
-    );
+    return <View>{wines == null ? <Text>This is the the wine screen</Text> : <Text>{JSON.stringify(wines, null, 2)}</Text>}</View>;
 };
 
 export default WinesScreen;
