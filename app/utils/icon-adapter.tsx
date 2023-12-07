@@ -1,6 +1,6 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 const createIconsMap = () => {
     return new Proxy(
@@ -24,5 +24,5 @@ const IconProvider = name => ({
 
 const FontAwesome5Icon = ({ name, style }) => {
     const { height, tintColor, ...iconStyle } = StyleSheet.flatten(style);
-    return <FontAwesome5 name={name} size={height} color={tintColor} stlye={iconStyle} />;
+    return <FontAwesome5 name={name} size={height} color={tintColor} style={iconStyle} />;
 };

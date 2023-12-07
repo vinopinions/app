@@ -1,8 +1,7 @@
 import * as eva from '@eva-design/eva';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { registerRootComponent } from 'expo';
 import React from 'react';
 import { Button, NativeModules, useColorScheme } from 'react-native';
@@ -26,7 +25,6 @@ const Layout = () => {
 
     return (
         <NavigationContainer>
-            <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={colorScheme === 'dark' ? eva.dark : eva.light}>
                 <Stack.Navigator>
                     {authState.authenticated ? (
