@@ -1,15 +1,17 @@
-import { Icon, IconElement } from '@ui-kitten/components';
+// https://fontawesome.com/v5/search
 
-export const Fa5Icon = (...props): IconElement => {
-    return <Icon {...props} pack="FontAwesome5" />;
-};
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export const HomeIcon = (props): IconElement => <Fa5Icon {...props} name="home" />;
+export const HomeIcon = props => <FontAwesome5 {...props} name="home" />;
 
-export const WineIcon = (props): IconElement => <Fa5Icon {...props} name="wine-glass-alt" />;
+export const WineIcon = props => <FontAwesome5 {...props} name="wine-glass-alt" />;
 
-export const StoreIcon = (props): IconElement => <Fa5Icon {...props} name="store-alt" />;
+export const StoreIcon = props => <FontAwesome5 {...props} name="store-alt" />;
 
-export const FriendsIcon = (props): IconElement => <Fa5Icon {...props} name="user-friends" />;
+export const FriendsIcon = props => <FontAwesome5 {...props} name="user-friends" />;
 
-export const AccountIcon = (props): IconElement => <Fa5Icon {...props} name="person-outline" />;
+export const AccountIcon = props => <FontAwesome5 {...props} name="user" />;
+
+export const EyeIcon = props => <FontAwesome5 {...props} name="eye" />;
+
+export const EyeSlashIcon = props => <FontAwesome5 {...props} name="eye-slash" />;
