@@ -1,21 +1,41 @@
-import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RefreshControl, Text, View } from 'react-native';
+import WineCardList from '../../components/winecardlist/WineCardList';
 import useWines from '../../hooks/useWines';
 import Wine from '../../models/Wine';
-
 const WinesScreen = () => {
+    const [refreshing, setRefreshing] = useState(false);
     const { getAll } = useWines();
     const [wines, setWines] = useState<Wine[]>(null);
 
-    useEffect(() => {
-        const getAllWines = async () => {
-            setWines(await getAll());
-        };
-        getAllWines();
+    const updateWines = useCallback(async () => {
+        setWines(await getAll());
     }, []);
 
-    console.log(wines);
-    return <View>{wines == null ? <Text>This is the the wine screen</Text> : <Text>{JSON.stringify(wines, null, 2)}</Text>}</View>;
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        await updateWines();
+        setRefreshing(false);
+    }, []);
+
+    useEffect(() => {
+        updateWines();
+    }, []);
+
+    return (
+        <View>
+            {wines == null ? (
+                <Text>This is the the wine screen</Text>
+            ) : (
+                <>
+                    <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines} />
+                    {/* {wines.map(wine => (
+                        <WineCard wine={wine} />
+                    ))} */}
+                </>
+            )}
+        </View>
+    );
 };
 
 export default WinesScreen;

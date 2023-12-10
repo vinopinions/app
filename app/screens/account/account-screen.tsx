@@ -2,7 +2,6 @@ import { useTheme } from '@ui-kitten/components';
 import { Image } from 'expo-image';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import RecentWineRatings from './recent-wine-ratings';
 import accountStyles from './styles/account-styles';
 
 const AccountScreen = () => {
@@ -14,7 +13,6 @@ const AccountScreen = () => {
                 <View style={accountStyles.profileContainer}>
                     <Image source="https://picsum.photos/seed/696/3000/2000" style={accountStyles.profilePicture} />
                     <Text style={accountStyles.userName}>User Name</Text>
-                    <RecentWineRatings />
                 </View>
             </View>
         </ScrollView>
