@@ -2,16 +2,27 @@ import axios, { AxiosResponse, HttpStatusCode } from 'axios';
 import { useState } from 'react';
 import { API_BASE_URL } from '../constants/UrlConstants';
 
-const useApi = () => {
+export type ApiResult = {
+    loading: boolean;
+    error?: Error;
+};
+
+type ApiUseApiResult<T> = ApiResult & {
+    get: (endpoint: string, data?: object) => Promise<void>;
+    post: (endpoint: string, data?: object) => Promise<void>;
+    result: T;
+};
+
+const useApi = <T = unknown>(): ApiUseApiResult<T> => {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const get = async (endpoint: string, data?: object) => {
+    const get = async (endpoint: string, data?: object): Promise<void> => {
         const url = getFullUrl(endpoint);
 
         try {
-            const response = await axios({
+            const response: AxiosResponse<T> = await axios({
                 method: 'GET',
                 url,
                 data

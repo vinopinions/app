@@ -1,9 +1,14 @@
 import { Credentials } from '../../auth/AuthContext';
 import { SIGNUP_ENDPOINT } from '../../constants/UrlConstants';
-import useApi from '../useApi';
+import useApi, { ApiResult } from '../useApi';
 
-const useSignup = () => {
-    const { post, result, error, loading } = useApi();
+type ApiUseSignupResult = ApiResult & {
+    signup: (credentials: Credentials) => Promise<void>;
+    result: unknown;
+};
+
+const useSignup = (): ApiUseSignupResult => {
+    const { post, result, loading, error } = useApi();
 
     const signup = async (credentials: Credentials) => {
         await post(SIGNUP_ENDPOINT, credentials);
@@ -12,8 +17,8 @@ const useSignup = () => {
     return {
         signup,
         result,
-        error,
-        loading
+        loading,
+        error
     };
 };
 

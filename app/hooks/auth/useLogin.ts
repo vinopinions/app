@@ -1,18 +1,25 @@
 import { Credentials } from '../../auth/AuthContext';
 import { LOGIN_ENDPOINT } from '../../constants/UrlConstants';
-import useApi from '../useApi';
+import useApi, { ApiResult } from '../useApi';
 
-const useLogin = (): { login: (credentials: Credentials) => Promise<void>; result: unknown; error: Error; loading: boolean } => {
-    const { post, result, error, loading } = useApi();
-    const login = async (credentials: Credentials) => {
+type AccessTokenResult = { access_token: string };
+
+type ApiUseLoginResult = ApiResult & {
+    login: (credentials: Credentials) => Promise<void>;
+    result: AccessTokenResult;
+};
+
+const useLogin = (): ApiUseLoginResult => {
+    const { post, result, loading, error } = useApi<AccessTokenResult>();
+    const login = async (credentials: Credentials): Promise<void> => {
         await post(LOGIN_ENDPOINT, credentials);
     };
 
     return {
         login,
         result,
-        error,
-        loading
+        loading,
+        error
     };
 };
 

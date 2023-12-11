@@ -1,8 +1,24 @@
 import { WINES_ENDPOINT } from '../../constants/UrlConstants';
-import useApi from '../useApi';
+import Wine from '../../models/Wine';
+import useApi, { ApiResult } from '../useApi';
 
-const useGetWines = () => {
-    return useApi('GET', WINES_ENDPOINT);
+type ApiGetWinesResult = ApiResult & {
+    getWines: () => Promise<void>;
+    wines: Wine[] | null;
 };
 
+const useGetWines = (): ApiGetWinesResult => {
+    const { get, result, loading, error } = useApi<Wine[]>();
+
+    const getWines = async () => {
+        await get(WINES_ENDPOINT);
+    };
+
+    return {
+        getWines,
+        wines: result,
+        loading,
+        error
+    };
+};
 export default useGetWines;
