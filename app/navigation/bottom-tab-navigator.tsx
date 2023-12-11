@@ -5,7 +5,7 @@ import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/friends-screen';
 import HomeScreen from '../screens/home/home-screen';
 import StoreScreen from '../screens/store/store-screen';
-import WinesScreen from '../screens/wines/wines-screen';
+import WinesScreen from '../screens/wines/WinesScreen';
 import { AccountIcon, FriendsIcon, HomeIcon, StoreIcon, WineIcon } from '../utils/icons';
 
 const Tab = createBottomTabNavigator();

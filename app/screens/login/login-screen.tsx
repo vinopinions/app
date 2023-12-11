@@ -2,7 +2,7 @@ import { Button, Input, Text } from '@ui-kitten/components';
 import { useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Credentials, useAuth } from '../../auth/AuthContext';
-import PasswordField from '../../auth/components/password-field';
+import PasswordField from '../../components/PasswordField';
 import loginStyles from './styles/login-styles';
 
 const LoginScreen = () => {

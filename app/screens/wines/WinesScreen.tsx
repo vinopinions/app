@@ -1,7 +1,8 @@
 import { Button } from '@ui-kitten/components';
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, View } from 'react-native';
-import WineCardList from '../../components/winecardlist/WineCardList';
+import { RefreshControl, StyleSheet, View } from 'react-native';
+import AddButton from '../../components/PlusButton';
+import WineCardList from '../../components/WineCardList';
 import useGetWines from '../../hooks/wines/useGetWines';
 const WinesScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -27,7 +28,12 @@ const WinesScreen = () => {
                 <Button>Test</Button>
             ) : (
                 <>
-                    <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines} />
+                    <WineCardList
+                        style={styles.wineCardList}
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                        wines={wines}
+                    />
+                    <AddButton />
                 </>
             )}
         </View>
@@ -35,3 +41,14 @@ const WinesScreen = () => {
 };
 
 export default WinesScreen;
+
+const styles = StyleSheet.create({
+    wineCardList: {
+        height: '100%'
+    },
+    plusButton: {
+        position: 'absolute',
+        top: '90%',
+        left: '80%'
+    }
+});

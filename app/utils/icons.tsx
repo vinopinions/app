@@ -16,3 +16,5 @@ export const AccountIcon = props => <FontAwesome5 {...props} name="user" />;
 export const EyeIcon = props => <FontAwesome5 {...props} name="eye" />;
 
 export const EyeSlashIcon = props => <FontAwesome5 {...props} name="eye-slash" />;
+
+export const PlusIcon = props => <FontAwesome5 {...props} name="plus" />;

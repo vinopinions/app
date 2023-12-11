@@ -62,17 +62,11 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
         if (signupResult !== null) await login(credentials);
     };
 
-    const login = async (credentials: Credentials): Promise<Error | null> => {
+    const login = async (credentials: Credentials): Promise<undefined> => {
         await doLogin(credentials);
         if (loginError) {
             alert(loginError.message);
         }
-
-        console.log(loginResult);
-
-        // TODO: Create type guard
-        if (!(typeof loginResult == 'object') || !('access_token' in loginResult) || !(typeof loginResult.access_token == 'string'))
-            return new Error('Invalid response from server. (Missing token)');
 
         const token = loginResult.access_token;
         setAuthState({

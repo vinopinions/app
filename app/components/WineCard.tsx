@@ -1,7 +1,6 @@
 import { Card, Text } from '@ui-kitten/components';
-import { View } from 'react-native';
-import Wine from '../../models/Wine';
-import styles from './styles';
+import { StyleSheet, View } from 'react-native';
+import Wine from '../models/Wine';
 
 interface WineCardProps {
     wine: Wine;
@@ -32,3 +31,9 @@ const WineCard = ({ wine }: WineCardProps): React.ReactElement => {
 };
 
 export default WineCard;
+
+const styles = StyleSheet.create({
+    item: {
+        marginVertical: 4
+    }
+});

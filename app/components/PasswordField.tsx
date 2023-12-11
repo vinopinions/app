@@ -1,7 +1,7 @@
 import { Input } from '@ui-kitten/components';
 import { useState } from 'react';
 import { StyleProp, TextStyle, TouchableWithoutFeedback } from 'react-native';
-import { EyeIcon, EyeSlashIcon } from '../../utils/icons';
+import { EyeIcon, EyeSlashIcon } from '../utils/icons';
 
 interface PasswordFieldProps {
     value: string;
