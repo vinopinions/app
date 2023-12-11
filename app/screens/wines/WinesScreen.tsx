@@ -33,7 +33,7 @@ const WinesScreen = () => {
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         wines={wines}
                     />
-                    <AddButton />
+                    <AddButton style={styles.plusButton} />
                 </>
             )}
         </View>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     plusButton: {
         position: 'absolute',
-        top: '90%',
-        left: '80%'
+        bottom: 50,
+        right: 20
     }
 });
