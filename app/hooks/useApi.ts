@@ -19,6 +19,7 @@ const useApi = <T = unknown>(): ApiUseApiResult<T> => {
     const [error, setError] = useState(null);
 
     const get = async (endpoint: string, data?: object): Promise<void> => {
+        setLoading(true);
         const url = getFullUrl(endpoint);
 
         try {
@@ -38,6 +39,7 @@ const useApi = <T = unknown>(): ApiUseApiResult<T> => {
     };
 
     const post = async (endpoint: string, data?: object) => {
+        setLoading(true);
         const url = getFullUrl(endpoint);
         try {
             console.log({ data });

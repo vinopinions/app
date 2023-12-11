@@ -1,15 +1,14 @@
+import { Button } from '@ui-kitten/components';
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, Text, View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import WineCardList from '../../components/winecardlist/WineCardList';
-import useWines from '../../hooks/wines/useGetWines';
-import Wine from '../../models/Wine';
+import useGetWines from '../../hooks/wines/useGetWines';
 const WinesScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
-    const { getAll } = useWines();
-    const [wines, setWines] = useState<Wine[]>(null);
+    const { wines, getWines, loading } = useGetWines();
 
     const updateWines = useCallback(async () => {
-        setWines(await getAll());
+        await getWines();
     }, []);
 
     const onRefresh = useCallback(async () => {
@@ -24,14 +23,11 @@ const WinesScreen = () => {
 
     return (
         <View>
-            {wines == null ? (
-                <Text>This is the the wine screen</Text>
+            {loading ? (
+                <Button>Test</Button>
             ) : (
                 <>
                     <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines} />
-                    {/* {wines.map(wine => (
-                        <WineCard wine={wine} />
-                    ))} */}
                 </>
             )}
         </View>
