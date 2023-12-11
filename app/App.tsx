@@ -8,8 +8,9 @@ import { Button, LogBox, NativeModules, useColorScheme } from 'react-native';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import { AppNavigator } from './navigation/bottom-tab-navigator';
 import LoginScreen from './screens/login/login-screen';
+import AddWineScreen from './screens/wines/AddWineScreen';
 
-const Stack = createNativeStackNavigator();
+export const Stack = createNativeStackNavigator();
 
 const App = () => {
     return (
@@ -36,6 +37,7 @@ const Layout = () => {
                     ) : (
                         <Stack.Screen name="Login" component={LoginScreen} />
                     )}
+                    <Stack.Screen name="AddWine" options={{ title: 'New Wine' }} component={AddWineScreen} />
                 </Stack.Navigator>
             </ApplicationProvider>
         </NavigationContainer>

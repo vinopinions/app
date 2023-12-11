@@ -1,14 +1,10 @@
-import { Button } from '@ui-kitten/components';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Button, ButtonProps } from '@ui-kitten/components';
+import { StyleSheet } from 'react-native';
 import { PlusIcon } from '../utils/icons';
 
-type AddButtonProps = {
-    style?: StyleProp<ViewStyle>;
-};
-
-const AddButton = ({ style = {} }: AddButtonProps) => {
+const AddButton = (props: ButtonProps) => {
     return (
-        <Button style={[styles.button, style]}>
+        <Button style={styles.button} {...props}>
             <PlusIcon />
         </Button>
     );

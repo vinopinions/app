@@ -4,9 +4,14 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 import AddButton from '../../components/PlusButton';
 import WineCardList from '../../components/WineCardList';
 import useGetWines from '../../hooks/wines/useGetWines';
-const WinesScreen = () => {
+
+const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { wines, getWines, loading } = useGetWines();
+
+    useEffect(() => {
+        updateWines();
+    }, []);
 
     const updateWines = useCallback(async () => {
         await getWines();
@@ -18,10 +23,9 @@ const WinesScreen = () => {
         setRefreshing(false);
     }, []);
 
-    useEffect(() => {
-        updateWines();
+    const onAddButtonPress = useCallback(() => {
+        navigation.navigate('AddWine');
     }, []);
-
     return (
         <View>
             {loading ? (
@@ -33,7 +37,7 @@ const WinesScreen = () => {
                         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                         wines={wines}
                     />
-                    <AddButton style={styles.plusButton} />
+                    <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
                 </>
             )}
         </View>
