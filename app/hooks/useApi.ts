@@ -1,41 +1,54 @@
 import axios, { AxiosResponse, HttpStatusCode } from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { API_BASE_URL } from '../constants/UrlConstants';
 
-export type ApiRequestInfo = {
-    result: unknown;
-    loading: boolean;
-    error: Error;
-};
-
-const useApi = (method: 'GET' | 'POST', endpoint: string, data?: object): ApiRequestInfo => {
+const useApi = () => {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const url = getFullUrl(endpoint);
+    const get = async (endpoint: string, data?: object) => {
+        const url = getFullUrl(endpoint);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios({
-                    method,
-                    url,
-                    data
-                });
-                setResult(response.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-                // TODO: remove
-                handleResponse(result);
-            }
-        };
+        try {
+            const response = await axios({
+                method: 'GET',
+                url,
+                data
+            });
+            setResult(response.data);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+            // TODO: remove
+            handleResponse(result);
+        }
+    };
 
-        fetchData();
-    }, []);
+    const post = async (endpoint: string, data?: object) => {
+        const url = getFullUrl(endpoint);
+        try {
+            console.log({ data });
+            const response = await axios({
+                method: 'POST',
+                url,
+                data
+            });
+            console.log({ status: response.status });
+            setResult(response.data);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+            // TODO: remove
+            handleResponse(result);
+        }
+    };
+
     return {
+        get,
+        post,
         result,
         loading,
         error
@@ -47,7 +60,7 @@ const getFullUrl = (endpoint: string) => {
 };
 
 export const handleResponse = (response: AxiosResponse) => {
-    if (response.status == HttpStatusCode.Unauthorized) alert('Unauthorized. Try to log in again!');
+    if (response && response.status == HttpStatusCode.Unauthorized) alert('Unauthorized. Try to log in again!');
     return response;
 };
 

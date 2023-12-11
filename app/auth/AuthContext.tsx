@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
         token: null,
         authenticated: false
     });
+    const { signup: doSignup, result: signupResult, error: signupError } = useSignup();
+    const { login: doLogin, result: loginResult, error: loginError } = useLogin();
 
     useEffect(() => {
         const loadTokenFromSecureStore = async () => {
@@ -53,29 +55,26 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     }, []);
 
     const register = async (credentials: Credentials) => {
-        const { result, error } = useSignup(credentials);
+        await doSignup(credentials);
 
-        if (error) return error;
+        if (signupError) return signupError;
 
-        if (result !== null) await login(credentials);
+        if (signupResult !== null) await login(credentials);
     };
 
     const login = async (credentials: Credentials): Promise<Error | null> => {
-        const { result, error } = useLogin(credentials);
+        await doLogin(credentials);
+        if (loginError) {
+            alert(loginError.message);
+        }
 
-        if (error) return error;
+        console.log(loginResult);
 
         // TODO: Create type guard
-        if (
-            !(typeof result == 'object') ||
-            !('data' in result) ||
-            !(typeof result.data == 'object') ||
-            !('access_token' in result.data) ||
-            !(typeof result.data.access_token == 'string')
-        )
+        if (!(typeof loginResult == 'object') || !('access_token' in loginResult) || !(typeof loginResult.access_token == 'string'))
             return new Error('Invalid response from server. (Missing token)');
 
-        const token = result.data.access_token;
+        const token = loginResult.access_token;
         setAuthState({
             token,
             authenticated: true
