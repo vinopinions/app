@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, Text, View } from 'react-native';
 import WineCardList from '../../components/winecardlist/WineCardList';
-import useWines from '../../hooks/useWines';
+import useWines from '../../hooks/wines/useGetWines';
 import Wine from '../../models/Wine';
 const WinesScreen = () => {
     const [refreshing, setRefreshing] = useState(false);

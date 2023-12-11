@@ -1,6 +1,7 @@
 // https://fontawesome.com/v5/search
 
 import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
 
 export const HomeIcon = props => <FontAwesome5 {...props} name="home" />;
 

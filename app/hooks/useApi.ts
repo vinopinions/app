@@ -1,39 +1,44 @@
 import axios, { AxiosResponse, HttpStatusCode } from 'axios';
+import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../constants/UrlConstants';
 
-const useApi = () => {
-    const post = async (endpoint: string, data?: object, validateResponse: boolean = true): Promise<AxiosResponse<unknown, unknown>> => {
-        const response = await call('POST', endpoint, data, validateResponse);
-        handleResponse(response);
-        return response;
-    };
+export type ApiRequestInfo = {
+    result: unknown;
+    loading: boolean;
+    error: Error;
+};
 
-    const get = async (endpoint: string, data?: object, validateResponse: boolean = true): Promise<AxiosResponse<unknown, unknown>> => {
-        const response = await call('GET', endpoint, data, validateResponse);
-        return response;
-    };
+const useApi = (method: 'GET' | 'POST', endpoint: string, data?: object): ApiRequestInfo => {
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const call = async (
-        method: 'GET' | 'POST',
-        endpoint: string,
-        data?: object,
-        validateResponse: boolean = true
-    ): Promise<AxiosResponse<unknown, unknown>> => {
-        const url = getFullUrl(endpoint);
+    const url = getFullUrl(endpoint);
 
-        const response = await axios({
-            method,
-            url,
-            data,
-            validateStatus: () => true
-        });
-        if (validateResponse) handleResponse(response);
-        return response;
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios({
+                    method,
+                    url,
+                    data
+                });
+                setResult(response.data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+                // TODO: remove
+                handleResponse(result);
+            }
+        };
 
+        fetchData();
+    }, []);
     return {
-        post,
-        get
+        result,
+        loading,
+        error
     };
 };
 
@@ -41,7 +46,7 @@ const getFullUrl = (endpoint: string) => {
     return endpoint.startsWith('/') ? API_BASE_URL + endpoint : API_BASE_URL + '/' + endpoint;
 };
 
-const handleResponse = (response: AxiosResponse) => {
+export const handleResponse = (response: AxiosResponse) => {
     if (response.status == HttpStatusCode.Unauthorized) alert('Unauthorized. Try to log in again!');
     return response;
 };

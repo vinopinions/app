@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { AUTH_ENDPOINT } from '../constants/UrlConstants';
-import useApi from '../hooks/useApi';
+import useLogin from '../hooks/auth/useLogin';
+import useSignup from '../hooks/auth/useSignup';
 
 const TOKEN_KEY = 'api-jwt';
 
@@ -30,7 +30,6 @@ export const useAuth = (): AuthProps => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }) => {
-    const { post } = useApi();
     const [authState, setAuthState] = useState<AuthState>({
         token: null,
         authenticated: false
@@ -54,39 +53,37 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     }, []);
 
     const register = async (credentials: Credentials) => {
-        try {
-            return await post(`${AUTH_ENDPOINT}/signup`, credentials);
-        } catch (e) {
-            console.log(e);
-            console.log(typeof e);
+        const { result, error } = useSignup(credentials);
 
-            return { error: true };
-        }
+        if (error) return error;
+
+        if (result !== null) await login(credentials);
     };
 
-    const login = async (credentials: Credentials) => {
-        try {
-            const result = await post(`${AUTH_ENDPOINT}/login`, credentials);
-            if (!(typeof result.data == 'object')) return;
-            if (!('access_token' in result.data)) return;
-            if (!(typeof result.data.access_token == 'string')) return;
+    const login = async (credentials: Credentials): Promise<Error | null> => {
+        const { result, error } = useLogin(credentials);
 
-            const token = result.data.access_token;
-            setAuthState({
-                token,
-                authenticated: true
-            });
+        if (error) return error;
 
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // TODO: Create type guard
+        if (
+            !(typeof result == 'object') ||
+            !('data' in result) ||
+            !(typeof result.data == 'object') ||
+            !('access_token' in result.data) ||
+            !(typeof result.data.access_token == 'string')
+        )
+            return new Error('Invalid response from server. (Missing token)');
 
-            await SecureStore.setItemAsync(TOKEN_KEY, token);
-            return result;
-        } catch (e) {
-            console.log(e);
-            console.log(typeof e);
-            // return { error: true, msg: (e as any).response.data.msg };
-            return { error: true };
-        }
+        const token = result.data.access_token;
+        setAuthState({
+            token,
+            authenticated: true
+        });
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        await SecureStore.setItemAsync(TOKEN_KEY, token);
     };
 
     const logout = async () => {
