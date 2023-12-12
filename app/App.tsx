@@ -7,7 +7,7 @@ import React from 'react';
 import { Button, LogBox, NativeModules, useColorScheme } from 'react-native';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import { AppNavigator } from './navigation/bottom-tab-navigator';
-import LoginScreen from './screens/login/login-screen';
+import LoginScreen from './screens/login/LoginScreen';
 import AddWineScreen from './screens/wines/AddWineScreen';
 
 export const Stack = createNativeStackNavigator();
