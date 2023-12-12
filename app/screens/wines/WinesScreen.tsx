@@ -1,4 +1,3 @@
-import { Button } from '@ui-kitten/components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 import AddButton from '../../components/PlusButton';
@@ -7,7 +6,7 @@ import useGetWines from '../../hooks/wines/useGetWines';
 
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
-    const { wines, getWines, loading } = useGetWines();
+    const { wines, getWines } = useGetWines();
 
     useEffect(() => {
         updateWines();
@@ -28,18 +27,14 @@ const WinesScreen = ({ navigation }) => {
     }, []);
     return (
         <View>
-            {loading ? (
-                <Button>Test</Button>
-            ) : (
-                <>
-                    <WineCardList
-                        style={styles.wineCardList}
-                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                        wines={wines}
-                    />
-                    <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
-                </>
-            )}
+            <>
+                <WineCardList
+                    style={styles.wineCardList}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                    wines={wines}
+                />
+                <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
+            </>
         </View>
     );
 };

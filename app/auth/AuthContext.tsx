@@ -18,7 +18,7 @@ export interface Credentials {
 
 interface AuthProps {
     authState: AuthState;
-    register: (credentials: Credentials) => Promise<unknown>;
+    signup: (credentials: Credentials) => Promise<unknown>;
     login: (credentials: Credentials) => Promise<unknown>;
     logout: () => Promise<unknown>;
 }
@@ -34,9 +34,10 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
         token: null,
         authenticated: false
     });
-    const { signup: doSignup, result: signupResult, error: signupError } = useSignup();
-    const { login: doLogin, result: loginResult, error: loginError } = useLogin();
+    const { signup, error: signupError } = useSignup();
+    const { login, result: loginResult, error: loginError } = useLogin();
 
+    // load the token from secure store if it exists
     useEffect(() => {
         const loadTokenFromSecureStore = async () => {
             const token = await SecureStore.getItemAsync(TOKEN_KEY);
@@ -54,30 +55,37 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
         loadTokenFromSecureStore();
     }, []);
 
-    const register = async (credentials: Credentials) => {
-        await doSignup(credentials);
+    // set everything up when login result is updating
+    useEffect(() => {
+        const handleLogin = async () => {
+            const token = loginResult?.access_token;
 
-        if (signupError) return signupError;
+            if (!token) return;
 
-        if (signupResult !== null) await login(credentials);
-    };
+            setAuthState({
+                token,
+                authenticated: true
+            });
 
-    const login = async (credentials: Credentials): Promise<undefined> => {
-        await doLogin(credentials);
-        if (loginError) {
-            alert(loginError.message);
-        }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            await SecureStore.setItemAsync(TOKEN_KEY, token);
+        };
+        handleLogin();
+    }, [loginResult]);
 
-        const token = loginResult.access_token;
-        setAuthState({
-            token,
-            authenticated: true
-        });
+    // handle login error
+    useEffect(() => {
+        if (!loginError) return;
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        alert(loginError.message);
+    }, [loginError]);
 
-        await SecureStore.setItemAsync(TOKEN_KEY, token);
-    };
+    // handle signup error
+    useEffect(() => {
+        if (!signupError) return;
+
+        alert(signupError.message);
+    }, [signupError]);
 
     const logout = async () => {
         await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -91,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode | ReactNode[] }
     };
 
     const value: AuthProps = {
-        register,
+        signup,
         login,
         logout,
         authState

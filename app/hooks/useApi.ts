@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, HttpStatusCode } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { API_BASE_URL } from '../constants/UrlConstants';
 
@@ -14,17 +14,17 @@ type ApiUseApiResult<T> = ApiResult & {
 };
 
 const useApi = <T = unknown>(): ApiUseApiResult<T> => {
-    const [result, setResult] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [result, setResult] = useState<T>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<Error>(null);
 
-    const get = async (endpoint: string, data?: object): Promise<void> => {
+    const call = async (method: 'GET' | 'POST', endpoint, data?: object): Promise<void> => {
         setLoading(true);
         const url = getFullUrl(endpoint);
 
         try {
             const response: AxiosResponse<T> = await axios({
-                method: 'GET',
+                method,
                 url,
                 data
             });
@@ -33,30 +33,15 @@ const useApi = <T = unknown>(): ApiUseApiResult<T> => {
             setError(error);
         } finally {
             setLoading(false);
-            // TODO: remove
-            handleResponse(result);
         }
     };
 
+    const get = async (endpoint: string, data?: object): Promise<void> => {
+        await call('GET', endpoint, data);
+    };
+
     const post = async (endpoint: string, data?: object) => {
-        setLoading(true);
-        const url = getFullUrl(endpoint);
-        try {
-            console.log({ data });
-            const response = await axios({
-                method: 'POST',
-                url,
-                data
-            });
-            console.log({ status: response.status });
-            setResult(response.data);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-            // TODO: remove
-            handleResponse(result);
-        }
+        await call('POST', endpoint, data);
     };
 
     return {
@@ -70,11 +55,6 @@ const useApi = <T = unknown>(): ApiUseApiResult<T> => {
 
 const getFullUrl = (endpoint: string) => {
     return endpoint.startsWith('/') ? API_BASE_URL + endpoint : API_BASE_URL + '/' + endpoint;
-};
-
-export const handleResponse = (response: AxiosResponse) => {
-    if (response && response.status == HttpStatusCode.Unauthorized) alert('Unauthorized. Try to log in again!');
-    return response;
 };
 
 export default useApi;

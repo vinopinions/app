@@ -11,7 +11,7 @@ const LoginScreen = () => {
         password: ''
     });
 
-    const { login, register } = useAuth();
+    const { login, signup } = useAuth();
     return (
         <SafeAreaView style={loginStyles.container}>
             <Text style={loginStyles.title}>Login</Text>
@@ -19,6 +19,7 @@ const LoginScreen = () => {
                 <Input
                     value={credentials.username}
                     style={loginStyles.inputText}
+                    autoCapitalize="none"
                     placeholder="username"
                     id="username"
                     onChangeText={username => setCredentials({ ...credentials, username })}
@@ -32,7 +33,7 @@ const LoginScreen = () => {
                 />
             </View>
             <Button onPress={() => login(credentials)}>Login</Button>
-            <Button onPress={() => register(credentials)}>Sign up</Button>
+            <Button onPress={() => signup(credentials)}>Sign up</Button>
         </SafeAreaView>
     );
 };
