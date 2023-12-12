@@ -17,14 +17,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "bundleIdentifier": "com.laylaoskarschule.vinopinions"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "package": "com.laylaoskarschule.vinopinions"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,7 +36,7 @@
         "projectId": "4b072a01-ec61-4a03-beb2-ad67258e3e33"
       }
     },
-    "owner": "devskar",
+    "owner": "layla-oskar-schule",
     "runtimeVersion": {
       "policy": "appVersion"
     },
