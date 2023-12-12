@@ -1,9 +1,8 @@
 import { Button, Input, Text } from '@ui-kitten/components';
 import { useState } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Credentials, useAuth } from '../../auth/AuthContext';
 import PasswordField from '../../components/PasswordField';
-import loginStyles from './styles/login-styles';
 
 const LoginScreen = () => {
     const [credentials, setCredentials] = useState<Credentials>({
@@ -13,21 +12,21 @@ const LoginScreen = () => {
 
     const { login, signup } = useAuth();
     return (
-        <SafeAreaView style={loginStyles.container}>
-            <Text style={loginStyles.title}>Login</Text>
-            <View style={loginStyles.inputView}>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Login</Text>
+            <View style={styles.inputView}>
                 <Input
                     value={credentials.username}
-                    style={loginStyles.inputText}
+                    style={styles.inputText}
                     autoCapitalize="none"
                     placeholder="username"
                     id="username"
                     onChangeText={username => setCredentials({ ...credentials, username })}
                 />
             </View>
-            <View style={loginStyles.inputView}>
+            <View style={styles.inputView}>
                 <PasswordField
-                    style={loginStyles.inputText}
+                    style={styles.inputText}
                     value={credentials.password}
                     onChangeText={password => setCredentials({ ...credentials, password })}
                 />
@@ -39,3 +38,27 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 50,
+        marginBottom: 40
+    },
+    inputView: {
+        width: '80%',
+        borderRadius: 25,
+        height: 50,
+        marginBottom: 20,
+        justifyContent: 'center',
+        padding: 20
+    },
+    inputText: {
+        height: 50
+    }
+});
