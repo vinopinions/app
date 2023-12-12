@@ -16,16 +16,22 @@ const AddWineScreen = () => {
     const [heritage, setHeritage] = useState('');
     const [winemaker, setWinemaker] = useState<Winemaker>(null);
 
-    useEffect(() => {
+    const updateWinemakers = useCallback(() => {
         const loadWinemakers = async () => {
             await getWinemakers();
         };
         loadWinemakers();
     }, []);
 
-    const onSubmit = () => {
+    useEffect(() => {
+        updateWinemakers();
+    }, []);
+
+    useEffect(() => {}, [winemakers]);
+
+    const onSubmit = useCallback(() => {
         createWine(name, +year, grapeVariety, heritage, winemaker.id);
-    };
+    }, []);
 
     const onAutocompleteSelect = useCallback((value: Winemaker) => {
         setWinemaker(value);
@@ -42,6 +48,7 @@ const AddWineScreen = () => {
                 placeholder="Winemaker"
                 identify={winemaker => winemaker.name}
                 items={winemakers}
+                onPressIn={updateWinemakers}
             />
             <Button onPress={() => onSubmit()}>Save</Button>
         </View>

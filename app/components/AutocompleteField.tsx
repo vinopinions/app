@@ -12,8 +12,14 @@ const AutocompleteField = <T,>(props: AutocompleteFieldProps<T>) => {
     const [query, setQuery] = useState('');
     const [data, setData] = useState<T[]>(props.items ?? []);
 
-    console.log('reloaded component ' + JSON.stringify(data));
+    const [autoCompleteItems, setAutoCompleteItems] = useState<React.JSX.Element[]>([]);
 
+    // update autoCompleteItems when data changes
+    useEffect(() => {
+        setAutoCompleteItems(data.map((item, index) => <AutocompleteItem key={index} title={props.identify(item)} />));
+    }, [data]);
+
+    // update data to match query
     useEffect(() => {
         setData((props.items ?? []).filter(item => props.identify(item).includes(query)));
     }, [query]);
@@ -25,9 +31,7 @@ const AutocompleteField = <T,>(props: AutocompleteFieldProps<T>) => {
 
     return (
         <Autocomplete onSelect={onSelect} style={styles.autocomplete} {...props} onChangeText={text => setQuery(text)} value={query}>
-            {data.map((item, index) => (
-                <AutocompleteItem key={index} title={props.identify(item)} />
-            ))}
+            {autoCompleteItems}
         </Autocomplete>
     );
 };
