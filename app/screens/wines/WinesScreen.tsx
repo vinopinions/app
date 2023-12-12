@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 // import WineCardList from '../../components/WineCardList';
-import AddButton from '../../components/PlusButton';
 import useGetWines from '../../hooks/wines/useGetWines';
 
 const WinesScreen = ({ navigation }) => {
@@ -27,14 +26,13 @@ const WinesScreen = ({ navigation }) => {
     }, []);
     return (
         <View>
-            <>
-                {/* <WineCardList
+            <Text>Wines screen</Text>
+            {/* <WineCardList
                     style={styles.wineCardList}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                     wines={wines}
                 /> */}
-                <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
-            </>
+            {/* <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} /> */}
         </View>
     );
 };

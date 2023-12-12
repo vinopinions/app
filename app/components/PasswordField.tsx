@@ -24,7 +24,7 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
     return (
         <>
             <TextInput value={props.value} placeholder="password" id="password" onChangeText={props.onChangeText} secureTextEntry={secureTextEntry} />
-            {maskingIcon}
+            {maskingIcon({})}
         </>
     );
 };
