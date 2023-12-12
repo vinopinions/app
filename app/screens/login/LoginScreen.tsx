@@ -1,6 +1,5 @@
-import { Button, Input, Text } from '@ui-kitten/components';
 import { useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Credentials, useAuth } from '../../auth/AuthContext';
 import PasswordField from '../../components/PasswordField';
 
@@ -15,7 +14,7 @@ const LoginScreen = () => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Login</Text>
             <View style={styles.inputView}>
-                <Input
+                <TextInput
                     value={credentials.username}
                     style={styles.inputText}
                     autoCapitalize="none"
@@ -31,8 +30,8 @@ const LoginScreen = () => {
                     onChangeText={password => setCredentials({ ...credentials, password })}
                 />
             </View>
-            <Button onPress={() => login(credentials)}>Login</Button>
-            <Button onPress={() => signup(credentials)}>Sign up</Button>
+            <Button title="Login" onPress={() => login(credentials)} />
+            <Button title="Sign up" onPress={() => signup(credentials)} />
         </SafeAreaView>
     );
 };

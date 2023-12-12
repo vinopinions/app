@@ -1,6 +1,5 @@
-import { Input } from '@ui-kitten/components';
-import { useState } from 'react';
-import { StyleProp, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, TextInput, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { EyeIcon, EyeSlashIcon } from '../utils/icons';
 
 interface PasswordFieldProps {
@@ -23,14 +22,10 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
     );
 
     return (
-        <Input
-            value={props.value}
-            placeholder="password"
-            id="password"
-            onChangeText={props.onChangeText}
-            accessoryRight={maskingIcon}
-            secureTextEntry={secureTextEntry}
-        />
+        <>
+            <TextInput value={props.value} placeholder="password" id="password" onChangeText={props.onChangeText} secureTextEntry={secureTextEntry} />
+            {maskingIcon}
+        </>
     );
 };
 

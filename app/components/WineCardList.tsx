@@ -1,29 +1,34 @@
-import { List } from '@ui-kitten/components';
-import { ListRenderItemInfo, RefreshControlProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Wine from '../models/Wine';
-import WineCard from './WineCard';
+// import React from 'react';
+// import { ListRenderItemInfo, RefreshControlProps, SectionList, StyleProp, StyleSheet, Text, ViewStyle } from 'react-native';
+// import Wine from '../models/Wine';
 
-interface WineCardListProps {
-    wines: Wine[];
-    style?: StyleProp<ViewStyle>;
-    refreshControl?: React.ReactElement<RefreshControlProps> | undefined;
-}
+// interface WineCardListProps {
+//     wines: Wine[];
+//     style?: StyleProp<ViewStyle>;
+//     refreshControl?: React.ReactElement<RefreshControlProps> | undefined;
+// }
 
-const WineCardList = ({ wines, refreshControl, style }: WineCardListProps): React.ReactElement => {
-    const renderItem = (info: ListRenderItemInfo<Wine>): React.ReactElement => {
-        return <WineCard wine={info.item} />;
-    };
+// const WineCardList = ({ wines, refreshControl, style }: WineCardListProps): React.ReactElement => {
+//     const renderItem = (info: ListRenderItemInfo<Wine>): React.ReactElement => {
+//         return <Text>{info.item.name}</Text>;
+//     };
 
-    return (
-        <List refreshControl={refreshControl} contentContainerStyle={styles.contentContainer} style={style} data={wines} renderItem={renderItem} />
-    );
-};
+//     return (
+//         <SectionList
+//             refreshControl={refreshControl}
+//             contentContainerStyle={styles.contentContainer}
+//             style={style}
+//             data={wines}
+//             renderItem={renderItem}
+//         />
+//     );
+// };
 
-export default WineCardList;
+// export default WineCardList;
 
-const styles = StyleSheet.create({
-    contentContainer: {
-        paddingHorizontal: 8,
-        paddingVertical: 4
-    }
-});
+// const styles = StyleSheet.create({
+//     contentContainer: {
+//         paddingHorizontal: 8,
+//         paddingVertical: 4
+//     }
+// });

@@ -1,12 +1,11 @@
-import { Button, ButtonProps } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { PlusIcon } from '../utils/icons';
 
-const AddButton = (props: ButtonProps) => {
+const AddButton = (props: TouchableOpacityProps) => {
     return (
-        <Button style={styles.button} {...props}>
+        <TouchableOpacity style={styles.button} {...props}>
             <PlusIcon />
-        </Button>
+        </TouchableOpacity>
     );
 };
 
