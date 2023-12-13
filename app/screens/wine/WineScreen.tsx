@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-const FriendsScreen = () => {
+const WineScreen = () => {
     return (
-        <View style={[styles.screen]}>
-            <Text>This is the friends screen</Text>
+        <View style={styles.screen}>
+            <Text>This is the the wine screen</Text>
         </View>
     );
 };
 
-export default FriendsScreen;
+export default WineScreen;
 
 const styles = StyleSheet.create({
     screen: {

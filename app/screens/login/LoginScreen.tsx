@@ -11,7 +11,7 @@ const LoginScreen = () => {
 
     const { login, signup } = useAuth();
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.screen}>
             <Text style={styles.title}>Login</Text>
             <View style={styles.inputView}>
                 <TextInput
@@ -39,7 +39,7 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-    container: {
+    screen: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'

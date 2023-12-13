@@ -8,7 +8,7 @@ import useGetWines from '../../hooks/wines/useGetWines';
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { wines, getWines } = useGetWines();
-    const [wineElements, setWineElements] = useState();
+    const [wineElements, setWineElements] = useState([]);
 
     useEffect(() => {
         updateWines();
@@ -19,7 +19,8 @@ const WinesScreen = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        if (wines) setWineElements(wines.map(wine => <Text>{wine.name}</Text>));
+        if (wines)
+            setWineElements(wines.map(wine => <Text>{`${wine.name} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}</Text>));
     }, [wines]);
 
     const onRefresh = useCallback(async () => {
