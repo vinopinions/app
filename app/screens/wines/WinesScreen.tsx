@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 // import WineCardList from '../../components/WineCardList';
+import { RefreshControl } from 'react-native';
 import AddButton from '../../components/PlusButton';
 import useGetWines from '../../hooks/wines/useGetWines';
 
@@ -32,7 +33,9 @@ const WinesScreen = ({ navigation }) => {
     }, []);
     return (
         <View style={styles.screen}>
-            {wineElements}
+            <ScrollView style={styles.wineListContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                {wineElements}
+            </ScrollView>
             <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
         </View>
     );
@@ -44,9 +47,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1
     },
-    wineCardList: {
-        height: '100%'
-    },
+    wineListContainer: {},
     plusButton: {
         position: 'absolute',
         right: 50,

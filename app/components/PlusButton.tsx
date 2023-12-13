@@ -1,23 +1,13 @@
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { PlusIcon } from '../utils/icons';
 
+// TODO: Make icon size configurable
 const AddButton = (props: TouchableOpacityProps) => {
     return (
-        <TouchableOpacity style={styles.button} {...props}>
+        <TouchableOpacity {...props}>
             <PlusIcon size={75} />
         </TouchableOpacity>
     );
 };
 
 export default AddButton;
-
-const styles = StyleSheet.create({
-    button: {
-        alignSelf: 'center',
-        height: 600,
-        width: 60,
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-});
