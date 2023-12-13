@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 // import WineCardList from '../../components/WineCardList';
+import AddButton from '../../components/PlusButton';
 import useGetWines from '../../hooks/wines/useGetWines';
 
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { wines, getWines } = useGetWines();
+    const [wineElements, setWineElements] = useState();
 
     useEffect(() => {
         updateWines();
@@ -14,6 +16,10 @@ const WinesScreen = ({ navigation }) => {
     const updateWines = useCallback(async () => {
         await getWines();
     }, []);
+
+    useEffect(() => {
+        if (wines) setWineElements(wines.map(wine => <Text>{wine.name}</Text>));
+    }, [wines]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
@@ -25,14 +31,9 @@ const WinesScreen = ({ navigation }) => {
         navigation.navigate('AddWine');
     }, []);
     return (
-        <View>
-            <Text>Wines screen</Text>
-            {/* <WineCardList
-                    style={styles.wineCardList}
-                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                    wines={wines}
-                /> */}
-            {/* <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} /> */}
+        <View style={styles.screen}>
+            {wineElements}
+            <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
         </View>
     );
 };
@@ -40,12 +41,15 @@ const WinesScreen = ({ navigation }) => {
 export default WinesScreen;
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1
+    },
     wineCardList: {
         height: '100%'
     },
     plusButton: {
         position: 'absolute',
-        bottom: 50,
-        right: 20
+        right: 50,
+        bottom: 50
     }
 });

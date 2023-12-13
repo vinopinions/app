@@ -1,6 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { IconProps } from '@expo/vector-icons/build/createIconSet';
-// https://ionic.io/ionicons
+// https://icons.expo.fyi/ filter for Ionicons
 
 export const HomeIcon = (props: Partial<IconProps<'home'>>) => <Ionicons {...props} name="home" />;
 export const HomeIconOutline = (props: Partial<IconProps<'home-outline'>>) => <Ionicons {...props} name="home-outline" />;
@@ -19,3 +19,5 @@ export const AccountIconOutline = (props: Partial<IconProps<'person-circle-outli
 
 export const EyeIcon = (props: Partial<IconProps<'eye-outline'>>) => <Ionicons {...props} name="eye-outline" />;
 export const EyeSlashIcon = (props: Partial<IconProps<'eye-off-outline'>>) => <Ionicons {...props} name="eye-off-outline" />;
+
+export const PlusIcon = (props: Partial<IconProps<'add-circle-outline'>>) => <Ionicons {...props} name="add-circle-outline" />;

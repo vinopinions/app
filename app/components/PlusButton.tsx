@@ -4,7 +4,7 @@ import { PlusIcon } from '../utils/icons';
 const AddButton = (props: TouchableOpacityProps) => {
     return (
         <TouchableOpacity style={styles.button} {...props}>
-            <PlusIcon />
+            <PlusIcon size={75} />
         </TouchableOpacity>
     );
 };
@@ -14,7 +14,7 @@ export default AddButton;
 const styles = StyleSheet.create({
     button: {
         alignSelf: 'center',
-        height: 60,
+        height: 600,
         width: 60,
         borderRadius: 30,
         justifyContent: 'center',

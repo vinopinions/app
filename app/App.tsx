@@ -27,7 +27,13 @@ const Layout = () => {
                     <Stack.Screen
                         name="App"
                         component={BottomTabNavigator}
-                        options={{ headerRight: () => <Button onPress={logout} title="Sign Out" /> }}
+                        options={{
+                            // make it center so it's the same on all platforms
+                            // https://reactnavigation.org/docs/native-stack-navigator/#headertitlealign
+                            headerTitleAlign: 'center',
+                            title: 'Vinopinions',
+                            headerRight: () => <Button onPress={logout} title="Sign Out" />
+                        }}
                     />
                 ) : (
                     <Stack.Screen name="Login" component={LoginScreen} />
