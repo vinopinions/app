@@ -3,7 +3,7 @@ import React from 'react';
 import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import HomeScreen from '../screens/home/HomeScreen';
-import StoreScreen from '../screens/store/store-screen';
+import StoreScreen from '../screens/store/StoreScreen';
 import WinesStackScreen from '../screens/wines/WinesStackScreen';
 import {
     AccountIcon,
