@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { Button, Text, TextField, View } from 'react-native-ui-lib';
 import { Credentials, useAuth } from '../../auth/AuthContext';
 import PasswordField from '../../components/PasswordField';
 
@@ -14,7 +15,7 @@ const LoginScreen = () => {
         <SafeAreaView style={styles.screen}>
             <Text style={styles.title}>Login</Text>
             <View style={styles.inputView}>
-                <TextInput
+                <TextField
                     value={credentials.username}
                     style={styles.inputText}
                     autoCapitalize="none"
@@ -30,8 +31,8 @@ const LoginScreen = () => {
                     onChangeText={password => setCredentials({ ...credentials, password })}
                 />
             </View>
-            <Button title="Login" onPress={() => login(credentials)} />
-            <Button title="Sign up" onPress={() => signup(credentials)} />
+            <Button label="Login" onPress={() => login(credentials)} />
+            <Button label="Sign up" onPress={() => signup(credentials)} />
         </SafeAreaView>
     );
 };

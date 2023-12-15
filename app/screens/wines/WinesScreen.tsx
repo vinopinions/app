@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
 // import WineCardList from '../../components/WineCardList';
-import { RefreshControl } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import AddButton from '../../components/PlusButton';
 import useGetWines from '../../hooks/wines/useGetWines';
 
@@ -20,7 +20,11 @@ const WinesScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (wines)
-            setWineElements(wines.map(wine => <Text>{`${wine.name} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}</Text>));
+            setWineElements(
+                wines.map((wine, index) => (
+                    <Text key={index}>{`${wine.name} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}</Text>
+                ))
+            );
     }, [wines]);
 
     const onRefresh = useCallback(async () => {

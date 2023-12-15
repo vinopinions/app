@@ -1,6 +1,8 @@
 import { Image } from 'expo-image';
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
+
 import accountStyles from './styles/account-styles';
 
 const AccountScreen = () => {
