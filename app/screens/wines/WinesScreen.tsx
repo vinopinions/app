@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native-ui-lib';
+import { View } from 'react-native-ui-lib';
 // import WineCardList from '../../components/WineCardList';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
 import AddButton from '../../components/PlusButton';
+import WineCardList from '../../components/WineCardList';
 import useGetWines from '../../hooks/wines/useGetWines';
 
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const { wines, getWines } = useGetWines();
-    const [wineElements, setWineElements] = useState([]);
 
     useEffect(() => {
         updateWines();
@@ -17,15 +17,6 @@ const WinesScreen = ({ navigation }) => {
     const updateWines = useCallback(async () => {
         await getWines();
     }, []);
-
-    useEffect(() => {
-        if (wines)
-            setWineElements(
-                wines.map((wine, index) => (
-                    <Text key={index}>{`${wine.name} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}</Text>
-                ))
-            );
-    }, [wines]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
@@ -38,9 +29,7 @@ const WinesScreen = ({ navigation }) => {
     }, []);
     return (
         <View style={styles.screen}>
-            <ScrollView style={styles.wineListContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                {wineElements}
-            </ScrollView>
+            <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines ?? []} />
             <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
         </View>
     );

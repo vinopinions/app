@@ -1,39 +1,45 @@
-// import { StyleSheet, View } from 'react-native';
-// import Wine from '../models/Wine';
-// import { Card } from 'react-native-ui-lib';
+import { StyleSheet } from 'react-native';
+import { Card, CardProps, Text, View } from 'react-native-ui-lib';
+import Wine from '../models/Wine';
 
-// interface WineCardProps {
-//     wine: Wine;
-// }
+type WineCardProps = CardProps & {
+    wine: Wine;
+};
 
-// const WineCard = ({ wine }: WineCardProps): React.ReactElement => {
-//     const renderItemHeader = (headerProps): React.ReactElement => (
-//         <View {...headerProps}>
-//             <Text category="h6">{wine.name}</Text>
-//         </View>
-//     );
+const WineCard = ({ wine }, props: WineCardProps): React.ReactElement => {
+    return (
+        <Card {...props} style={styles.card} onPress={() => console.log('press on a card')}>
+            <View padding-20>
+                <Text text40 $textDefault>
+                    {wine.name}
+                </Text>
 
-//     const renderItemFooter = (footerProps): React.ReactElement => <Text {...footerProps}>By {wine.winemaker}</Text>;
+                <Text text70 $textDefault>
+                    {`${wine.grapeVariety} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}
+                </Text>
 
-//     return (
-//         <Card
-//             style={styles.item}
-//             status="basic"
-//             header={headerProps => renderItemHeader(headerProps)}
-//             footer={footerProps => renderItemFooter(footerProps)}
-//         >
-//             <Text>{wine.year}</Text>
-//             <Text>{wine.grapeVariety}</Text>
-//             <Text>{wine.heritage}</Text>
-//             <Text>{wine.id}</Text>
-//         </Card>
-//     );
-// };
+                {/* TODO: Implement for rating
+      <View>
+        <Text text90 $textDisabled>
+          {wine.likes} Likes
+        </Text>
+        <View row right>
+          <Button
+            style={{marginRight: 10}}
+            text90
+            link
+            iconSource={featureIcon}
+            label="Feature"
+          />
+          <Button text90 link iconSource={shareIcon} label="Share"/>
+        </View>
+      </View> */}
+            </View>
+        </Card>
+    );
+};
+export default WineCard;
 
-// export default WineCard;
-
-// const styles = StyleSheet.create({
-//     item: {
-//         marginVertical: 4
-//     }
-// });
+const styles = StyleSheet.create({
+    card: { marginBottom: 15 }
+});
