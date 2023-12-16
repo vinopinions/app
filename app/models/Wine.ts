@@ -1,10 +1,12 @@
+import Winemaker from './Winemaker';
+
 type Wine = {
     id: string;
     name: string;
     year: number;
     grapeVariety: string;
     heritage: string;
-    winemaker?: object;
+    winemaker?: Winemaker;
 };
 
 export function isWine(obj: unknown): obj is Wine {

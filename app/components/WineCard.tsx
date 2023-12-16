@@ -6,16 +6,18 @@ type WineCardProps = CardProps & {
     wine: Wine;
 };
 
-const WineCard = ({ wine }, props: WineCardProps): React.ReactElement => {
+const WineCard = (props: WineCardProps): React.ReactElement => {
+    console.log(props.wine);
+    console.log(props.wine.winemaker);
     return (
         <Card {...props} style={styles.card} onPress={() => console.log('press on a card')}>
             <View padding-20>
                 <Text text40 $textDefault>
-                    {wine.name}
+                    {props.wine.name}
                 </Text>
 
                 <Text text70 $textDefault>
-                    {`${wine.grapeVariety} aus ${wine.heritage} aus dem Jahr ${wine.year} von ${wine.winemaker}`}
+                    {`${props.wine.grapeVariety} aus ${props.wine.heritage} aus dem Jahr ${props.wine.year} von ${props.wine.winemaker?.name}`}
                 </Text>
 
                 {/* TODO: Implement for rating
