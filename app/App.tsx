@@ -5,23 +5,26 @@ import React from 'react';
 import { NativeModules } from 'react-native';
 import { Button } from 'react-native-ui-lib';
 
+import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
+import { store } from './store/store';
 
 export const Stack = createNativeStackNavigator();
 
 const App = () => {
     return (
-        <AuthProvider>
-            <Layout />
-        </AuthProvider>
+        <Provider store={store}>
+            <AuthProvider>
+                <Layout />
+            </AuthProvider>
+        </Provider>
     );
 };
 
 const Layout = () => {
     const { authState, logout } = useAuth();
-
     return (
         <NavigationContainer>
             <Stack.Navigator>

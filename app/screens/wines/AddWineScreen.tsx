@@ -1,55 +1,101 @@
 import { useEffect, useState } from 'react';
-import { Button, TextField, View, Wizard, WizardStepStates } from 'react-native-ui-lib';
+import { StyleSheet } from 'react-native';
+import { Button, Picker, PickerModes, TextField, View, Wizard, WizardStepStates } from 'react-native-ui-lib';
+import { useDispatch, useSelector } from 'react-redux';
 import WineCard from '../../components/WineCard';
-import useGetWinemakers from '../../hooks/winemakers/useGetWinemakers';
-import Winemaker from '../../models/Winemaker';
+import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
+import { AppDispatch, RootState } from '../../store/store';
 // import useGetWinemakers from '../../hooks/winemakers/useGetWinemakers';
 // import useCreateWine from '../../hooks/wines/useCreateWine';
 // import Winemaker from '../../models/Winemaker';
 
 const AddWineScreen = () => {
-    // const { createWine } = useCreateWine();
-    const { getWinemakers, winemakers } = useGetWinemakers();
+    const dispatch: AppDispatch = useDispatch();
+    const winemakers = useSelector((state: RootState) => state.winemakers.items);
 
-    const [name, setName] = useState('');
+    const [name, setName] = useState<string>();
     const [year, setYear] = useState<number>();
-    const [grapeVariety, setGrapeVariety] = useState('');
-    const [heritage, setHeritage] = useState('');
-    const [winemakerId, setWinemakerId] = useState('');
+    const [grapeVariety, setGrapeVariety] = useState<string>();
+    const [heritage, setHeritage] = useState<string>();
+    const [winemakerName, setWinemakerName] = useState<string>('');
     const [winemaker, setWinemaker] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
-        getWinemakers();
+        dispatch(fetchWinemakersAsync());
     }, []);
 
     useEffect(() => {
-        if (!winemakers) return;
-
-        const wm: Winemaker | null = winemakers.find(e => e.id == winemakerId);
-
-        if (wm) setWinemaker(wm);
-    }, [winemakerId]);
+        console.log(winemakerName);
+    }, [winemakerName]);
 
     return (
-        <View>
+        <View style={styles.screen}>
             <Wizard activeIndex={activeIndex} onActiveIndexChanged={idx => console.log('f' + idx)}>
-                <Wizard.Step state={WizardStepStates.DISABLED} label="Choose Name" />
-                <Wizard.Step state={WizardStepStates.ENABLED} label="Choose Year" />
-                <Wizard.Step state={WizardStepStates.ENABLED} label="Choose Grape Variety" />
-                <Wizard.Step state={WizardStepStates.ENABLED} label="Choose Heritage" />
-                <Wizard.Step state={WizardStepStates.ENABLED} label="Choose Winemaker" />
+                <Wizard.Step state={WizardStepStates.ENABLED} label="General Information" />
                 <Wizard.Step state={WizardStepStates.ENABLED} label="Overview" />
             </Wizard>
 
             {
                 {
-                    0: <TextField placeholder="Name" value={name} onChangeText={name => setName(name)} />,
-                    1: <TextField placeholder="Year" value={'' + year} onChangeText={year => setYear(+year)} maxLength={4} inputMode="decimal" />,
-                    2: <TextField placeholder="GrapeVariety" value={grapeVariety} onChangeText={variety => setGrapeVariety(variety)} />,
-                    3: <TextField placeholder="Heritage" value={heritage} onChangeText={heritage => setHeritage(heritage)} />,
-                    4: <TextField placeholder="WinemakerID" value={winemakerId} onChangeText={winemakerId => setWinemakerId(winemakerId)} />,
-                    5: (
+                    0: (
+                        <View>
+                            <TextField
+                                autoFocus
+                                floatingPlaceholder
+                                style={styles.textInput}
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={name => setName(name)}
+                            />
+
+                            <TextField
+                                style={styles.textInput}
+                                floatingPlaceholder
+                                placeholder="Year"
+                                value={'' + (year ?? '')}
+                                onChangeText={year => setYear(+year)}
+                                maxLength={4}
+                                enableErrors
+                                validate={['number']}
+                                validationMessage={['A year can only consist of numbers']}
+                                inputMode="decimal"
+                            />
+
+                            <TextField
+                                floatingPlaceholder
+                                style={styles.textInput}
+                                placeholder="Grape variety"
+                                value={grapeVariety}
+                                onChangeText={variety => setGrapeVariety(variety)}
+                            />
+                            <TextField
+                                floatingPlaceholder
+                                style={styles.textInput}
+                                placeholder="Heritage"
+                                value={heritage}
+                                onChangeText={heritage => setHeritage(heritage)}
+                            />
+                            <Picker
+                                mode={PickerModes.SINGLE}
+                                placeholder="Winemaker"
+                                floatingPlaceholder
+                                useSafeArea
+                                value={winemaker}
+                                onChange={item => setWinemaker(item)}
+                                topBarProps={{ title: 'Winemakers' }}
+                                showSearch
+                                onSearchChange={text => setWinemakerName(text)}
+                                searchPlaceholder={'Search a winemaker'}
+                            >
+                                {winemakers.map((winemaker, idx) => (
+                                    <Picker.Item key={idx} value={winemaker.id} label={winemaker.name} />
+                                ))}
+                                <Picker.Item key="new" value="new" label="Create winemaker..." />
+                            </Picker>
+                        </View>
+                    ),
+                    2: (
                         <WineCard
                             wine={{
                                 id: '123',
@@ -64,8 +110,7 @@ const AddWineScreen = () => {
                 }[activeIndex]
             }
 
-            <Button label="Next" onPress={() => setActiveIndex(idx => idx + 1)} />
-            <Button label="Pervious" onPress={() => setActiveIndex(idx => idx - 1)} />
+            <Button style={styles.nextButton} label="Next" onPress={() => setActiveIndex(idx => idx + 1)} />
             {/* <TextField placeholder="Name" value={name} onChangeText={t => setName(t)} />
             
             <TextField placeholder="heritage" value={heritage} onChangeText={t => setHeritage(t)} />
@@ -83,3 +128,17 @@ const AddWineScreen = () => {
 };
 
 export default AddWineScreen;
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1
+    },
+    textInput: {
+        fontSize: 30
+    },
+    nextButton: {
+        position: 'absolute',
+        bottom: 50,
+        alignSelf: 'center'
+    }
+});

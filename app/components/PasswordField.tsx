@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleProp, TextStyle, TouchableWithoutFeedback } from 'react-native';
-import { TextField } from 'react-native-ui-lib';
+import { TextField, View } from 'react-native-ui-lib';
 
 import { EyeIcon, EyeSlashIcon } from '../utils/icons';
 
@@ -17,17 +17,21 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
         setSecureTextEntry(!secureTextEntry);
     };
 
-    const maskingIcon = (props): React.ReactElement => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-            {secureTextEntry ? <EyeIcon {...props} /> : <EyeSlashIcon {...props} />}
-        </TouchableWithoutFeedback>
-    );
-
     return (
-        <>
-            <TextField value={props.value} placeholder="password" id="password" onChangeText={props.onChangeText} secureTextEntry={secureTextEntry} />
-            {maskingIcon({})}
-        </>
+        <TextField
+            value={props.value}
+            placeholder="password"
+            id="password"
+            onChangeText={props.onChangeText}
+            secureTextEntry={secureTextEntry}
+            trailingAccessory={
+                <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        {secureTextEntry ? <EyeIcon size={25} {...props} /> : <EyeSlashIcon size={25} {...props} />}
+                    </View>
+                </TouchableWithoutFeedback>
+            }
+        />
     );
 };
 

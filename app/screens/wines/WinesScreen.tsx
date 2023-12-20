@@ -1,27 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native-ui-lib';
-// import WineCardList from '../../components/WineCardList';
 import { RefreshControl, StyleSheet } from 'react-native';
+import { View } from 'react-native-ui-lib';
+import { useDispatch, useSelector } from 'react-redux';
 import AddButton from '../../components/PlusButton';
 import WineCardList from '../../components/WineCardList';
-import useGetWines from '../../hooks/wines/useGetWines';
+import { fetchWinesAsync } from '../../features/wines/winesSlice';
+import { AppDispatch, RootState } from '../../store/store';
 
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
-    const { wines, getWines } = useGetWines();
-
-    useEffect(() => {
-        updateWines();
-    }, []);
-
-    const updateWines = useCallback(async () => {
-        await getWines();
-    }, []);
+    const dispatch: AppDispatch = useDispatch();
+    const wines = useSelector((state: RootState) => state.wines.items);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await updateWines();
+        dispatch(fetchWinesAsync());
         setRefreshing(false);
+    }, []);
+
+    useEffect(() => {
+        dispatch(fetchWinesAsync());
     }, []);
 
     const onAddButtonPress = useCallback(() => {
@@ -29,7 +27,7 @@ const WinesScreen = ({ navigation }) => {
     }, []);
     return (
         <View style={styles.screen}>
-            <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines ?? []} />
+            <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={wines} />
             <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
         </View>
     );
