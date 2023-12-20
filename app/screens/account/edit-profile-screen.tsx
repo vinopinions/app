@@ -1,10 +1,8 @@
-import { useTheme } from '@ui-kitten/components';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
 
 const EditProfileScreen = () => {
-    const theme = useTheme();
     return (
-        <View style={{ backgroundColor: theme['background-basic-color-1'] }}>
+        <View>
             <Text>This is the edit profile screen</Text>
         </View>
     );

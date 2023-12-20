@@ -1,6 +1,8 @@
-import { Icon, Input } from '@ui-kitten/components';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleProp, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import { TextField, View } from 'react-native-ui-lib';
+
+import { EyeIcon, EyeSlashIcon } from '../utils/icons';
 
 interface PasswordFieldProps {
     value: string;
@@ -15,20 +17,20 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
         setSecureTextEntry(!secureTextEntry);
     };
 
-    const maskingIcon = (props): React.ReactElement => (
-        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-            <Icon {...props} name={secureTextEntry ? 'eye-off-outline' : 'eye-outline'} />
-        </TouchableWithoutFeedback>
-    );
-
     return (
-        <Input
+        <TextField
             value={props.value}
             placeholder="password"
             id="password"
             onChangeText={props.onChangeText}
-            accessoryRight={maskingIcon}
             secureTextEntry={secureTextEntry}
+            trailingAccessory={
+                <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        {secureTextEntry ? <EyeIcon size={25} {...props} /> : <EyeSlashIcon size={25} {...props} />}
+                    </View>
+                </TouchableWithoutFeedback>
+            }
         />
     );
 };
