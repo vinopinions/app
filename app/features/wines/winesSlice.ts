@@ -14,6 +14,7 @@ export const fetchWinesAsync = createAsyncThunk<Wine[]>('wines/fetchWines', asyn
 });
 
 export const createWineAsync = createAsyncThunk('wines/createWine', async (wine: Wine) => {
+    console.log(wine);
     const response = await createWine(wine);
     return response.data;
 });
@@ -41,6 +42,11 @@ const winesSlice = createSlice({
             })
             .addCase(createWineAsync.fulfilled, (state, action) => {
                 state.items.push(action.payload);
+            })
+            .addCase(createWineAsync.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+                console.log('Error: ' + action.error);
             });
     }
 });

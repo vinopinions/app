@@ -8,7 +8,7 @@ export interface Credentials {
     password: string;
 }
 interface AuthState {
-    access_token: string | null;
+    accessToken: string | null;
     authenticated: boolean;
 }
 

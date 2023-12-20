@@ -7,8 +7,6 @@ type WineCardProps = CardProps & {
 };
 
 const WineCard = (props: WineCardProps): React.ReactElement => {
-    console.log(props.wine);
-    console.log(props.wine.winemaker);
     return (
         <Card {...props} style={styles.card} onPress={() => console.log('press on a card')}>
             <View padding-20>

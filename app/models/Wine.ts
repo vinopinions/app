@@ -1,7 +1,7 @@
 import Winemaker from './Winemaker';
 
 type Wine = {
-    id: string;
+    id?: string;
     name: string;
     year: number;
     grapeVariety: string;
