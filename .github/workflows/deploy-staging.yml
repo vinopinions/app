@@ -19,6 +19,6 @@ jobs:
             - name: 'Build and push image'
               run: |
                   shortSha=$(git rev-parse --short ${{ github.sha }})
-                  docker build . --tag ghcr.io/layla-oskar-schule/vinopinionsap-expo:${{ github.ref_name }}-$shortSha --tag ghcr.io/layla-oskar-schule/vinopinionsapp-expo:staging
+                  docker build . --tag ghcr.io/layla-oskar-schule/vinopinionsapp-expo:${{ github.ref_name }}-$shortSha --tag ghcr.io/layla-oskar-schule/vinopinionsapp-expo:staging
                   docker push ghcr.io/layla-oskar-schule/vinopinionsapp-expo:staging
                   docker push ghcr.io/layla-oskar-schule/vinopinionsapp-expo:${{ github.ref_name }}-$shortSha
