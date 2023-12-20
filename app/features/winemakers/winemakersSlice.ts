@@ -2,6 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createWinemaker, fetchWinemakers } from '../../api/api';
 import Winemaker from '../../models/Winemaker';
 
+interface WinemakersState {
+    items: Winemaker[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+}
+
 export const fetchWinemakersAsync = createAsyncThunk<Winemaker[]>('winemakers/fetchWinemakers', async () => {
     const response = await fetchWinemakers();
     return response.data;
@@ -18,7 +24,7 @@ const winemakersSlice = createSlice({
         items: [],
         status: 'idle',
         error: null
-    },
+    } as WinemakersState,
     reducers: {},
     extraReducers: builder => {
         builder
