@@ -7,15 +7,19 @@ type StoreCardProps = CardProps & { store: Store };
 
 const StoreCard = (props: StoreCardProps): React.ReactElement => {
     return (
-        <Card {...props} style={styles.card} onPress={() => console.log('card pressed')}>
+        <Card {...props} style={styles.card} onPress={() => console.log(props.store.wines)}>
             <View padding-20>
                 <Text text40 $textDefault>
                     {props.store.name}
                 </Text>
                 <Text text70 $textDefault>
-                    // TODO: maybe add ammount of wines bought and rated at this store
                     {props.store.address}
                 </Text>
+                <View style={{ flex: 1 }}>
+                    <Text text60 $textDefault style={{ textAlign: 'right' }}>
+                        {props.store.wines === undefined ? 'No ratings yet' : props.store.wines.length}
+                    </Text>
+                </View>
             </View>
         </Card>
     );

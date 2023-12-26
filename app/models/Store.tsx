@@ -5,7 +5,7 @@ type Store = {
     name: string;
     address?: string;
     url?: string;
-    wines: Wine[];
+    wines: Wine[] | undefined;
 };
 
 export const isStore = (obj: unknown): obj is Store => {

@@ -1,3 +1,4 @@
+import Store from './Store';
 import Winemaker from './Winemaker';
 
 type Wine = {
@@ -7,6 +8,7 @@ type Wine = {
     grapeVariety: string;
     heritage: string;
     winemaker?: Winemaker;
+    stores?: Store[];
 };
 
 export function isWine(obj: unknown): obj is Wine {
