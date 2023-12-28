@@ -6,7 +6,7 @@ import { View } from 'react-native-ui-lib';
 import { RefreshControl, StyleSheet } from 'react-native';
 import StoreCardList from '../../components/stores/StoreCardList';
 
-const StoresScreen = ({ navigation }) => {
+const StoresScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const dispatch: AppDispatch = useDispatch();
     const stores = useSelector((state: RootState) => state.stores.items);
