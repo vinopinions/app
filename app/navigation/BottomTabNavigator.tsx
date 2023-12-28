@@ -3,7 +3,6 @@ import React from 'react';
 import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import HomeScreen from '../screens/home/HomeScreen';
-import StoreScreen from '../screens/stores/StoreScreen';
 import WinesStackScreen from '../screens/wines/WinesStackScreen';
 import {
     AccountIcon,
@@ -17,6 +16,7 @@ import {
     WineIcon,
     WineIconOutline
 } from '../utils/icons';
+import StoresStackScreen from '../screens/stores/StoresStackScreen';
 
 const HomeRouteName = 'Home';
 const WinesStackRouteName = 'WinesStack';
@@ -53,7 +53,7 @@ const BottomTabNavigator = () => (
         />
         <BottomTab.Screen
             name={StoresRouteName}
-            component={StoreScreen}
+            component={StoresStackScreen}
             options={{
                 headerShown: false
             }}

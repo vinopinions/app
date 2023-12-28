@@ -7,7 +7,7 @@ type StoreCardProps = CardProps & { store: Store };
 
 const StoreCard = (props: StoreCardProps): React.ReactElement => {
     return (
-        <Card {...props} style={styles.card} onPress={() => console.log(props.store.wines)}>
+        <Card {...props} style={styles.card}>
             <View padding-20>
                 <Text text40 $textDefault>
                     {props.store.name}
