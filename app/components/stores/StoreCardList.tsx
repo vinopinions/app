@@ -3,6 +3,8 @@ import Store from '../../models/Store';
 import StoreCard from './StoreCard';
 import { useNavigation } from '@react-navigation/native';
 import { StoresScreenNavigationProp } from '../../screens/stores/StoresStackScreen';
+import React from 'react';
+import { TextField } from 'react-native-ui-lib';
 
 interface StoreCardListProps {
     stores: Store[];
@@ -12,17 +14,39 @@ interface StoreCardListProps {
 
 const StoreCardList = ({ stores, style }: StoreCardListProps) => {
     const navigation = useNavigation<StoresScreenNavigationProp>();
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchResults, setSearchResults] = React.useState(stores);
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+    };
+
+    const performSearch = () => {
+        if (searchQuery === '') {
+            setSearchResults(stores);
+        } else {
+            const results = stores.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
+            setSearchResults(results);
+        }
+    };
+
+    React.useEffect(() => {
+        performSearch();
+    }, [searchQuery, stores]);
 
     const onCardSelection = (store: Store) => {
         navigation.navigate('StoreDetailsScreen', { store: store });
     };
 
     return (
-        <ScrollView style={[styles.contentContainer, style]}>
-            {stores.map((store, index) => (
-                <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
-            ))}
-        </ScrollView>
+        <>
+            <TextField placeholder="Search..." onChangeText={handleSearch} value={searchQuery} />
+            <ScrollView style={[styles.contentContainer, style]}>
+                {searchResults.map((store, index) => (
+                    <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
+                ))}
+            </ScrollView>
+        </>
     );
 };
 

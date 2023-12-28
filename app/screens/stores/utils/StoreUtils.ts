@@ -11,7 +11,5 @@ export const getWinesForStore = (store: Store): Wine[] => {
     useEffect(() => {
         dispatch(fetchWinesAsync());
     }, []);
-    return wines.filter(w => {
-        return w.stores.some(s => s.id === store.id);
-    });
+    return wines.filter(w => w.stores.some(s => s.id === store.id));
 };
