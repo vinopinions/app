@@ -12,7 +12,6 @@ export type StoresStackParamList = {
 };
 
 export type StoresScreenNavigationProp = StackNavigationProp<StoresStackParamList, 'StoresScreen'>;
-
 export type StoreDetailsScreenRouteProp = RouteProp<StoresStackParamList, 'StoreDetailsScreen'>;
 
 const StoresStackScreen = () => {
