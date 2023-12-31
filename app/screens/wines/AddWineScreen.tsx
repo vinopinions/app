@@ -32,9 +32,7 @@ const AddWineScreen = ({ navigation }) => {
     const onFinishButtonPress = useCallback(() => {
         const onFinishButtonPressAsync = async () => {
             const wine: Wine = { winemaker, grapeVariety, heritage, name, year, stores };
-            console.log;
             await dispatch(createWineAsync(wine));
-            console.log(wine.stores);
             navigation.goBack(null);
         };
         onFinishButtonPressAsync();
