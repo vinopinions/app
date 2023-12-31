@@ -40,7 +40,14 @@ const StoreCardList = ({ stores, style }: StoreCardListProps) => {
 
     return (
         <>
-            <TextField placeholder="Search..." onChangeText={handleSearch} value={searchQuery} />
+            <TextField
+                placeholder="Search..."
+                placeholderTextColor="grey"
+                onChangeText={handleSearch}
+                value={searchQuery}
+                containerStyle={styles.searchBarContainer}
+                style={{ fontSize: 20, alignContent: 'flex-start' }}
+            />
             <ScrollView style={[styles.contentContainer, style]}>
                 {searchResults.map((store, index) => (
                     <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
@@ -56,5 +63,13 @@ const styles = StyleSheet.create({
     contentContainer: {
         paddingHorizontal: 8,
         paddingVertical: 4
+    },
+    searchBarContainer: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderRadius: 5,
+        height: 25,
+        paddingTop: 1.5,
+        paddingBottom: 0
     }
 });

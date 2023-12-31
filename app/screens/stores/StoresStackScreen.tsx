@@ -18,7 +18,7 @@ const StoresStackScreen = () => {
     return (
         <StoresStack.Navigator>
             <StoresStack.Screen options={{ headerShown: false }} name="StoresScreen" component={StoresScreen} />
-            <StoresStack.Screen name="StoreDetailsScreen" component={StoreDetailsScreen} />
+            <StoresStack.Screen options={{ headerShown: false }} name="StoreDetailsScreen" component={StoreDetailsScreen} />
         </StoresStack.Navigator>
     );
 };
