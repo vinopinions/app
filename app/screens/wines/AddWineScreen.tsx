@@ -8,30 +8,42 @@ import { createWineAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
 import Winemaker from '../../models/Winemaker';
 import { AppDispatch, RootState } from '../../store/store';
+import Store from '../../models/Store';
+import { fetchStoresAsync } from '../../features/stores/storesSlice';
 
 const AddWineScreen = ({ navigation }) => {
     const dispatch: AppDispatch = useDispatch();
     const winemakers = useSelector((state: RootState) => state.winemakers.items);
+    const allStores = useSelector((state: RootState) => state.stores.items);
 
     const [name, setName] = useState<string>();
     const [year, setYear] = useState<number>();
     const [grapeVariety, setGrapeVariety] = useState<string>();
     const [heritage, setHeritage] = useState<string>();
     const [winemaker, setWinemaker] = useState<Winemaker>(null);
+    const [stores, setStores] = useState<Store[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         dispatch(fetchWinemakersAsync());
+        dispatch(fetchStoresAsync());
     }, []);
 
     const onFinishButtonPress = useCallback(() => {
         const onFinishButtonPressAsync = async () => {
-            const wine: Wine = { winemaker, grapeVariety, heritage, name, year };
+            const wine: Wine = { winemaker, grapeVariety, heritage, name, year, stores };
+            console.log;
             await dispatch(createWineAsync(wine));
+            console.log(wine.stores);
             navigation.goBack(null);
         };
         onFinishButtonPressAsync();
-    }, [name, year, grapeVariety, heritage, winemaker]);
+    }, [name, year, grapeVariety, heritage, winemaker, stores]);
+
+    const updateSelectedStores = (ids: string[]) => {
+        const updatedStores = ids.map(id => allStores.find(store => store.id === id) as Store);
+        setStores(updatedStores);
+    };
 
     return (
         <View style={styles.screen}>
@@ -93,6 +105,19 @@ const AddWineScreen = ({ navigation }) => {
                             >
                                 {winemakers.map(winemaker => (
                                     <Picker.Item key={winemaker.id} value={winemaker.id} label={winemaker.name} />
+                                ))}
+                            </Picker>
+                            <Picker
+                                placeholder="Stores"
+                                floatingPlaceholder
+                                useSafeArea
+                                mode={Picker.modes.MULTI}
+                                enableModalBlur={false}
+                                value={stores.map(store => store.id)}
+                                onChange={itemValue => updateSelectedStores(itemValue as string[])}
+                            >
+                                {allStores.map(store => (
+                                    <Picker.Item key={store.id} value={store.id} label={store.name} />
                                 ))}
                             </Picker>
                             <Button style={styles.navigationButton} label="Next" onPress={() => setActiveIndex(idx => idx + 1)} />
