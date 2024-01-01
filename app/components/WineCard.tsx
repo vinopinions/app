@@ -8,7 +8,7 @@ type WineCardProps = CardProps & {
 
 const WineCard = (props: WineCardProps): React.ReactElement => {
     return (
-        <Card {...props} style={styles.card} onPress={() => console.log(props.wine)}>
+        <Card {...props} style={styles.card}>
             <View padding-20>
                 <Text text40 $textDefault>
                     {props.wine.name}
