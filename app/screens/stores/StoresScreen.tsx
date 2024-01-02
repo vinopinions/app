@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
-import { TextField, View } from 'react-native-ui-lib';
+import { View } from 'react-native-ui-lib';
 import { RefreshControl, StyleSheet } from 'react-native';
 import StoreCardList from '../../components/stores/StoreCardList';
 import Store from '../../models/Store';
+import SearchBar from '../utils/Searchbar';
 
 const StoresScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -42,14 +43,7 @@ const StoresScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <TextField
-                placeholder="Search..."
-                placeholderTextColor="grey"
-                onChangeText={handleSearch}
-                value={searchQuery}
-                containerStyle={styles.searchBarContainer}
-                style={{ fontSize: 20, alignContent: 'flex-start' }}
-            />
+            <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
             <StoreCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} stores={searchResults} />
         </View>
     );
@@ -60,13 +54,5 @@ export default StoresScreen;
 const styles = StyleSheet.create({
     screen: {
         flex: 1
-    },
-    searchBarContainer: {
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderRadius: 5,
-        height: 25,
-        paddingTop: 1.5,
-        paddingBottom: 0
     }
 });
