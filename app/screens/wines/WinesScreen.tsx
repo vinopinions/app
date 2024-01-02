@@ -6,7 +6,7 @@ import AddButton from '../../components/PlusButton';
 import WineCardList from '../../components/WineCardList';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import { AppDispatch, RootState } from '../../store/store';
-import SearchBar from '../utils/Searchbar';
+import SearchBar from '../utils/SearchBar';
 import Wine from '../../models/Wine';
 
 const WinesScreen = ({ navigation }) => {

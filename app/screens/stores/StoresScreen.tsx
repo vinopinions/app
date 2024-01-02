@@ -6,7 +6,7 @@ import { View } from 'react-native-ui-lib';
 import { RefreshControl, StyleSheet } from 'react-native';
 import StoreCardList from '../../components/stores/StoreCardList';
 import Store from '../../models/Store';
-import SearchBar from '../utils/Searchbar';
+import SearchBar from '../utils/SearchBar';
 
 const StoresScreen = () => {
     const [refreshing, setRefreshing] = useState(false);

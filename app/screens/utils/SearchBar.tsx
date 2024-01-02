@@ -24,10 +24,10 @@ export default SearchBar;
 const styles = StyleSheet.create({
     searchBarContainer: {
         backgroundColor: 'white',
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 5,
         height: 25,
         paddingTop: 1.5,
-        paddingBottom: 0
+        margin: 8
     }
 });
