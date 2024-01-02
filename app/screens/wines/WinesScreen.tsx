@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../../store/store';
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const dispatch: AppDispatch = useDispatch();
-    const wines = useSelector((state: RootState) => state.wines.items);
+    const wines = useSelector((state: RootState) => (state.wines.status !== 'failed' ? state.wines.data : []));
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
