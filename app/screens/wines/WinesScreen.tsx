@@ -12,7 +12,7 @@ import Wine from '../../models/Wine';
 const WinesScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const dispatch: AppDispatch = useDispatch();
-    const wines = useSelector((state: RootState) => state.wines.items);
+    const wines = useSelector((state: RootState) => (state.wines.status !== 'failed' ? state.wines.data : []));
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Wine[]>(wines);
 

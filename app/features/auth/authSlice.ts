@@ -6,13 +6,20 @@ import { Credentials } from '../../auth/AuthContext';
 
 const TOKEN_KEY = 'api-jwt';
 
-interface AuthState {
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-    accessToken: string | null;
-    authenticated: boolean;
-}
-
+type AuthState =
+    | {
+          status: 'idle' | 'loading';
+          authenticated: boolean;
+      }
+    | {
+          status: 'succeeded';
+          authenticated: boolean;
+          accessToken: string;
+      }
+    | {
+          status: 'failed';
+          error: string;
+      };
 export const loginAsync = createAsyncThunk('auth/login', async (credentials: Credentials): Promise<{ access_token: string }> => {
     const response = await login(credentials);
     const token = response.data.access_token;
@@ -39,14 +46,14 @@ export const loadAccessTokenAsync = createAsyncThunk('auth/loadAccessToken', asy
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 });
 
+const initialState: AuthState = {
+    status: 'idle',
+    authenticated: false
+};
+
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        accessToken: null,
-        authenticated: false,
-        status: 'idle',
-        error: null
-    } as AuthState,
+    initialState: initialState as AuthState,
     reducers: {},
     extraReducers: builder => {
         builder
@@ -55,12 +62,14 @@ const authSlice = createSlice({
             })
             .addCase(loginAsync.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.authenticated = true;
-                state.accessToken = action.payload.access_token;
+                if (state.status == 'succeeded') {
+                    state.authenticated = true;
+                    state.accessToken = action.payload.access_token;
+                }
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
+                if (state.status == 'failed') state.error = action.error.message;
             })
             .addCase(signupAsync.pending, state => {
                 state.status = 'loading';
@@ -70,15 +79,21 @@ const authSlice = createSlice({
             })
             .addCase(signupAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
+                if (state.status == 'failed') state.error = action.error.message;
             })
             .addCase(logoutAsync.fulfilled, state => {
-                state.accessToken = null;
-                state.authenticated = false;
+                state.status = 'succeeded';
+                if (state.status == 'succeeded') {
+                    state.accessToken = null;
+                    state.authenticated = false;
+                }
             })
             .addCase(loadAccessTokenAsync.fulfilled, (state, action) => {
-                state.accessToken = action.payload;
-                state.authenticated = true;
+                state.status = 'succeeded';
+                if (state.status == 'succeeded') {
+                    state.accessToken = action.payload;
+                    state.authenticated = true;
+                }
             });
     }
 });

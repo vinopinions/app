@@ -1,12 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import ApiResponseState from '../../api/ApiResponseState';
 import { createWinemaker, fetchWinemakers } from '../../api/api';
 import Winemaker from '../../models/Winemaker';
 
-interface WinemakersState {
-    items: Winemaker[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-}
+type WinemakersState = ApiResponseState<Winemaker[]>;
 
 export const fetchWinemakersAsync = createAsyncThunk<Winemaker[]>('winemakers/fetchWinemakers', async () => {
     const response = await fetchWinemakers();
@@ -18,13 +15,14 @@ export const createWinemakerAsync = createAsyncThunk('winemaker/createWinemaker'
     return response.data;
 });
 
+const initialState: WinemakersState = {
+    data: [],
+    status: 'idle'
+};
+
 const winemakersSlice = createSlice({
     name: 'winemakers',
-    initialState: {
-        items: [],
-        status: 'idle',
-        error: null
-    } as WinemakersState,
+    initialState: initialState as WinemakersState,
     reducers: {},
     extraReducers: builder => {
         builder
@@ -33,21 +31,21 @@ const winemakersSlice = createSlice({
             })
             .addCase(fetchWinemakersAsync.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.items = action.payload;
+                if (state.status == 'succeeded') state.data = action.payload;
             })
             .addCase(fetchWinemakersAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
+                if (state.status == 'failed') state.error = action.error.message;
             })
             .addCase(createWinemakerAsync.pending, state => {
                 state.status = 'loading';
             })
             .addCase(createWinemakerAsync.fulfilled, (state, action) => {
-                state.items.push(action.payload);
+                if (state.status !== 'failed') state.data.push(action.payload);
             })
             .addCase(createWinemakerAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
+                if (state.status == 'failed') state.error = action.error.message;
             });
     }
 });
