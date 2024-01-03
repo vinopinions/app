@@ -3,7 +3,6 @@ import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { Button, View } from 'react-native-ui-lib';
-import { RefreshControl, StyleSheet } from 'react-native';
 import StoreCardList from '../../components/stores/StoreCardList';
 import Store from '../../models/Store';
 import SearchBar from '../utils/SearchBar';
@@ -33,9 +32,16 @@ const StoresScreen = ({ navigation }) => {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        dispatch(fetchStoresAsync());
-        setRefreshing(false);
+        try {
+            await dispatch(fetchStoresAsync());
+        } finally {
+            setRefreshing(false);
+        }
     }, []);
+
+    useEffect(() => {
+        setRefreshing(false);
+    }, [stores]);
 
     useEffect(() => {
         dispatch(fetchStoresAsync());
@@ -48,7 +54,7 @@ const StoresScreen = ({ navigation }) => {
     return (
         <View style={styles.screen}>
             <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-            <StoreCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} stores={searchResults} />
+            <StoreCardList refreshing={refreshing} onRefresh={onRefresh} stores={searchResults} />
             <View style={styles.buttonContainer}>
                 <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
             </View>

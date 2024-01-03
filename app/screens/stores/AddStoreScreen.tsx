@@ -19,10 +19,12 @@ const AddStoreScreen = ({ navigation }) => {
 
     const onFinishButtonPress = React.useCallback(() => {
         const onFinishButtonPressAsync = async () => {
+            /*
             if (allStores.map(s => s.name.toLowerCase() === name.toLowerCase() || s.address.toLowerCase() == address.toLowerCase())) {
                 alert('Store already exists!');
                 return navigation.goBack();
             }
+            */
             const store: Store = { name, address, url, wines: [] };
             await dispatch(createStoreAsync(store));
             navigation.goBack();
