@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddButton from '../../components/PlusButton';
@@ -48,7 +48,7 @@ const WinesScreen = ({ navigation }) => {
     return (
         <View style={styles.screen}>
             <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-            <WineCardList refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} wines={searchResults} />
+            <WineCardList refreshing={refreshing} onRefresh={onRefresh} wines={searchResults} />
             <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
         </View>
     );
