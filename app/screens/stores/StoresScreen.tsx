@@ -11,7 +11,7 @@ import SearchBar from '../utils/SearchBar';
 const StoresScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const dispatch: AppDispatch = useDispatch();
-    const stores = useSelector((state: RootState) => state.stores.items);
+    const stores = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Store[]>(stores);
 

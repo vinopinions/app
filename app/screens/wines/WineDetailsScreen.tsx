@@ -12,7 +12,7 @@ import { fetchStoresAsync } from '../../features/stores/storesSlice';
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
     const wine: Wine = route.params.wine;
     const dispatch: AppDispatch = useDispatch();
-    const stores: Store[] = useSelector((state: RootState) => state.stores.items);
+    const stores: Store[] = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [selectedStores, setSelectedStores] = useState<Store[]>(wine.stores);
 
     useEffect(() => {

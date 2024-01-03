@@ -11,7 +11,7 @@ import Store from '../../models/Store';
 const AddStoreScreen = ({ navigation }) => {
     const dispatch: AppDispatch = useDispatch();
     const [activeIndex, setActiveIndex] = useState(0);
-    const allStores = useSelector((state: RootState) => state.stores.items);
+    const allStores = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
 
     const [name, setName] = useState<string>();
     const [address, setAddress] = useState<string>();

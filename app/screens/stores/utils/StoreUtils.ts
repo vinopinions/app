@@ -7,7 +7,7 @@ import Wine from '../../../models/Wine';
 
 export const getWinesForStore = (store: Store): Wine[] => {
     const dispatch: AppDispatch = useDispatch();
-    const wines = useSelector((state: RootState) => state.wines.items);
+    const wines = useSelector((state: RootState) => (state.wines.status !== 'failed' ? state.wines.data : []));
     useEffect(() => {
         dispatch(fetchWinesAsync());
     }, []);

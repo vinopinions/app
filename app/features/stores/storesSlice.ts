@@ -1,12 +1,9 @@
+import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-interface StoresState {
-    items: Store[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-}
+type StoresState = ApiResponseState<Store[]>;
 
 export const fetchStoresAsync = createAsyncThunk<Store[]>('stores/fetchStores', async () => {
     const response = await fetchStores();
@@ -19,13 +16,14 @@ export const createStoreAsync = createAsyncThunk('stores/createStore', async (st
     return response.data;
 });
 
+const initialState: StoresState = {
+    data: [],
+    status: 'idle'
+};
+
 const storesSlice = createSlice({
     name: 'stores',
-    initialState: {
-        items: [],
-        status: 'idle',
-        error: null
-    } as StoresState,
+    initialState: initialState as StoresState,
     reducers: {},
     extraReducers: builder => {
         builder
@@ -34,19 +32,21 @@ const storesSlice = createSlice({
             })
             .addCase(fetchStoresAsync.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.items = action.payload;
+                if (state.status == 'succeeded') state.data = action.payload;
             })
             .addCase(fetchStoresAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
+                if (state.status == 'failed') state.error = action.error.message;
+            })
+            .addCase(createStoreAsync.pending, state => {
+                state.status = 'loading';
             })
             .addCase(createStoreAsync.fulfilled, (state, action) => {
-                state.items.push(action.payload);
+                if (state.status !== 'failed') state.data.push(action.payload);
             })
             .addCase(createStoreAsync.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message;
-                console.log('Error: ' + action.error);
+                if (state.status == 'failed') state.error = action.error.message;
             });
     }
 });
