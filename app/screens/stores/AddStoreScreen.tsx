@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import StoreCard from '../../components/stores/StoreCard';
 import React from 'react';
-import { AppDispatch } from '../../store/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { createStoreAsync } from '../../features/stores/storesSlice';
 import Store from '../../models/Store';
 
 const AddStoreScreen = ({ navigation }) => {
     const dispatch: AppDispatch = useDispatch();
     const [activeIndex, setActiveIndex] = useState(0);
+    const allStores = useSelector((state: RootState) => state.stores.items);
 
     const [name, setName] = useState<string>();
     const [address, setAddress] = useState<string>();
@@ -18,6 +19,10 @@ const AddStoreScreen = ({ navigation }) => {
 
     const onFinishButtonPress = React.useCallback(() => {
         const onFinishButtonPressAsync = async () => {
+            if (allStores.map(s => s.name.toLowerCase() === name.toLowerCase() || s.address.toLowerCase() == address.toLowerCase())) {
+                alert('Store already exists!');
+                return navigation.goBack();
+            }
             const store: Store = { name, address, url, wines: [] };
             await dispatch(createStoreAsync(store));
             navigation.goBack();
