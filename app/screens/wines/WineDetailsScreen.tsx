@@ -1,19 +1,22 @@
 import Wine from '../../models/Wine';
-import { Picker, Text, View } from 'react-native-ui-lib';
+import { Button, Picker, Text, View } from 'react-native-ui-lib';
 import { StyleSheet } from 'react-native';
-import { WineDetailsScreenRouteProp } from './WinesStackScreen';
+import { WineDetailsScreenRouteProp, WinesScreenNavigationProp } from './WinesStackScreen';
 import StoreCardList from '../../components/stores/StoreCardList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import Store from '../../models/Store';
 import { useEffect, useState } from 'react';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
     const wine: Wine = route.params.wine;
     const dispatch: AppDispatch = useDispatch();
     const stores: Store[] = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [selectedStores, setSelectedStores] = useState<Store[]>(wine.stores);
+
+    const navigation = useNavigation<WinesScreenNavigationProp>();
 
     useEffect(() => {
         dispatch(fetchStoresAsync());
@@ -60,6 +63,11 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
                 </Picker>
             </View>
             <View>
+                <Text text60>Ratings:</Text>
+                <Button label="Rate wine" onPress={() => navigation.navigate('CreateRatingScreen', { wine: wine })} />
+            </View>
+            <View>
+                <Text text60>Stores:</Text>
                 <StoreCardList stores={wine.stores} />
             </View>
         </View>

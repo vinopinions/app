@@ -8,13 +8,17 @@ import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import { AppDispatch, RootState } from '../../store/store';
 import SearchBar from '../utils/SearchBar';
 import Wine from '../../models/Wine';
+import { useNavigation } from '@react-navigation/native';
+import { WinesScreenNavigationProp } from './WinesStackScreen';
 
-const WinesScreen = ({ navigation }) => {
+const WinesScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const dispatch: AppDispatch = useDispatch();
     const wines = useSelector((state: RootState) => (state.wines.status !== 'failed' ? state.wines.data : []));
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Wine[]>(wines);
+
+    const navigation = useNavigation<WinesScreenNavigationProp>();
 
     const performSearch = () => {
         if (searchQuery === '') setSearchResults(wines);
@@ -43,7 +47,7 @@ const WinesScreen = ({ navigation }) => {
     }, []);
 
     const onAddButtonPress = useCallback(() => {
-        navigation.navigate('AddWine');
+        navigation.navigate('AddWineScreen');
     }, []);
     return (
         <View style={styles.screen}>
