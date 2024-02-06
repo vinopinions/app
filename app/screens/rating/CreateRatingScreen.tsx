@@ -23,10 +23,11 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigat
         const onSubmitButtonPressAsync = async () => {
             const rating: Rating = { stars, text };
             await dispatch(createWineRatingAsync({ wineId: wine.id, rating: rating }));
+            console.log(rating);
             navigation.goBack();
         };
         onSubmitButtonPressAsync();
-    }, [stars, text, wine]);
+    }, [stars, text, wine, dispatch, navigation]);
 
     return (
         <TouchableOpacity onPress={Keyboard.dismiss} style={{ flex: 1 }} activeOpacity={1}>
@@ -40,7 +41,7 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigat
                     Rating:
                 </Text>
                 <View>
-                    <StarRating style={{ paddingLeft: 5 }} rating={stars} maxStars={5} onChange={setStars} />
+                    <StarRating style={{ paddingLeft: 5 }} rating={stars} maxStars={5} onChange={setStars} enableHalfStar={false} />
                 </View>
                 <View>
                     <TextField
