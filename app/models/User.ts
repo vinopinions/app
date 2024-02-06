@@ -1,10 +1,10 @@
 type User = {
     id?: string;
-    name: string;
+    username: string;
 };
 
 export function isUser(obj: unknown): obj is User {
-    return typeof obj === 'object' && 'id' in obj && 'name' in obj;
+    return typeof obj === 'object' && 'id' in obj && 'username' in obj;
 }
 
 export function isUserArray(obj: unknown): obj is User[] {

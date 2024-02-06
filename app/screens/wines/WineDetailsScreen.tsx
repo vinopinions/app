@@ -24,6 +24,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
     useEffect(() => {
         dispatch(fetchStoresAsync());
         dispatch(fetchRatingsAsync(wine.id));
+        console.log(ratings);
     }, []);
 
     const updateSelectedStores = (ids: string[]) => {

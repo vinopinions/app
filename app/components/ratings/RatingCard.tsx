@@ -6,11 +6,12 @@ type RatingCardProps = CardProps & {
 };
 
 const RatingCard = (props: RatingCardProps): React.ReactElement => {
+    console.log(props.rating.user.username);
     return (
         <Card {...props}>
             <View padding-20>
                 <Text text40 $textDefault>
-                    {props.rating.user.name}
+                    {props.rating.user.username}
                 </Text>
                 <Text text70 $textDefault>
                     {props.rating.stars}
