@@ -1,4 +1,5 @@
 import { Credentials } from '../auth/AuthContext';
+import Rating from '../models/Rating';
 import Store from '../models/Store';
 import Wine from '../models/Wine';
 import Winemaker from '../models/Winemaker';
@@ -18,6 +19,8 @@ export const apiWinemakers = createDefaultAxiosInstance({ baseURL: BASE_URL_WINE
 
 export const apiStores = createDefaultAxiosInstance({ baseURL: BASE_URL_STORES });
 
+export const apiWineRatings = createDefaultAxiosInstance({ baseURL: BASE_URL_WINES });
+
 export const login = (credentials: Credentials) => apiAuth.post('/login', credentials);
 export const signup = (credentials: Credentials) => apiAuth.post('/signup', credentials);
 
@@ -29,3 +32,6 @@ export const createWinemaker = (winemaker: Winemaker) => apiWinemakers.post('/',
 
 export const fetchStores = () => apiStores.get('/');
 export const createStore = (store: Store) => apiStores.post('/', store);
+
+export const fetchWineRatings = (wineId: string) => apiWineRatings.get(`/${wineId}/ratings`);
+export const createWineRating = (wineId: string, rating: Rating) => apiWineRatings.post(`/${wineId}/rating`, rating);
