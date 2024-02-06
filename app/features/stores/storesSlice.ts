@@ -11,7 +11,6 @@ export const fetchStoresAsync = createAsyncThunk<Store[]>('stores/fetchStores', 
 });
 
 export const createStoreAsync = createAsyncThunk('stores/createStore', async (store: Store) => {
-    console.log(store);
     const response = await createStore(store);
     return response.data;
 });

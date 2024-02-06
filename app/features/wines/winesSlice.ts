@@ -11,7 +11,6 @@ export const fetchWinesAsync = createAsyncThunk<Wine[]>('wines/fetchWines', asyn
 });
 
 export const createWineAsync = createAsyncThunk('wines/createWine', async (wine: Wine) => {
-    console.log(wine);
     const response = await createWine(wine);
     return response.data;
 });

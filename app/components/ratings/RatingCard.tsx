@@ -8,7 +8,6 @@ type RatingCardProps = CardProps & {
 };
 
 const RatingCard = (props: RatingCardProps): React.ReactElement => {
-    console.log(props.rating.user.username);
     return (
         <Card {...props} style={styles.card}>
             <View padding-20>
