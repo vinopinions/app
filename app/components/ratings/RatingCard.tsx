@@ -11,7 +11,7 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
     return (
         <Card {...props} style={styles.card}>
             <View padding-20>
-                <Text text40 $textDefault>
+                <Text text50 $textDefault>
                     {props.rating.user.username}
                 </Text>
                 <StarRatingDisplay
