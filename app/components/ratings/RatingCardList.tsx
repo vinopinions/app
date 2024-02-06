@@ -12,7 +12,7 @@ interface RatingCardListProps {
 
 const RatingCardList = ({ ratings, style, refreshing, onRefresh }: RatingCardListProps): React.ReactElement => {
     return (
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             {ratings.map((rating, index) => (
                 <RatingCard rating={rating} key={index} />
             ))}
