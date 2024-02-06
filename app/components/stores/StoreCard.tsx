@@ -12,7 +12,7 @@ const StoreCard = (props: StoreCardProps): React.ReactElement => {
     return (
         <Card {...props} style={styles.card}>
             <View padding-20>
-                <Text text40 $textDefault>
+                <Text text50 $textDefault>
                     {props.store.name}
                 </Text>
                 <Text text70 $textDefault>
