@@ -1,4 +1,4 @@
-import { ScrollView, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { ScrollView, StyleProp, ViewStyle } from 'react-native';
 import Store from '../../models/Store';
 import StoreCard from './StoreCard';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ const StoreCardList = ({ stores, style, refreshing, onRefresh }: StoreCardListPr
 
     return (
         <>
-            <ScrollView style={[styles.contentContainer, style]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 {stores.map((store, index) => (
                     <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
                 ))}
@@ -32,10 +32,3 @@ const StoreCardList = ({ stores, style, refreshing, onRefresh }: StoreCardListPr
 };
 
 export default StoreCardList;
-
-const styles = StyleSheet.create({
-    contentContainer: {
-        paddingHorizontal: 8,
-        paddingVertical: 4
-    }
-});
