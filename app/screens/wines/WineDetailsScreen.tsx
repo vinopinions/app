@@ -9,10 +9,13 @@ import Store from '../../models/Store';
 import { useEffect, useState } from 'react';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { useNavigation } from '@react-navigation/native';
+import { fetchRatingsAsync } from '../../features/ratings/ratingsSlice';
+import RatingCardList from '../../components/ratings/RatingCardList';
 
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
     const wine: Wine = route.params.wine;
     const dispatch: AppDispatch = useDispatch();
+    const ratings = useSelector((state: RootState) => (state.ratings.status !== 'failed' ? state.ratings.data : []));
     const stores: Store[] = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [selectedStores, setSelectedStores] = useState<Store[]>(wine.stores);
 
@@ -20,6 +23,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
 
     useEffect(() => {
         dispatch(fetchStoresAsync());
+        dispatch(fetchRatingsAsync(wine.id));
     }, []);
 
     const updateSelectedStores = (ids: string[]) => {
@@ -65,6 +69,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
             <View>
                 <Text text60>Ratings:</Text>
                 <Button label="Rate wine" onPress={() => navigation.navigate('CreateRatingScreen', { wine: wine })} />
+                <RatingCardList ratings={ratings} />
             </View>
             <View>
                 <Text text60>Stores:</Text>
