@@ -1,6 +1,6 @@
 import Wine from '../../models/Wine';
 import { Button, Picker, Text, View } from 'react-native-ui-lib';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { WineDetailsScreenRouteProp, WinesScreenNavigationProp } from './WinesStackScreen';
 import StoreCardList from '../../components/stores/StoreCardList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,7 +35,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
     // TODO: add winemaker name
 
     return (
-        <View>
+        <ScrollView style={{ padding: 10 }}>
             <Text text40 style={styles.text}>
                 {wine.name}
             </Text>
@@ -76,7 +76,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
                 <Text text60>Stores:</Text>
                 <StoreCardList stores={wine.stores} />
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
