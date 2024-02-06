@@ -14,7 +14,12 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
                 <Text text40 $textDefault>
                     {props.rating.user.username}
                 </Text>
-                <StarRatingDisplay rating={props.rating.stars} style={{ height: 25, width: 15 }} starSize={20} starStyle={{ height: 5, width: 5 }} />
+                <StarRatingDisplay
+                    rating={props.rating.stars}
+                    style={{ height: 25, width: 15, marginLeft: -8 }}
+                    starSize={20}
+                    starStyle={{ height: 5, width: 5 }}
+                />
                 <Text text70 $textDefault>
                     {props.rating.text}
                 </Text>
