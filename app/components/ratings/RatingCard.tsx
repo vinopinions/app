@@ -1,6 +1,7 @@
 import { Card, CardProps, View, Text } from 'react-native-ui-lib';
 import Rating from '../../models/Rating';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { StyleSheet } from 'react-native';
 
 type RatingCardProps = CardProps & {
     rating: Rating;
@@ -9,7 +10,7 @@ type RatingCardProps = CardProps & {
 const RatingCard = (props: RatingCardProps): React.ReactElement => {
     console.log(props.rating.user.username);
     return (
-        <Card {...props}>
+        <Card {...props} style={styles.card}>
             <View padding-20>
                 <Text text40 $textDefault>
                     {props.rating.user.username}
@@ -24,3 +25,7 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
 };
 
 export default RatingCard;
+
+const styles = StyleSheet.create({
+    card: { marginBottom: 15 }
+});
