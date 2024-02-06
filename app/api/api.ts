@@ -39,4 +39,4 @@ export const fetchStores = () => apiStores.get('/');
 export const createStore = (store: Store) => apiStores.post('/', store);
 
 export const fetchWineRatings = (wineId: string) => apiWineRatings.get(`/${wineId}/ratings`);
-export const createWineRating = (wineId: string, rating: Rating) => apiWineRatings.post(`/${wineId}/rating`, rating);
+export const createWineRating = async (wineId: string, rating: Rating) => apiWineRatings.post(`/${wineId}/ratings`, rating);

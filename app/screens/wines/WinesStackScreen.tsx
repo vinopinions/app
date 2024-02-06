@@ -18,6 +18,7 @@ export type WinesStackParamList = {
 export type WinesScreenNavigationProp = StackNavigationProp<WinesStackParamList, 'WinesScreen'>;
 export type WineDetailsScreenRouteProp = RouteProp<WinesStackParamList, 'WineDetailsScreen'>;
 export type CreateRatingScreenRouteProp = RouteProp<WinesStackParamList, 'CreateRatingScreen'>;
+export type CreateRatingScreenNavigationProp = StackNavigationProp<WinesStackParamList, 'CreateRatingScreen'>;
 
 const WinesStackScreen = () => {
     return (

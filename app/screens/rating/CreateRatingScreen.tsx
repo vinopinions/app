@@ -1,13 +1,32 @@
 import { Button, Text, TextField, View } from 'react-native-ui-lib';
-import { CreateRatingScreenRouteProp } from '../wines/WinesStackScreen';
+import { CreateRatingScreenNavigationProp, CreateRatingScreenRouteProp } from '../wines/WinesStackScreen';
 import Wine from '../../models/Wine';
 import StarRating from 'react-native-star-rating-widget';
 import { useState } from 'react';
 import { Keyboard, TouchableOpacity } from 'react-native';
+import Rating from '../../models/Rating';
+import { createWineRatingAsync } from '../../features/ratings/ratingsSlice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import React from 'react';
 
-const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp }> = ({ route }): React.ReactElement => {
+const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigation: CreateRatingScreenNavigationProp }> = ({
+    route,
+    navigation
+}): React.ReactElement => {
+    const dispatch: AppDispatch = useDispatch();
     const wine: Wine = route.params.wine;
-    const [rating, setRating] = useState(0);
+    const [stars, setStars] = useState(0);
+    const [text, setText] = useState<string>();
+
+    const onSubmitButtonPress = React.useCallback(() => {
+        const onSubmitButtonPressAsync = async () => {
+            const rating: Rating = { stars, text };
+            await dispatch(createWineRatingAsync({ wineId: wine.id, rating: rating }));
+            navigation.goBack();
+        };
+        onSubmitButtonPressAsync();
+    }, [stars, text, wine]);
 
     return (
         <TouchableOpacity onPress={Keyboard.dismiss} style={{ flex: 1 }} activeOpacity={1}>
@@ -21,13 +40,18 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp }> = ({ 
                     Rating:
                 </Text>
                 <View>
-                    <StarRating style={{ paddingLeft: 5 }} rating={rating} maxStars={5} onChange={setRating} />
+                    <StarRating style={{ paddingLeft: 5 }} rating={stars} maxStars={5} onChange={setStars} />
                 </View>
                 <View>
-                    <TextField multiline={true} style={{ borderWidth: 0.5, height: 100, fontSize: 20, margin: 10, marginTop: 5 }} />
+                    <TextField
+                        multiline={true}
+                        style={{ borderWidth: 0.5, height: 100, fontSize: 20, margin: 10, marginTop: 5 }}
+                        value={text}
+                        onChangeText={setText}
+                    />
                 </View>
                 <View>
-                    <Button label="Submit rating" style={{ margin: 10 }} />
+                    <Button label="Submit rating" style={{ margin: 10 }} onPress={onSubmitButtonPress} />
                 </View>
             </View>
         </TouchableOpacity>

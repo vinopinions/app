@@ -3,12 +3,14 @@ import authReducer from '../features/auth/authSlice';
 import winemakersReducer from '../features/winemakers/winemakersSlice';
 import winesReducer from '../features/wines/winesSlice';
 import storesReducer from '../features/stores/storesSlice';
+import currentUserReducer from '../features/users/currentUserSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer,
     wines: winesReducer,
     winemakers: winemakersReducer,
-    stores: storesReducer
+    stores: storesReducer,
+    currentUser: currentUserReducer
 });
 
 export const store = configureStore({
