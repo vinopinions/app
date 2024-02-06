@@ -1,12 +1,12 @@
 import Wine from '../../models/Wine';
 import { Button, Picker, Text, View } from 'react-native-ui-lib';
-import { ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { WineDetailsScreenRouteProp, WinesScreenNavigationProp } from './WinesStackScreen';
 import StoreCardList from '../../components/stores/StoreCardList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import Store from '../../models/Store';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { useNavigation } from '@react-navigation/native';
 import { fetchRatingsAsync } from '../../features/ratings/ratingsSlice';
@@ -18,6 +18,21 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
     const ratings = useSelector((state: RootState) => (state.ratings.status !== 'failed' ? state.ratings.data : []));
     const stores: Store[] = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [selectedStores, setSelectedStores] = useState<Store[]>(wine.stores);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await dispatch(fetchStoresAsync());
+            await dispatch(fetchRatingsAsync(wine.id));
+        } finally {
+            setRefreshing(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        setRefreshing(false);
+    }, [stores]);
 
     const navigation = useNavigation<WinesScreenNavigationProp>();
 
@@ -34,7 +49,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
     // TODO: add winemaker name
 
     return (
-        <ScrollView style={{ padding: 10 }}>
+        <ScrollView style={{ padding: 10 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <Text text40 style={styles.text}>
                 {wine.name}
             </Text>

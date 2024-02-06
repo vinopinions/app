@@ -1,6 +1,5 @@
 import { ScrollView, StyleProp, ViewStyle } from 'react-native';
 import Rating from '../../models/Rating';
-import { RefreshControl } from 'react-native-gesture-handler';
 import RatingCard from './RatingCard';
 
 interface RatingCardListProps {
@@ -10,9 +9,9 @@ interface RatingCardListProps {
     onRefresh?: () => void;
 }
 
-const RatingCardList = ({ ratings, style, refreshing, onRefresh }: RatingCardListProps): React.ReactElement => {
+const RatingCardList = ({ ratings, style }: RatingCardListProps): React.ReactElement => {
     return (
-        <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <ScrollView style={style}>
             {ratings.map((rating, index) => (
                 <RatingCard rating={rating} key={index} />
             ))}
