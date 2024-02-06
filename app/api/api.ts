@@ -10,6 +10,7 @@ const BASE_URL_AUTH = `${BASE_URL}/auth`;
 const BASE_URL_WINES = `${BASE_URL}/wines`;
 const BASE_URL_WINEMAKERS = `${BASE_URL}/winemakers`;
 const BASE_URL_STORES = `${BASE_URL}/stores`;
+const BASE_URL_USERS = `${BASE_URL}/users`;
 
 export const apiAuth = createDefaultAxiosInstance({ baseURL: BASE_URL_AUTH });
 
@@ -21,8 +22,12 @@ export const apiStores = createDefaultAxiosInstance({ baseURL: BASE_URL_STORES }
 
 export const apiWineRatings = createDefaultAxiosInstance({ baseURL: BASE_URL_WINES });
 
+export const apiUsers = createDefaultAxiosInstance({ baseURL: BASE_URL_USERS });
+
 export const login = (credentials: Credentials) => apiAuth.post('/login', credentials);
 export const signup = (credentials: Credentials) => apiAuth.post('/signup', credentials);
+
+export const fetchCurrentUser = () => apiUsers.get('/me');
 
 export const fetchWines = () => apiWines.get('/');
 export const createWine = (wine: Wine) => apiWines.post('/', wine);
