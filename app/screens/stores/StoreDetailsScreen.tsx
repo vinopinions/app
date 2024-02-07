@@ -1,15 +1,25 @@
 import { Text, View } from 'react-native-ui-lib';
 import { StoreDetailsScreenRouteProp } from './StoresStackScreen';
 import Store from '../../models/Store';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { getWinesForStore } from './utils/StoreUtils';
 import Wine from '../../models/Wine';
 import WineCardList from '../../components/WineCardList';
+import { fetchStoreByIdAsync } from '../../features/stores/storesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
 
 const StoreDetailsScreen: React.FC<{ route: StoreDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
-    const store: Store = route.params.store;
-    const winesAtStore: Wine[] = getWinesForStore(store);
+    const dispatch: AppDispatch = useDispatch();
+    const stores = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
+
+    useEffect(() => {
+        dispatch(fetchStoreByIdAsync(route.params.store.id));
+    }, []);
+
+    const store: Store = stores[0];
+    const winesAtStore: Wine[] = store.wines;
+
     return (
         <View>
             <Text text40 style={styles.text}>

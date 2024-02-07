@@ -7,6 +7,7 @@ import StoreCardList from '../../components/stores/StoreCardList';
 import Store from '../../models/Store';
 import SearchBar from '../utils/SearchBar';
 import { StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const StoresScreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -14,6 +15,20 @@ const StoresScreen = ({ navigation }) => {
     const stores = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Store[]>(stores);
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchStores = async () => {
+                setRefreshing(true);
+                try {
+                    await dispatch(fetchStoresAsync());
+                } finally {
+                    setRefreshing(false);
+                }
+            };
+            fetchStores();
+        }, [])
+    );
 
     const performSearch = () => {
         if (searchQuery === '') setSearchResults(stores);

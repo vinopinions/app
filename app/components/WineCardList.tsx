@@ -21,9 +21,7 @@ const WineCardList = ({ wines, style, refreshing, onRefresh }: WineCardListProps
 
     return (
         <ScrollView style={[styles.contentContainer, style]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-            {wines.map((wine, index) => (
-                <WineCard wine={wine} key={index} onPress={() => onCardSelection(wine)} />
-            ))}
+            {wines && wines.map((wine, index) => <WineCard wine={wine} key={index} onPress={() => onCardSelection(wine)} />)}
         </ScrollView>
     );
 };

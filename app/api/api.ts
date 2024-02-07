@@ -30,12 +30,14 @@ export const signup = (credentials: Credentials) => apiAuth.post('/signup', cred
 export const fetchCurrentUser = () => apiUsers.get('/me');
 
 export const fetchWines = () => apiWines.get('/');
+export const fetchWineById = (wineId: string) => apiWines.get(`/${wineId}`);
 export const createWine = (wine: Wine) => apiWines.post('/', wine);
 
 export const fetchWinemakers = () => apiWinemakers.get('/');
 export const createWinemaker = (winemaker: Winemaker) => apiWinemakers.post('/', winemaker);
 
 export const fetchStores = () => apiStores.get('/');
+export const fetchStoreById = (storeId: string) => apiStores.get(`/${storeId}`);
 export const createStore = (store: Store) => apiStores.post('/', store);
 
 export const fetchWineRatings = (wineId: string) => apiWineRatings.get(`/${wineId}/ratings`);

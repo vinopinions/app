@@ -1,5 +1,5 @@
 import ApiResponseState from '../../api/ApiResponseState';
-import { createStore, fetchStores } from '../../api/api';
+import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -7,6 +7,11 @@ type StoresState = ApiResponseState<Store[]>;
 
 export const fetchStoresAsync = createAsyncThunk<Store[]>('stores/fetchStores', async () => {
     const response = await fetchStores();
+    return response.data;
+});
+
+export const fetchStoreByIdAsync = createAsyncThunk<Store, string>('stores/fetchStoreById', async (storeId: string) => {
+    const response = await fetchStoreById(storeId);
     return response.data;
 });
 
@@ -34,6 +39,17 @@ const storesSlice = createSlice({
                 if (state.status == 'succeeded') state.data = action.payload;
             })
             .addCase(fetchStoresAsync.rejected, (state, action) => {
+                state.status = 'failed';
+                if (state.status == 'failed') state.error = action.error.message;
+            })
+            .addCase(fetchStoreByIdAsync.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(fetchStoreByIdAsync.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                if (state.status == 'succeeded') state.data = [action.payload];
+            })
+            .addCase(fetchStoreByIdAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 if (state.status == 'failed') state.error = action.error.message;
             })
