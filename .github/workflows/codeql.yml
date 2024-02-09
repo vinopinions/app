@@ -32,10 +32,6 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
-      - run: yarn --ignore-scripts --non-interactive --frozen-lockfile
-
-      - run: yarn build
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
