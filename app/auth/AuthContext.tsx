@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  AuthState,
   loadAccessTokenAsync,
   loginAsync,
   logoutAsync,
@@ -11,10 +12,6 @@ import { AppDispatch, RootState } from '../store/store';
 export interface Credentials {
   username: string;
   password: string;
-}
-interface AuthState {
-  accessToken: string | null;
-  authenticated: boolean;
 }
 
 interface AuthProps {

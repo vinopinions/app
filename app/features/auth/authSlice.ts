@@ -6,7 +6,7 @@ import { Credentials } from '../../auth/AuthContext';
 
 const TOKEN_KEY = 'api-jwt';
 
-type AuthState =
+export type AuthState =
   | {
       status: 'idle' | 'loading';
       authenticated: boolean;

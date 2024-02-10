@@ -1,6 +1,8 @@
 {
   "name": "vinopinions-app",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "description": "App for vinopinions",
+  "license": "UNLICENSED",
   "main": "./app/App.tsx",
   "scripts": {
     "start": "expo start",
@@ -56,5 +58,6 @@
     "prettier": "^3.2.5",
     "semantic-release": "^23.0.2",
     "typescript": "^5.2.2"
-  }
+  },
+  "repository": "https://github.com/layla-oskar-schule/vinopinions-app"
 }
