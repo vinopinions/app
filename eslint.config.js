@@ -1,8 +1,8 @@
-export default [{
+const config = [{
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
+    tsconfigRootDir: new URL('.', import.meta.url).pathname,
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
@@ -24,3 +24,4 @@ export default [{
   },
 }]
 
+export default config;
