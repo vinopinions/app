@@ -1,5 +1,10 @@
 import ts from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import nPlugin from 'eslint-plugin-n';
+import prettierPlugin from 'eslint-plugin-prettier';
+import promisePlugin from 'eslint-plugin-promise';
+import reactPlugin from 'eslint-plugin-react';
 
 const config = [{
 
@@ -14,6 +19,11 @@ const config = [{
   plugins: {
     '@typescript-eslint': ts,
     ts,
+    prettierPlugin,
+    importPlugin,
+    nPlugin,
+    promisePlugin,
+    reactPlugin
   },
   rules: {
     ...ts.configs['eslint-recommended'].rules,
