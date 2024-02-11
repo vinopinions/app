@@ -1,22 +1,23 @@
+import ts from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+
 const config = [{
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: new URL('.', import.meta.url).pathname,
-    sourceType: 'module',
+
+  languageOptions: {
+    parser: tsParser,
+    parserOptions: {
+      ecmaFeatures: { modules: true },
+      ecmaVersion: 'latest',
+      project: './tsconfig.json',
+    },
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
-  root: true,
-  env: {
-    node: true,
-    jest: true,
+  plugins: {
+    '@typescript-eslint': ts,
+    ts,
   },
-  ignorePatterns: ['eslint.config.js'],
   rules: {
+    ...ts.configs['eslint-recommended'].rules,
+    ...ts.configs['recommended'].rules,
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
