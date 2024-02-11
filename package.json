@@ -4,6 +4,7 @@
   "description": "App for vinopinions",
   "license": "UNLICENSED",
   "main": "./app/App.tsx",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "start:tunnel": "expo start --tunnel",
