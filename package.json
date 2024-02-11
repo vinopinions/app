@@ -4,6 +4,7 @@
   "description": "App for vinopinions",
   "license": "UNLICENSED",
   "main": "./app/App.tsx",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "start:tunnel": "expo start --tunnel",
@@ -44,7 +45,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/react": "~18.2.14",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard-with-typescript": "^39.1.1",
