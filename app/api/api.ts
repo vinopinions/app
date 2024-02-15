@@ -4,7 +4,7 @@ import Wine from '../models/Wine';
 import Winemaker from '../models/Winemaker';
 import { createDefaultAxiosInstance } from './utils';
 
-const BASE_URL = 'https://api-t.vinopinions.spots.host/v0';
+const BASE_URL = 'https://api-dev.vinopinions.spots.host/v1';
 const BASE_URL_AUTH = `${BASE_URL}/auth`;
 const BASE_URL_WINES = `${BASE_URL}/wines`;
 const BASE_URL_WINEMAKERS = `${BASE_URL}/winemakers`;
