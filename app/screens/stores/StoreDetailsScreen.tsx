@@ -1,25 +1,15 @@
-import { Text, View } from 'react-native-ui-lib';
-import { StoreDetailsScreenRouteProp } from './StoresStackScreen';
-import Store from '../../models/Store';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import Wine from '../../models/Wine';
+import { Text, View } from 'react-native-ui-lib';
 import WineCardList from '../../components/WineCardList';
-import { fetchStoreByIdAsync } from '../../features/stores/storesSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import Store from '../../models/Store';
+import Wine from '../../models/Wine';
+import { StoreDetailsScreenRouteProp } from './StoresStackScreen';
+import { getWinesForStore } from './utils/StoreUtils';
 
 const StoreDetailsScreen: React.FC<{ route: StoreDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
-    const dispatch: AppDispatch = useDispatch();
-    const stores = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
-
-    useEffect(() => {
-        dispatch(fetchStoreByIdAsync(route.params.store.id));
-    }, []);
-
-    const store: Store = stores[0];
-    const winesAtStore: Wine[] = store.wines;
-
+    const store: Store = route.params.store;
+    const winesAtStore: Wine[] = getWinesForStore(store);
     return (
         <View>
             <Text text40 style={styles.text}>

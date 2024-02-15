@@ -5,6 +5,7 @@ type Rating = {
     stars: number;
     text: string;
     user?: User;
+    createdAt?: Date;
 };
 
 export function isRating(obj: unknown): obj is Rating {

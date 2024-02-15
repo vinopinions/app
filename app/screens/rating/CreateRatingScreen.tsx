@@ -23,7 +23,6 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigat
         const onSubmitButtonPressAsync = async () => {
             const rating: Rating = { stars, text };
             await dispatch(createWineRatingAsync({ wineId: wine.id, rating: rating }));
-            console.log(rating);
             navigation.goBack();
         };
         onSubmitButtonPressAsync();

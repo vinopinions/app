@@ -1,3 +1,4 @@
+import Rating from './Rating';
 import Store from './Store';
 import Winemaker from './Winemaker';
 
@@ -9,6 +10,7 @@ type Wine = {
     heritage: string;
     winemaker?: Winemaker;
     stores?: Store[];
+    ratings?: Rating[];
 };
 
 export function isWine(obj: unknown): obj is Wine {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import { createWine, fetchWineById, fetchWines } from '../../api/api';
+import { createWine, fetchWineById, fetchWines, updateStoresForWine } from '../../api/api';
 import Wine from '../../models/Wine';
 
 type WinesState = ApiResponseState<Wine[]>;
@@ -19,6 +19,14 @@ export const createWineAsync = createAsyncThunk('wines/createWine', async (wine:
     const response = await createWine(wine);
     return response.data;
 });
+
+export const updateStoresForWineAsync = createAsyncThunk<Wine, { wineId: string; storeIds: string[] }>(
+    'wines/updateStoresForWine',
+    async ({ wineId, storeIds }) => {
+        const response = await updateStoresForWine(wineId, storeIds);
+        return response.data;
+    }
+);
 
 const initialState: WinesState = {
     data: [],
@@ -50,6 +58,22 @@ const winesSlice = createSlice({
                 if (state.status == 'succeeded') state.data = [action.payload];
             })
             .addCase(fetchWineByIdAsync.rejected, (state, action) => {
+                state.status = 'failed';
+                if (state.status == 'failed') state.error = action.error.message;
+            })
+            .addCase(updateStoresForWineAsync.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(updateStoresForWineAsync.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                if (state.status == 'succeeded') {
+                    const index = state.data.findIndex(wine => wine.id === action.payload.id);
+                    if (index !== -1) {
+                        state.data[index].stores = action.payload.stores;
+                    }
+                }
+            })
+            .addCase(updateStoresForWineAsync.rejected, (state, action) => {
                 state.status = 'failed';
                 if (state.status == 'failed') state.error = action.error.message;
             })

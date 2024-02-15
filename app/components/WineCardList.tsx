@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { RefreshControl, ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Wine from '../models/Wine';
-import WineCard from './WineCard';
-import { useNavigation } from '@react-navigation/native';
 import { WinesScreenNavigationProp } from '../screens/wines/WinesStackScreen';
+import WineCard from './WineCard';
 
 interface WineCardListProps {
     wines: Wine[];
@@ -21,7 +21,9 @@ const WineCardList = ({ wines, style, refreshing, onRefresh }: WineCardListProps
 
     return (
         <ScrollView style={[styles.contentContainer, style]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-            {wines && wines.map((wine, index) => <WineCard wine={wine} key={index} onPress={() => onCardSelection(wine)} />)}
+            {wines.map((wine, index) => (
+                <WineCard wine={wine} key={index} onPress={() => onCardSelection(wine)} />
+            ))}
         </ScrollView>
     );
 };

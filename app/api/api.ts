@@ -5,7 +5,7 @@ import Wine from '../models/Wine';
 import Winemaker from '../models/Winemaker';
 import { createDefaultAxiosInstance } from './utils';
 
-const BASE_URL = 'https://api-t.vinopinions.spots.host/v0';
+const BASE_URL = 'https://api-dev.vinopinions.spots.host/v1';
 const BASE_URL_AUTH = `${BASE_URL}/auth`;
 const BASE_URL_WINES = `${BASE_URL}/wines`;
 const BASE_URL_WINEMAKERS = `${BASE_URL}/winemakers`;
@@ -32,6 +32,7 @@ export const fetchCurrentUser = () => apiUsers.get('/me');
 export const fetchWines = () => apiWines.get('/');
 export const fetchWineById = (wineId: string) => apiWines.get(`/${wineId}`);
 export const createWine = (wine: Wine) => apiWines.post('/', wine);
+export const updateStoresForWine = (wineId: string, storeIds: string[]) => apiWines.put(`/${wineId}`, { storeIds });
 
 export const fetchWinemakers = () => apiWinemakers.get('/');
 export const createWinemaker = (winemaker: Winemaker) => apiWinemakers.post('/', winemaker);
@@ -40,5 +41,5 @@ export const fetchStores = () => apiStores.get('/');
 export const fetchStoreById = (storeId: string) => apiStores.get(`/${storeId}`);
 export const createStore = (store: Store) => apiStores.post('/', store);
 
-export const fetchWineRatings = (wineId: string) => apiWineRatings.get(`/${wineId}/ratings`);
-export const createWineRating = async (wineId: string, rating: Rating) => apiWineRatings.post(`/${wineId}/ratings`, rating);
+export const createWineRating = async (wineId: string, rating: Rating) =>
+    apiWineRatings.post(`/${wineId}/ratings`, rating);

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import Rating from '../../models/Rating';
-import { createWineRating, fetchWineRatings } from '../../api/api';
+import { createWineRating } from '../../api/api';
 
 type RatigsState = ApiResponseState<Rating[]>;
 
@@ -9,11 +9,6 @@ interface createWineRatingParams {
     wineId: string;
     rating: Rating;
 }
-
-export const fetchRatingsAsync = createAsyncThunk<Rating[], string>('ratings/fetchWineRatings', async (wineId: string) => {
-    const response = await fetchWineRatings(wineId);
-    return response.data;
-});
 
 export const createWineRatingAsync = createAsyncThunk('ratings/createWineRating', async (params: createWineRatingParams) => {
     const response = await createWineRating(params.wineId, params.rating);
@@ -31,17 +26,6 @@ const ratingsSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(fetchRatingsAsync.pending, state => {
-                state.status = 'loading';
-            })
-            .addCase(fetchRatingsAsync.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                if (state.status == 'succeeded') state.data = action.payload;
-            })
-            .addCase(fetchRatingsAsync.rejected, (state, action) => {
-                state.status = 'failed';
-                if (state.status == 'failed') state.error = action.error.message;
-            })
             .addCase(createWineRatingAsync.fulfilled, (state, action) => {
                 if (state.status == 'succeeded') state.data.push(action.payload);
             })

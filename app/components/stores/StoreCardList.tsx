@@ -23,9 +23,7 @@ const StoreCardList = ({ stores, style, refreshing, onRefresh }: StoreCardListPr
     return (
         <>
             <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                {stores.map((store, index) => (
-                    <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
-                ))}
+                {stores && stores.map((store, index) => <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />)}
             </ScrollView>
         </>
     );

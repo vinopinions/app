@@ -11,9 +11,12 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
     return (
         <Card {...props} style={styles.card}>
             <View padding-20>
-                <Text text50 $textDefault>
-                    {props.rating.user.username}
-                </Text>
+                <View row spread>
+                    <Text text50 $textDefault>
+                        {props.rating.user.username}
+                    </Text>
+                    <Text marginT-5>{new Date(props.rating.createdAt).toLocaleDateString()}</Text>
+                </View>
                 <StarRatingDisplay
                     rating={props.rating.stars}
                     style={{ height: 25, width: 15, marginLeft: -8 }}

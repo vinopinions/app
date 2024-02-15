@@ -1,94 +1,103 @@
 import Wine from '../../models/Wine';
-import { Button, Picker, Text, View } from 'react-native-ui-lib';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
+import { RefreshControl, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { WineDetailsScreenRouteProp, WinesScreenNavigationProp } from './WinesStackScreen';
-import StoreCardList from '../../components/stores/StoreCardList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import Store from '../../models/Store';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { useNavigation } from '@react-navigation/native';
-import { fetchRatingsAsync } from '../../features/ratings/ratingsSlice';
 import RatingCardList from '../../components/ratings/RatingCardList';
+import StoreCardList from '../../components/stores/StoreCardList';
+import { fetchWinesAsync, updateStoresForWineAsync } from '../../features/wines/winesSlice';
 
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ route }): React.ReactElement => {
-    const wine: Wine = route.params.wine;
     const dispatch: AppDispatch = useDispatch();
-    const ratings = useSelector((state: RootState) => (state.ratings.status !== 'failed' ? state.ratings.data : []));
-    const stores: Store[] = useSelector((state: RootState) => (state.stores.status !== 'failed' ? state.stores.data : []));
-    const [selectedStores, setSelectedStores] = useState<Store[]>(wine.stores);
+    const stores: Store[] = useSelector((state: RootState) =>
+        state.stores.status !== 'failed' ? state.stores.data : []
+    );
+    const wine: Wine = useSelector((state: RootState) =>
+        state.wines.status !== 'failed' ? state.wines.data.find(w => w.id === route.params.wine.id) : route.params.wine
+    );
     const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        try {
-            await dispatch(fetchStoresAsync());
-            await dispatch(fetchRatingsAsync(wine.id));
-        } finally {
-            setRefreshing(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        setRefreshing(false);
-    }, [stores]);
 
     const navigation = useNavigation<WinesScreenNavigationProp>();
 
     useEffect(() => {
         dispatch(fetchStoresAsync());
-        dispatch(fetchRatingsAsync(wine.id));
-    }, []);
+    }, [dispatch, route.params.wine.id]);
 
-    const updateSelectedStores = (ids: string[]) => {
-        const updatedStores = ids.map(id => stores.find(store => store.id === id) as Store);
-        setSelectedStores(updatedStores);
-    };
-
-    // TODO: add winemaker name
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await dispatch(fetchStoresAsync());
+            await dispatch(fetchWinesAsync());
+        } finally {
+            setRefreshing(false);
+        }
+    }, [dispatch, route.params.wine.id]);
 
     return (
-        <ScrollView style={{ padding: 10 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-            <Text text40 style={styles.text}>
-                {wine.name}
-            </Text>
-            <Text text70 style={styles.text}>
-                {wine.grapeVariety}
-            </Text>
-            <Text text70 style={styles.text}>
-                {wine.heritage}
-            </Text>
-            <Text text70 style={styles.text}>
-                {wine.year}
-            </Text>
-            <View style={styles.pickerContainer}>
+        <ScrollView
+            style={{ padding: 10 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+            <View marginB-5>
+                <Text text40 style={styles.text}>
+                    {wine && wine.name} von {wine && wine.winemaker && wine.winemaker.name}
+                </Text>
+            </View>
+            <View marginB-10>
+                <Text text70 style={styles.text}>
+                    {wine.grapeVariety}
+                </Text>
+                <Text text70 style={styles.text}>
+                    {wine && wine.heritage}
+                </Text>
+                <Text text70 style={styles.text}>
+                    {wine && wine.year}
+                </Text>
+            </View>
+            <View row>
+                <Button
+                    marginR-10
+                    marginB-10
+                    label="Rate wine"
+                    onPress={() => navigation.navigate('CreateRatingScreen', { wine: wine })}
+                />
                 <Picker
-                    placeholder={'Add Store'}
-                    label={'Add Store'}
+                    label="Add Store"
+                    mode={PickerModes.MULTI}
                     useSafeArea
-                    floatingPlaceholder
-                    value={selectedStores.map(store => store.id)}
-                    onChange={items => updateSelectedStores(items as string[])}
-                    enableModalBlur={false}
-                    showSearch
-                    searchPlaceholder="Search..."
-                    topBarProps={{ title: 'Stores' }}
-                    mode={Picker.modes.MULTI}
+                    value={wine.stores.map(s => s.id)}
+                    onChange={items => {
+                        dispatch(updateStoresForWineAsync({ wineId: wine.id, storeIds: items as string[] }));
+                    }}
+                    renderPicker={() => {
+                        return (
+                            <SafeAreaView>
+                                <Button label="Add Store" />
+                            </SafeAreaView>
+                        );
+                    }}
                 >
-                    {stores.map(store => (
-                        <Picker.Item key={store.id} value={store.id} label={store.name} />
+                    {stores.map(s => (
+                        <Picker.Item key={s.id} value={s.id} label={s.name} />
                     ))}
                 </Picker>
             </View>
             <View>
-                <Text text60>Ratings:</Text>
-                <Button label="Rate wine" onPress={() => navigation.navigate('CreateRatingScreen', { wine: wine })} />
-                <RatingCardList ratings={ratings} />
+                <View marginB-5>
+                    <Text text60>Ratings:</Text>
+                </View>
+                <RatingCardList ratings={wine.ratings} />
             </View>
             <View>
-                <Text text60>Stores:</Text>
-                <StoreCardList stores={wine.stores} />
+                <View marginB-5>
+                    <Text text60>Stores:</Text>
+                    <StoreCardList stores={wine.stores || []} />
+                </View>
             </View>
         </ScrollView>
     );
