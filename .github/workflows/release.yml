@@ -1,10 +1,13 @@
 name: Release
 on:
   push:
-    branches: ['master']
+    branches: ['developer', 'master']
 
 permissions:
   contents: read # for checkout
+
+env:
+  SEMANTIC_RELEASE_VERSION: 23
 
 jobs:
   codeql:
@@ -21,16 +24,16 @@ jobs:
       contents: read
 
   release:
-    name: Release
+    name: Release Github
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
 
     needs:
       - codeql
       - eslint
+
+    outputs:
+      version: ${{ steps.check_version.outputs.RELEASE_VERSION }}
+      releaseCommitSha: ${{ steps.get_release_commit_sha.outputs.RELEASE_COMMIT_SHA }}
 
     steps:
       - name: Generate token
@@ -51,10 +54,20 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: yarn --ignore-scripts --non-interactive --frozen-lockfile
+      - name: Install dev dependencies
+        run: yarn install --dev --ignore-scripts --non-interactive --frozen-lockfile
 
-      - name: Create github release
+      - name: Check version
+        id: check_version
+        run: echo "RELEASE_VERSION=$(npx semantic-release --dry-run | grep 'The next release version is' | awk '{print $NF}')" >> $GITHUB_OUTPUT
+
+      - name: Release version
         env:
+          BRANCH_NAME: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-        run: yarn release
+        run: npx semantic-release
+
+      # store the commit hash of the release commit for later workflows to verify the correct version
+      - name: Get Release Commit Sha
+        id: get_release_commit_sha
+        run: echo "RELEASE_COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
