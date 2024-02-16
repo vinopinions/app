@@ -9,11 +9,12 @@ import { createWineRatingAsync } from '../../features/ratings/ratingsSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import React from 'react';
+import { fetchWinesAsync } from '../../features/wines/winesSlice';
 
-const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigation: CreateRatingScreenNavigationProp }> = ({
-    route,
-    navigation
-}): React.ReactElement => {
+const CreateRatingScreen: React.FC<{
+    route: CreateRatingScreenRouteProp;
+    navigation: CreateRatingScreenNavigationProp;
+}> = ({ route, navigation }): React.ReactElement => {
     const dispatch: AppDispatch = useDispatch();
     const wine: Wine = route.params.wine;
     const [stars, setStars] = useState(0);
@@ -23,6 +24,7 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigat
         const onSubmitButtonPressAsync = async () => {
             const rating: Rating = { stars, text };
             await dispatch(createWineRatingAsync({ wineId: wine.id, rating: rating }));
+            await dispatch(fetchWinesAsync());
             navigation.goBack();
         };
         onSubmitButtonPressAsync();
@@ -40,7 +42,13 @@ const CreateRatingScreen: React.FC<{ route: CreateRatingScreenRouteProp; navigat
                     Rating:
                 </Text>
                 <View>
-                    <StarRating style={{ paddingLeft: 5 }} rating={stars} maxStars={5} onChange={setStars} enableHalfStar={false} />
+                    <StarRating
+                        style={{ paddingLeft: 5 }}
+                        rating={stars}
+                        maxStars={5}
+                        onChange={setStars}
+                        enableHalfStar={false}
+                    />
                 </View>
                 <View>
                     <TextField

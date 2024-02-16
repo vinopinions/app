@@ -11,6 +11,7 @@ const BASE_URL_WINES = `${BASE_URL}/wines`;
 const BASE_URL_WINEMAKERS = `${BASE_URL}/winemakers`;
 const BASE_URL_STORES = `${BASE_URL}/stores`;
 const BASE_URL_USERS = `${BASE_URL}/users`;
+const BASE_URL_RATINGS = `${BASE_URL}/ratings`;
 
 export const apiAuth = createDefaultAxiosInstance({ baseURL: BASE_URL_AUTH });
 
@@ -23,6 +24,8 @@ export const apiStores = createDefaultAxiosInstance({ baseURL: BASE_URL_STORES }
 export const apiWineRatings = createDefaultAxiosInstance({ baseURL: BASE_URL_WINES });
 
 export const apiUsers = createDefaultAxiosInstance({ baseURL: BASE_URL_USERS });
+
+export const apiRatings = createDefaultAxiosInstance({ baseURL: BASE_URL_RATINGS });
 
 export const login = (credentials: Credentials) => apiAuth.post('/login', credentials);
 export const signup = (credentials: Credentials) => apiAuth.post('/signup', credentials);
@@ -41,5 +44,6 @@ export const fetchStores = () => apiStores.get('/');
 export const fetchStoreById = (storeId: string) => apiStores.get(`/${storeId}`);
 export const createStore = (store: Store) => apiStores.post('/', store);
 
-export const createWineRating = async (wineId: string, rating: Rating) =>
-    apiWineRatings.post(`/${wineId}/ratings`, rating);
+export const createWineRating = (wineId: string, rating: Rating) => apiWineRatings.post(`/${wineId}/ratings`, rating);
+
+export const deleteRating = (ratingId: string) => apiRatings.delete(`/${ratingId}`);

@@ -36,7 +36,7 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
         } finally {
             setRefreshing(false);
         }
-    }, [dispatch, route.params.wine.id]);
+    }, [dispatch, route.params.wine]);
 
     return (
         <ScrollView
