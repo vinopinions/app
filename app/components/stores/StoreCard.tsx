@@ -8,18 +8,6 @@ import { getWinesForStore } from '../../screens/stores/utils/StoreUtils';
 type StoreCardProps = CardProps & { store: Store };
 
 const StoreCard = (props: StoreCardProps): React.ReactElement => {
-    return (
-        <Card {...props} style={styles.card}>
-            <View padding-20>
-                <Text text50 $textDefault>
-                    {props.store.name}
-                </Text>
-                <Text text70 $textDefault>
-                    {props.store.address}
-                </Text>
-            </View>
-        </Card>
-    );
   const wines: Wine[] = getWinesForStore(props.store);
   return (
     <Card {...props} style={styles.card}>

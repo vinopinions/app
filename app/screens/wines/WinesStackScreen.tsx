@@ -7,6 +7,7 @@ import Wine from '../../models/Wine';
 import AddWineScreen from './AddWineScreen';
 import WineDetailsScreen from './WineDetailsScreen';
 import CreateRatingScreen from '../rating/CreateRatingScreen';
+import WinesScreen from './WinesScreen';
 
 const WinesStack = createStackNavigator();
 
