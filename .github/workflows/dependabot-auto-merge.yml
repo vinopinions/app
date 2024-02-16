@@ -1,0 +1,40 @@
+name: Dependabot Auto-Merge
+
+on:
+  pull_request_target:
+    branches: ['developer']
+    types: labeled
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' && contains( github.event.pull_request.labels.*.name, 'yarn')
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ vars.RELEASE_BOT_ID }}
+          private_key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Approve
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+
+      - name: Merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}

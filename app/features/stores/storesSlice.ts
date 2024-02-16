@@ -1,7 +1,7 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 type StoresState = ApiResponseState<Store[]>;
 

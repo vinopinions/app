@@ -14,7 +14,14 @@ type Wine = {
 };
 
 export function isWine(obj: unknown): obj is Wine {
-    return typeof obj === 'object' && 'id' in obj && 'name' in obj && 'year' in obj && 'grapeVariety' in obj && 'heritage' in obj;
+    return (
+        typeof obj === 'object' &&
+        'id' in obj &&
+        'name' in obj &&
+        'year' in obj &&
+        'grapeVariety' in obj &&
+        'heritage' in obj
+    );
 }
 
 export function isWineArray(obj: unknown): obj is Wine[] {

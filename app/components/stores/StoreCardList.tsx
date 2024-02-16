@@ -2,9 +2,12 @@ import { ScrollView, StyleProp, ViewStyle } from 'react-native';
 import Store from '../../models/Store';
 import StoreCard from './StoreCard';
 import { useNavigation } from '@react-navigation/native';
-import { StoresScreenNavigationProp } from '../../screens/stores/StoresStackScreen';
 import React from 'react';
+import { ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import Store from '../../models/Store';
+import { StoresScreenNavigationProp } from '../../screens/stores/StoresStackScreen';
+import StoreCard from './StoreCard';
 
 interface StoreCardListProps {
     stores: Store[];
@@ -23,7 +26,10 @@ const StoreCardList = ({ stores, style, refreshing, onRefresh }: StoreCardListPr
     return (
         <>
             <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-                {stores && stores.map((store, index) => <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />)}
+                {stores &&
+                    stores.map((store, index) => (
+                        <StoreCard store={store} key={index} onPress={() => onCardSelection(store)} />
+                    ))}
             </ScrollView>
         </>
     );

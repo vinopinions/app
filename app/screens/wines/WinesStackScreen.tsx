@@ -1,8 +1,10 @@
-import AddWineScreen from './AddWineScreen';
-import WinesScreen from './WinesScreen';
-import Wine from '../../models/Wine';
-import { StackNavigationProp, createStackNavigator } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import {
+  StackNavigationProp,
+  createStackNavigator,
+} from '@react-navigation/stack';
+import Wine from '../../models/Wine';
+import AddWineScreen from './AddWineScreen';
 import WineDetailsScreen from './WineDetailsScreen';
 import CreateRatingScreen from '../rating/CreateRatingScreen';
 

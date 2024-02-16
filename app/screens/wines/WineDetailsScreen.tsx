@@ -106,13 +106,13 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({ ro
 export default WineDetailsScreen;
 
 const styles = StyleSheet.create({
-    text: {
-        marginTop: 5,
-        marginLeft: 10
-    },
-    pickerContainer: {
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        padding: 8
-    }
+  text: {
+    marginTop: 5,
+    marginLeft: 10,
+  },
+  pickerContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    padding: 8,
+  },
 });
