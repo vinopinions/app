@@ -1,9 +1,8 @@
-import { Card, CardProps, View, Text, TouchableOpacity, Incubator, PanningProvider } from 'react-native-ui-lib';
+import { Card, CardProps, View, Text, TouchableOpacity } from 'react-native-ui-lib';
 import Rating from '../../models/Rating';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { Alert, StyleSheet } from 'react-native';
 import User from '../../models/User';
-import { useState } from 'react';
 import { AppDispatch } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { deleteRatingAsync } from '../../features/ratings/ratingsSlice';
@@ -16,27 +15,28 @@ type RatingCardProps = CardProps & {
 
 const RatingCard = (props: RatingCardProps): React.ReactElement => {
     const dispatch: AppDispatch = useDispatch();
-    const [showModal, setShowModal] = useState(false);
 
-    const toggleModal = () => {
-        setShowModal(!showModal);
-    };
-
-    const handleDelete = (rating: Rating) => {
-        Alert.alert('Deleting Rating', 'Are you sure you want to delete your rating?', [
+    const handleDelete = () => {
+        Alert.alert('Confirm Deletion', 'Are you sure you want to delete this rating?', [
             {
                 text: 'Cancel',
-                onPress: () => toggleModal()
+                onPress: handleCancelDelete,
+                style: 'cancel'
             },
             {
                 text: 'OK',
-                onPress: () => {
-                    dispatch(deleteRatingAsync(rating.id));
-                    dispatch(fetchWinesAsync());
-                    toggleModal();
-                }
+                onPress: handleConfirmDelete
             }
         ]);
+    };
+
+    const handleCancelDelete = () => {
+        console.log('dismissing alert');
+    };
+
+    const handleConfirmDelete = async () => {
+        await dispatch(deleteRatingAsync(props.rating.id));
+        await dispatch(fetchWinesAsync());
     };
 
     return (
@@ -62,34 +62,11 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
                     </Text>
                     {props.currentUser && props.rating.user.id == props.currentUser.id && (
                         <View>
-                            <TouchableOpacity onPress={toggleModal}>
-                                <Text text40>...</Text>
+                            <TouchableOpacity onPress={() => handleDelete()}>
+                                <Text red30 text40>
+                                    x
+                                </Text>
                             </TouchableOpacity>
-                            <Incubator.Dialog
-                                visible={showModal}
-                                onDismiss={() => toggleModal}
-                                width="100%"
-                                height="20%"
-                                bottom
-                                direction={PanningProvider.Directions.DOWN}
-                            >
-                                <View style={styles.modalContainer}>
-                                    <View style={styles.modalContent}>
-                                        <TouchableOpacity style={styles.modalOption}>
-                                            <Text style={styles.modalOptionText}>Edit</Text>
-                                        </TouchableOpacity>
-                                        <View style={styles.separator} />
-                                        <TouchableOpacity
-                                            style={styles.modalOption}
-                                            onPress={() => handleDelete(props.rating)}
-                                        >
-                                            <Text red10 style={styles.modalOptionText}>
-                                                Delete
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </Incubator.Dialog>
                         </View>
                     )}
                 </View>

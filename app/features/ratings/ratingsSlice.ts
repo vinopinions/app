@@ -18,8 +18,8 @@ export const createWineRatingAsync = createAsyncThunk(
     }
 );
 
-export const deleteRatingAsync = createAsyncThunk('ratings/deleteRating', async (wineId: string) => {
-    await deleteRating(wineId);
+export const deleteRatingAsync = createAsyncThunk('ratings/deleteRating', async (ratingId: string) => {
+    await deleteRating(ratingId);
 });
 
 const initialState: RatigsState = {
