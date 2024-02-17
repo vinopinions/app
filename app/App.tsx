@@ -14,38 +14,38 @@ import { store } from './store/store';
 export const Stack = createNativeStackNavigator();
 
 const App = () => {
-    return (
-        <Provider store={store}>
-            <AuthProvider>
-                <Layout />
-            </AuthProvider>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    </Provider>
+  );
 };
 
 const Layout = () => {
-    const { authState, logout } = useAuth();
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                {authState.authenticated ? (
-                    <Stack.Screen
-                        name="App"
-                        component={BottomTabNavigator}
-                        options={{
-                            // make it center so it's the same on all platforms
-                            // https://reactnavigation.org/docs/native-stack-navigator/#headertitlealign
-                            headerTitleAlign: 'center',
-                            title: 'Vinopinions',
-                            headerRight: () => <Button onPress={logout} label="Sign Out" />
-                        }}
-                    />
-                ) : (
-                    <Stack.Screen name="Login" component={LoginScreen} />
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  const { authState, logout } = useAuth();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {authState.status === 'succeeded' && authState.authenticated ? (
+          <Stack.Screen
+            name="App"
+            component={BottomTabNavigator}
+            options={{
+              // make it center so it's the same on all platforms
+              // https://reactnavigation.org/docs/native-stack-navigator/#headertitlealign
+              headerTitleAlign: 'center',
+              title: 'Vinopinions',
+              headerRight: () => <Button onPress={logout} label="Sign Out" />,
+            }}
+          />
+        ) : (
+          <Stack.Screen name="Login" component={LoginScreen} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 NativeModules.DevSettings.setIsDebuggingRemotely(false);
