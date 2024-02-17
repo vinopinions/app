@@ -1,6 +1,3 @@
-import { ScrollView, StyleProp, ViewStyle } from 'react-native';
-import Store from '../../models/Store';
-import StoreCard from './StoreCard';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';

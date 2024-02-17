@@ -3,7 +3,6 @@ import authReducer from '../features/auth/authSlice';
 import storesReducer from '../features/stores/storesSlice';
 import winemakersReducer from '../features/winemakers/winemakersSlice';
 import winesReducer from '../features/wines/winesSlice';
-import storesReducer from '../features/stores/storesSlice';
 import currentUserReducer from '../features/users/currentUserSlice';
 import ratingsSlice from '../features/ratings/ratingsSlice';
 
@@ -17,7 +16,7 @@ const rootReducer = combineReducers({
 });
 
 export const store = configureStore({
-  reducer: rootReducer,
+    reducer: rootReducer
 });
 
 export type RootState = ReturnType<typeof store.getState>;

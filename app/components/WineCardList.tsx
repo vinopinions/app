@@ -1,10 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { RefreshControl, ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Wine from '../models/Wine';
 import { WinesScreenNavigationProp } from '../screens/wines/WinesStackScreen';
-import WineCard from './WineCard';
 import WineCard from './WineCard';
 
 interface WineCardListProps {
