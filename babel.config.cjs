@@ -1,4 +1,4 @@
-export default (api: { cache: (arg0: boolean) => void }) => {
+module.exports = (api) => {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],
