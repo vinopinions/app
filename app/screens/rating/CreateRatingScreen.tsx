@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Keyboard, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Keyboard, TouchableOpacity } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import { Button, Text, TextField, View } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
@@ -21,15 +21,30 @@ const CreateRatingScreen: React.FC<{
   const wine: Wine = route.params.wine;
   const [stars, setStars] = useState(0);
   const [text, setText] = useState<string>();
+  const [submitButtonDisabled, setSubmitButtonDisabled] =
+    useState<boolean>(true);
+
+  useEffect(() => {
+    setSubmitButtonDisabled(stars === 0 || !text || text.trim() === '');
+  }, [stars, text]);
 
   const onSubmitButtonPress = React.useCallback(() => {
     const onSubmitButtonPressAsync = async () => {
-      const rating: Rating = { stars, text };
-      await dispatch(
-        createWineRatingAsync({ wineId: wine.id, rating: rating }),
-      );
-      await dispatch(fetchWinesAsync());
-      navigation.goBack();
+      if (!stars || stars === 0) {
+        Alert.alert('No stars submitted', 'Please add stars to your rating', [
+          {
+            text: 'OK',
+            onPress: () => console.log('OK'),
+          },
+        ]);
+      } else {
+        const rating: Rating = { stars, text };
+        await dispatch(
+          createWineRatingAsync({ wineId: wine.id, rating: rating }),
+        );
+        await dispatch(fetchWinesAsync());
+        navigation.goBack();
+      }
     };
     onSubmitButtonPressAsync();
   }, [stars, text, wine, dispatch, navigation]);
@@ -73,6 +88,12 @@ const CreateRatingScreen: React.FC<{
             }}
             value={text}
             onChangeText={setText}
+            enableErrors
+            validationMessage={'Field is required'}
+            validate={'required'}
+            validateOnChange
+            validateOnStart
+            validateOnBlur
           />
         </View>
         <View>
@@ -80,6 +101,7 @@ const CreateRatingScreen: React.FC<{
             label="Submit rating"
             style={{ margin: 10 }}
             onPress={onSubmitButtonPress}
+            disabled={submitButtonDisabled}
           />
         </View>
       </View>

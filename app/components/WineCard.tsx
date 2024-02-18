@@ -17,7 +17,7 @@ const WineCard = (props: WineCardProps): React.ReactElement => {
       (total, rating) => total + rating.stars,
       0,
     );
-    return sum / props.wine.ratings.length;
+    return Math.round((sum / props.wine.ratings.length) * 10) / 10;
   };
 
   const averageRating = calculateAverageRating();
