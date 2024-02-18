@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
+import React from 'react';
 import Wine from '../models/Wine';
 
 type WineCardProps = CardProps & {

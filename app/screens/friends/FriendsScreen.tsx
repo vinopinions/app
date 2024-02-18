@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
+import React from 'react';
 
 const FriendsScreen = () => {
   return (

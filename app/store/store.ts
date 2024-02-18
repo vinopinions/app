@@ -7,16 +7,16 @@ import currentUserReducer from '../features/users/currentUserSlice';
 import ratingsSlice from '../features/ratings/ratingsSlice';
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    wines: winesReducer,
-    winemakers: winemakersReducer,
-    stores: storesReducer,
-    currentUser: currentUserReducer,
-    ratings: ratingsSlice
+  auth: authReducer,
+  wines: winesReducer,
+  winemakers: winemakersReducer,
+  stores: storesReducer,
+  currentUser: currentUserReducer,
+  ratings: ratingsSlice,
 });
 
 export const store = configureStore({
-    reducer: rootReducer
+  reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

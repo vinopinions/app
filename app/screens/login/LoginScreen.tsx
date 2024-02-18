@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Text, TextField, View } from 'react-native-ui-lib';
 import { Credentials, useAuth } from '../../auth/AuthContext';

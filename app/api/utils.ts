@@ -7,9 +7,10 @@ export const createDefaultAxiosInstance = (
 
   instance.interceptors.request.use(
     (config) => {
-      if (axios.defaults.headers.common.Authorization)
+      if (axios.defaults.headers.common.Authorization) {
         config.headers.Authorization =
           axios.defaults.headers.common.Authorization;
+      }
       return config;
     },
     (error) => {

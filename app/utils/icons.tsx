@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { IconProps } from '@expo/vector-icons/build/createIconSet';
+import React from 'react';
 // https://icons.expo.fyi/ filter for Ionicons
 
 export const HomeIcon = (props: Partial<IconProps<'home'>>) => (

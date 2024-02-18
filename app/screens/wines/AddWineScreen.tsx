@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import React from 'react';
 import {
   Button,
   Picker,
@@ -38,7 +39,7 @@ const AddWineScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(fetchWinemakersAsync());
     dispatch(fetchStoresAsync());
-  }, []);
+  }, [dispatch]);
 
   const onFinishButtonPress = useCallback(() => {
     const onFinishButtonPressAsync = async () => {
@@ -54,7 +55,16 @@ const AddWineScreen = ({ navigation }) => {
       navigation.goBack(null);
     };
     onFinishButtonPressAsync();
-  }, [name, year, grapeVariety, heritage, winemaker, stores]);
+  }, [
+    name,
+    year,
+    grapeVariety,
+    heritage,
+    winemaker,
+    stores,
+    dispatch,
+    navigation,
+  ]);
 
   const updateSelectedStores = (ids: string[]) => {
     const updatedStores = ids.map(
@@ -126,12 +136,8 @@ const AddWineScreen = ({ navigation }) => {
                 showSearch
                 searchPlaceholder={'Search a winemaker'}
               >
-                {winemakers.map((winemaker) => (
-                  <Picker.Item
-                    key={winemaker.id}
-                    value={winemaker.id}
-                    label={winemaker.name}
-                  />
+                {winemakers.map((wm) => (
+                  <Picker.Item key={wm.id} value={wm.id} label={wm.name} />
                 ))}
               </Picker>
               <Picker
