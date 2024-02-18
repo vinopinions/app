@@ -48,7 +48,7 @@ const WinesScreen = ({ navigation }) => {
   }, [dispatch]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.navigate('AddWine');
+    navigation.navigate('AddWineScreen');
   }, [navigation]);
   return (
     <View style={styles.screen}>
