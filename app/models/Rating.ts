@@ -2,12 +2,13 @@ import User from './User';
 import Wine from './Wine';
 
 type Rating = {
-  id?: string;
+  id: string;
   stars: number;
   text: string;
-  user?: User;
-  wine?: Wine;
-  createdAt?: Date;
+  user: User;
+  wine: Wine;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export function isRating(obj: unknown): obj is Rating {
@@ -17,7 +18,9 @@ export function isRating(obj: unknown): obj is Rating {
     'stars' in obj &&
     'text' in obj &&
     'user' in obj &&
-    'wine' in obj
+    'wine' in obj &&
+    'createdAt' in obj &&
+    'updatedAt' in obj
   );
 }
 

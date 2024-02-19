@@ -75,7 +75,7 @@ export const fetchStoreById = (storeId: string) =>
   apiStores.get(STORES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, storeId));
 export const createStore = (store: Store) => apiStores.post('', store);
 
-export const createWineRating = (wineId: string, rating: Rating) =>
+export const createWineRating = (wineId: string, rating: RatingDto) =>
   apiWineRatings.post(
     WINES_ID_RATINGS_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId),
     rating,

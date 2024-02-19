@@ -38,7 +38,7 @@ const CreateRatingScreen: React.FC<{
           },
         ]);
       } else {
-        const rating: Rating = { stars, text };
+        const rating: RatingDto = { stars, text };
         await dispatch(
           createWineRatingAsync({ wineId: wine.id, rating: rating }),
         );

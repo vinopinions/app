@@ -6,14 +6,14 @@ import { createWineRating, deleteRating } from '../../api/api';
 
 type RatigsState = ApiResponseState<Rating[]>;
 
-interface createWineRatingParams {
+interface CreateWineRatingParams {
   wineId: string;
-  rating: Rating;
+  rating: RatingDto;
 }
 
 export const createWineRatingAsync = createAsyncThunk(
   'ratings/createWineRating',
-  async (params: createWineRatingParams) => {
+  async (params: CreateWineRatingParams) => {
     const response = await createWineRating(params.wineId, params.rating);
     return response.data;
   },
