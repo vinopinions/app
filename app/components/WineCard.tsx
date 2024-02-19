@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Wine from '../models/Wine';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
@@ -9,18 +9,18 @@ type WineCardProps = CardProps & {
 };
 
 const WineCard = (props: WineCardProps): React.ReactElement => {
-  const calculateAverageRating = (): number => {
+  const [averageRating, setAverageRating] = useState<number>();
+
+  useEffect(() => {
     if (!props.wine.ratings || props.wine.ratings.length === 0) {
-      return 0;
+      setAverageRating(0);
     }
     const sum = props.wine.ratings.reduce(
       (total, rating) => total + rating.stars,
       0,
     );
-    return Math.round((sum / props.wine.ratings.length) * 10) / 10;
-  };
-
-  const averageRating = calculateAverageRating();
+    setAverageRating(Math.round((sum / props.wine.ratings.length) * 10) / 10);
+  }, [props.wine.ratings]);
 
   return (
     <Card {...props} style={styles.card}>
