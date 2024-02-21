@@ -1,12 +1,13 @@
+import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
+import SearchBar from '../../components/SearchBar';
 import StoreCardList from '../../components/stores/StoreCardList';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import Store from '../../models/Store';
 import { AppDispatch, RootState } from '../../store/store';
-import SearchBar from '../utils/SearchBar';
 
 const StoresScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -17,21 +18,21 @@ const StoresScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Store[]>(stores);
 
-  const performSearch = () => {
-    if (searchQuery === '') setSearchResults(stores);
-    else {
-      const results = stores.filter((s) =>
-        s.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  };
-
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   useEffect(() => {
+    const performSearch = () => {
+      if (searchQuery === '') {
+        setSearchResults(stores);
+      } else {
+        const results = stores.filter((s) =>
+          s.name.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+        setSearchResults(results);
+      }
+    };
     performSearch();
   }, [searchQuery, stores]);
 
@@ -42,7 +43,7 @@ const StoresScreen = ({ navigation }) => {
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(false);
@@ -50,7 +51,7 @@ const StoresScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchStoresAsync());
-  }, []);
+  }, [dispatch]);
 
   const onAddButtonPress = () => {
     navigation.navigate('AddStoreScreen');

@@ -1,18 +1,19 @@
+import * as React from 'react';
+import { Alert, StyleSheet } from 'react-native';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import {
   Card,
   CardProps,
-  View,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native-ui-lib';
-import Rating from '../../models/Rating';
-import { StarRatingDisplay } from 'react-native-star-rating-widget';
-import { Alert, StyleSheet } from 'react-native';
-import User from '../../models/User';
-import { AppDispatch } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { deleteRatingAsync } from '../../features/ratings/ratingsSlice';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
+import Rating from '../../models/Rating';
+import User from '../../models/User';
+import { AppDispatch } from '../../store/store';
 
 type RatingCardProps = CardProps & {
   rating: Rating;
@@ -63,9 +64,9 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
         <View>
           <StarRatingDisplay
             rating={props.rating.stars}
-            style={{ height: 25, width: 15, marginLeft: -8 }}
+            style={styles.starRating}
             starSize={20}
-            starStyle={{ height: 5, width: 5 }}
+            starStyle={styles.starRatingStar}
           />
         </View>
         <View row spread>
@@ -73,7 +74,7 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
             {props.rating.text}
           </Text>
           {props.currentUser &&
-            props.rating.user.id == props.currentUser.id && (
+            props.rating.user.id === props.currentUser.id && (
               <View>
                 <TouchableOpacity onPress={() => handleDelete()}>
                   <Text red30 text40>
@@ -114,4 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#CCCCCC',
     marginVertical: 10,
   },
+  starRating: { height: 25, width: 15, marginLeft: -8 },
+  starRatingStar: { height: 5, width: 5 },
 });

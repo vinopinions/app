@@ -1,9 +1,8 @@
-import { StyleSheet } from 'react-native';
-import { Card, CardProps, Text, View } from 'react-native-ui-lib';
 import React, { useEffect, useState } from 'react';
-import Wine from '../models/Wine';
+import { StyleSheet } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
-import WineDto from '../models/dtos/Wine.dto';
+import { Card, CardProps, Text, View } from 'react-native-ui-lib';
+import Wine from '../models/Wine';
 
 type WineCardProps = CardProps & {
   wine: Wine;

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { PlusIcon } from '../utils/icons';
 

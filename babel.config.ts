@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 export default (api) => {
   api.cache(true);
   return {

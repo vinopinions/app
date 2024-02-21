@@ -49,7 +49,9 @@ export const loadAccessTokenAsync = createAsyncThunk(
   'auth/loadAccessToken',
   async (): Promise<string> => {
     const token = await SecureStore.getItemAsync(TOKEN_KEY);
-    if (!token) return Promise.reject();
+    if (!token) {
+      return Promise.reject();
+    }
 
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
@@ -71,14 +73,16 @@ const authSlice = createSlice({
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.authenticated = true;
           state.accessToken = action.payload.access_token;
         }
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') state.error = action.error.message;
+        if (state.status === 'failed') {
+          state.error = action.error.message;
+        }
       })
       .addCase(signupAsync.pending, (state) => {
         state.status = 'loading';
@@ -88,18 +92,20 @@ const authSlice = createSlice({
       })
       .addCase(signupAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') state.error = action.error.message;
+        if (state.status === 'failed') {
+          state.error = action.error.message;
+        }
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.accessToken = null;
           state.authenticated = false;
         }
       })
       .addCase(loadAccessTokenAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.accessToken = action.payload;
           state.authenticated = true;
         }

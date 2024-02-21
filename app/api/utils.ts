@@ -1,9 +1,9 @@
 import axios, { CreateAxiosDefaults } from 'axios';
 
 export const createDefaultAxiosInstance = (
-  config?: CreateAxiosDefaults<unknown>,
+  axiosConfig?: CreateAxiosDefaults<unknown>,
 ) => {
-  const instance = axios.create(config);
+  const instance = axios.create(axiosConfig);
 
   instance.interceptors.request.use(
     (config) => {
@@ -59,6 +59,8 @@ export const createDefaultAxiosInstance = (
       if (error.response) {
         const status = error.response.status;
 
+        /*eslint no-alert: "off"*/
+        // TODO: enable eslint rule and implement own handling
         if (status === 401) {
           alert('Unauthorized');
         } else if (status === 404) {

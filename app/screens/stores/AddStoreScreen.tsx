@@ -34,7 +34,7 @@ const AddStoreScreen = ({ navigation }) => {
       navigation.goBack();
     };
     onFinishButtonPressAsync();
-  }, [name, address, url]);
+  }, [dispatch, navigation, name, address, url]);
 
   return (
     <View style={styles.screen}>
@@ -49,28 +49,28 @@ const AddStoreScreen = ({ navigation }) => {
       {
         {
           0: (
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
               <TextField
                 autoFocus
                 floatingPlaceholder
                 style={styles.textInput}
                 placeholder="Name"
                 value={name}
-                onChangeText={(name) => setName(name)}
+                onChangeText={(value) => setName(value)}
               />
               <TextField
                 floatingPlaceholder
                 style={styles.textInput}
                 placeholder="Address"
                 value={address}
-                onChangeText={(address) => setAddress(address)}
+                onChangeText={(value) => setAddress(value)}
               />
               <TextField
                 floatingPlaceholder
                 style={styles.textInput}
                 placeholder="Url"
                 value={url}
-                onChangeText={(url) => setUrl(url)}
+                onChangeText={(value) => setUrl(value)}
               />
               <Button
                 style={styles.navigationButton}
@@ -80,7 +80,7 @@ const AddStoreScreen = ({ navigation }) => {
             </View>
           ),
           1: (
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
               <StoreCard
                 store={{
                   name,
@@ -125,5 +125,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
+  },
+  container: {
+    flex: 1,
   },
 });

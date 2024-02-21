@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { StyleProp, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { TextField, View } from 'react-native-ui-lib';
 
 import { EyeIcon, EyeSlashIcon } from '../utils/icons';
@@ -26,9 +31,7 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
       secureTextEntry={secureTextEntry}
       trailingAccessory={
         <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
+          <View style={styles.toggleSecureButton}>
             {secureTextEntry ? (
               <EyeIcon size={25} {...props} />
             ) : (
@@ -42,3 +45,11 @@ const PasswordField = (props: PasswordFieldProps): React.ReactElement => {
 };
 
 export default PasswordField;
+
+const styles = StyleSheet.create({
+  toggleSecureButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

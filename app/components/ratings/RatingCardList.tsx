@@ -1,11 +1,12 @@
+import * as React from 'react';
+import { useEffect } from 'react';
 import { ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCurrentUserAsync } from '../../features/users/currentUserSlice';
 import Rating from '../../models/Rating';
-import RatingCard from './RatingCard';
 import User from '../../models/User';
 import { AppDispatch, RootState } from '../../store/store';
-import { useEffect } from 'react';
-import { fetchCurrentUserAsync } from '../../features/users/currentUserSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import RatingCard from './RatingCard';
 
 interface RatingCardListProps {
   ratings: Rating[];

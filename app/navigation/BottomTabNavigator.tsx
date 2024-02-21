@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import { Button, ButtonProps } from 'react-native-ui-lib';
+import { useAuth } from '../auth/AuthContext';
 import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import HomeScreen from '../screens/home/HomeScreen';
@@ -17,8 +19,6 @@ import {
   WineIcon,
   WineIconOutline,
 } from '../utils/icons';
-import { useAuth } from '../auth/AuthContext';
-import { Button } from 'react-native-ui-lib';
 
 const HomeRouteName = 'Home';
 const WinesStackRouteName = 'WinesStack';
@@ -27,6 +27,10 @@ const FriendsRouteName = 'Friends';
 const AccountRouteName = 'Account';
 
 const BottomTab = createBottomTabNavigator();
+
+const createSignOutButton = (props: ButtonProps) => (
+  <Button {...props} label="Sign Out" />
+);
 
 const BottomTabNavigator = () => {
   const { logout } = useAuth();
@@ -74,7 +78,7 @@ const BottomTabNavigator = () => {
         component={AccountDrawer}
         options={{
           headerShown: true,
-          headerRight: () => <Button onPress={logout} label="Sign Out" />,
+          headerRight: () => createSignOutButton({ onPress: logout }),
         }}
       />
     </BottomTab.Navigator>
