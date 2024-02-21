@@ -15,7 +15,6 @@ import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
 import { createWineAsync } from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
-import Wine from '../../models/Wine';
 import Winemaker from '../../models/Winemaker';
 import { AppDispatch, RootState } from '../../store/store';
 import WineDto from '../../models/dtos/Wine.dto';

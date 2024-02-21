@@ -17,6 +17,8 @@ import {
   WineIcon,
   WineIconOutline,
 } from '../utils/icons';
+import { useAuth } from '../auth/AuthContext';
+import { Button } from 'react-native-ui-lib';
 
 const HomeRouteName = 'Home';
 const WinesStackRouteName = 'WinesStack';
@@ -26,54 +28,58 @@ const AccountRouteName = 'Account';
 
 const BottomTab = createBottomTabNavigator();
 
-const BottomTabNavigator = () => (
-  <BottomTab.Navigator
-    screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarIcon: ({ size, color, focused }) => {
-        return getIconForScreen(route.name, size, color, focused);
-      },
-    })}
-  >
-    <BottomTab.Screen
-      name={HomeRouteName}
-      component={HomeScreen}
-      options={{
-        tabBarLabel: 'Home',
+const BottomTabNavigator = () => {
+  const { logout } = useAuth();
+  return (
+    <BottomTab.Navigator
+      screenOptions={({ route }) => ({
         headerShown: false,
-      }}
-    />
-    <BottomTab.Screen
-      name={WinesStackRouteName}
-      component={WinesStackScreen}
-      options={{
-        headerShown: false,
-        title: 'Wines',
-      }}
-    />
-    <BottomTab.Screen
-      name={StoresRouteName}
-      component={StoresStackScreen}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <BottomTab.Screen
-      name={FriendsRouteName}
-      component={FriendsScreen}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <BottomTab.Screen
-      name={AccountRouteName}
-      component={AccountDrawer}
-      options={{
-        headerShown: false,
-      }}
-    />
-  </BottomTab.Navigator>
-);
+        tabBarIcon: ({ size, color, focused }) => {
+          return getIconForScreen(route.name, size, color, focused);
+        },
+      })}
+    >
+      <BottomTab.Screen
+        name={HomeRouteName}
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          headerShown: false,
+        }}
+      />
+      <BottomTab.Screen
+        name={WinesStackRouteName}
+        component={WinesStackScreen}
+        options={{
+          headerShown: false,
+          title: 'Wines',
+        }}
+      />
+      <BottomTab.Screen
+        name={StoresRouteName}
+        component={StoresStackScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <BottomTab.Screen
+        name={FriendsRouteName}
+        component={FriendsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <BottomTab.Screen
+        name={AccountRouteName}
+        component={AccountDrawer}
+        options={{
+          headerShown: true,
+          headerRight: () => <Button onPress={logout} label="Sign Out" />,
+        }}
+      />
+    </BottomTab.Navigator>
+  );
+};
 
 export default BottomTabNavigator;
 
