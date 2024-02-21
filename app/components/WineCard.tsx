@@ -3,6 +3,7 @@ import { Card, CardProps, Text, View } from 'react-native-ui-lib';
 import React, { useEffect, useState } from 'react';
 import Wine from '../models/Wine';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import WineDto from '../models/dtos/Wine.dto';
 
 type WineCardProps = CardProps & {
   wine: Wine;

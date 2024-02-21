@@ -3,14 +3,14 @@ import Store from './Store';
 import Winemaker from './Winemaker';
 
 type Wine = {
-  id?: string;
+  id: string;
   name: string;
   year: number;
   grapeVariety: string;
   heritage: string;
-  winemaker?: Winemaker;
-  stores?: Store[];
-  ratings?: Rating[];
+  winemaker: Winemaker;
+  stores: Store[];
+  ratings: Rating[];
 };
 
 export function isWine(obj: unknown): obj is Wine {

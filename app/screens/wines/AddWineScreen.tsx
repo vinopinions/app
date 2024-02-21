@@ -18,6 +18,8 @@ import Store from '../../models/Store';
 import Wine from '../../models/Wine';
 import Winemaker from '../../models/Winemaker';
 import { AppDispatch, RootState } from '../../store/store';
+import WineDto from '../../models/dtos/Wine.dto';
+import { faker } from '@faker-js/faker';
 
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -43,7 +45,7 @@ const AddWineScreen = ({ navigation }) => {
 
   const onFinishButtonPress = useCallback(() => {
     const onFinishButtonPressAsync = async () => {
-      const wine: Wine = {
+      const wine: WineDto = {
         winemaker,
         grapeVariety,
         heritage,
@@ -170,11 +172,14 @@ const AddWineScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               <WineCard
                 wine={{
+                  id: faker.string.uuid(),
                   name,
                   year,
                   grapeVariety,
                   heritage,
                   winemaker,
+                  stores: [],
+                  ratings: [],
                 }}
               />
               <Button

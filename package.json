@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
+    "@faker-js/faker": "^8.4.1",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",

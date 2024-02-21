@@ -15,10 +15,9 @@ import {
   WINES_ID_ENDPOINT_URL,
   WINES_ID_RATINGS_ENDPOINT_URL,
 } from '../constants/UrlConstants';
-import Rating from '../models/Rating';
 import Store from '../models/Store';
-import Wine from '../models/Wine';
 import Winemaker from '../models/Winemaker';
+import WineDto from '../models/dtos/Wine.dto';
 import { createDefaultAxiosInstance } from './utils';
 
 export const apiAuth = createDefaultAxiosInstance({
@@ -60,7 +59,7 @@ export const fetchWineById = (wineId: string) =>
   apiWines.get(WINES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId));
 
 export const fetchWines = () => apiWines.get('');
-export const createWine = (wine: Wine) => apiWines.post('', wine);
+export const createWine = (wine: WineDto) => apiWines.post('', wine);
 export const updateStoresForWine = (wineId: string, storeIds: string[]) =>
   apiWines.put(WINES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId), {
     storeIds,

@@ -7,6 +7,7 @@ import {
   updateStoresForWine,
 } from '../../api/api';
 import Wine from '../../models/Wine';
+import WineDto from '../../models/dtos/Wine.dto';
 
 type WinesState = ApiResponseState<Wine[]>;
 
@@ -28,7 +29,7 @@ export const fetchWineByIdAsync = createAsyncThunk<Wine, string>(
 
 export const createWineAsync = createAsyncThunk(
   'wines/createWine',
-  async (wine: Wine) => {
+  async (wine: WineDto) => {
     const response = await createWine(wine);
     return response.data;
   },
