@@ -1,4 +1,5 @@
 import { RouteProp } from '@react-navigation/native';
+import React from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -6,13 +7,17 @@ import {
 import Wine from '../../models/Wine';
 import AddWineScreen from './AddWineScreen';
 import WineDetailsScreen from './WineDetailsScreen';
+import CreateRatingScreen from '../rating/CreateRatingScreen';
 import WinesScreen from './WinesScreen';
+import StoreDetailsScreen from '../stores/StoreDetailsScreen';
 
 const WinesStack = createStackNavigator();
 
 export type WinesStackParamList = {
   WinesScreen: undefined;
+  AddWineScreen: undefined;
   WineDetailsScreen: { wine: Wine };
+  CreateRatingScreen: { wine: Wine };
 };
 
 export type WinesScreenNavigationProp = StackNavigationProp<
@@ -22,6 +27,14 @@ export type WinesScreenNavigationProp = StackNavigationProp<
 export type WineDetailsScreenRouteProp = RouteProp<
   WinesStackParamList,
   'WineDetailsScreen'
+>;
+export type CreateRatingScreenRouteProp = RouteProp<
+  WinesStackParamList,
+  'CreateRatingScreen'
+>;
+export type CreateRatingScreenNavigationProp = StackNavigationProp<
+  WinesStackParamList,
+  'CreateRatingScreen'
 >;
 
 const WinesStackScreen = () => {
@@ -38,9 +51,19 @@ const WinesStackScreen = () => {
         component={WineDetailsScreen}
       />
       <WinesStack.Screen
-        name="AddWine"
+        name="AddWineScreen"
         options={{ title: 'New Wine' }}
         component={AddWineScreen}
+      />
+      <WinesStack.Screen
+        name="CreateRatingScreen"
+        options={{ title: 'New Rating' }}
+        component={CreateRatingScreen}
+      />
+      <WinesStack.Screen
+        name="StoreDetailsScreen"
+        options={{ title: 'Store Details' }}
+        component={StoreDetailsScreen}
       />
     </WinesStack.Navigator>
   );

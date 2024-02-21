@@ -18,15 +18,16 @@ const WinesScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Wine[]>(wines);
 
-  const performSearch = () => {
-    if (searchQuery === '') setSearchResults(wines);
-    else {
+  const performSearch = useCallback(() => {
+    if (searchQuery === '') {
+      setSearchResults(wines);
+    } else {
       const results = wines.filter((w) =>
         w.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setSearchResults(results);
     }
-  };
+  }, [searchQuery, wines]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -34,21 +35,21 @@ const WinesScreen = ({ navigation }) => {
 
   useEffect(() => {
     performSearch();
-  }, [searchQuery, wines]);
+  }, [searchQuery, performSearch, wines]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     dispatch(fetchWinesAsync());
     setRefreshing(false);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchWinesAsync());
-  }, []);
+  }, [dispatch]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.navigate('AddWine');
-  }, []);
+    navigation.navigate('AddWineScreen');
+  }, [navigation]);
   return (
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />

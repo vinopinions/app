@@ -1,0 +1,8 @@
+{
+  // https://www.npmjs.com/package/@react-native/eslint-config?activeTab=code
+  "extends": "@react-native",
+  "plugins": ["jest"],
+  "parserOptions": {
+    "requireConfigFile": false
+  }
+}

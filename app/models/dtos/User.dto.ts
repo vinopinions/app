@@ -1,0 +1,3 @@
+type UserDto = {
+  username: string;
+};

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import Store from '../../models/Store';
 import { StoresScreenNavigationProp } from '../../screens/stores/StoresStackScreen';
@@ -28,28 +28,22 @@ const StoreCardList = ({
   return (
     <>
       <ScrollView
-        style={[styles.contentContainer, style]}
+        style={style}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {stores.map((store, index) => (
-          <StoreCard
-            store={store}
-            key={index}
-            onPress={() => onCardSelection(store)}
-          />
-        ))}
+        {stores &&
+          stores.map((store, index) => (
+            <StoreCard
+              store={store}
+              key={index}
+              onPress={() => onCardSelection(store)}
+            />
+          ))}
       </ScrollView>
     </>
   );
 };
 
 export default StoreCardList;
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-});

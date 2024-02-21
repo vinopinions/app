@@ -37,7 +37,7 @@ export const AuthProvider = ({
 
   useEffect(() => {
     dispatch(loadAccessTokenAsync());
-  }, []);
+  }, [dispatch]);
 
   const login = async (credentials: Credentials) => {
     await dispatch(loginAsync(credentials));

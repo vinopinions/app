@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import React from 'react';
 import {
   Button,
   Picker,
@@ -17,6 +18,8 @@ import Store from '../../models/Store';
 import Wine from '../../models/Wine';
 import Winemaker from '../../models/Winemaker';
 import { AppDispatch, RootState } from '../../store/store';
+import WineDto from '../../models/dtos/Wine.dto';
+import { faker } from '@faker-js/faker';
 
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -38,11 +41,11 @@ const AddWineScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(fetchWinemakersAsync());
     dispatch(fetchStoresAsync());
-  }, []);
+  }, [dispatch]);
 
   const onFinishButtonPress = useCallback(() => {
     const onFinishButtonPressAsync = async () => {
-      const wine: Wine = {
+      const wine: WineDto = {
         winemaker,
         grapeVariety,
         heritage,
@@ -54,7 +57,16 @@ const AddWineScreen = ({ navigation }) => {
       navigation.goBack(null);
     };
     onFinishButtonPressAsync();
-  }, [name, year, grapeVariety, heritage, winemaker, stores]);
+  }, [
+    name,
+    year,
+    grapeVariety,
+    heritage,
+    winemaker,
+    stores,
+    dispatch,
+    navigation,
+  ]);
 
   const updateSelectedStores = (ids: string[]) => {
     const updatedStores = ids.map(
@@ -126,12 +138,8 @@ const AddWineScreen = ({ navigation }) => {
                 showSearch
                 searchPlaceholder={'Search a winemaker'}
               >
-                {winemakers.map((winemaker) => (
-                  <Picker.Item
-                    key={winemaker.id}
-                    value={winemaker.id}
-                    label={winemaker.name}
-                  />
+                {winemakers.map((wm) => (
+                  <Picker.Item key={wm.id} value={wm.id} label={wm.name} />
                 ))}
               </Picker>
               <Picker
@@ -164,11 +172,14 @@ const AddWineScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
               <WineCard
                 wine={{
+                  id: faker.string.uuid(),
                   name,
                   year,
                   grapeVariety,
                   heritage,
                   winemaker,
+                  stores: [],
+                  ratings: [],
                 }}
               />
               <Button

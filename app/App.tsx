@@ -28,7 +28,7 @@ const Layout = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {authState.authenticated ? (
+        {authState.status === 'succeeded' && authState.authenticated ? (
           <Stack.Screen
             name="App"
             component={BottomTabNavigator}

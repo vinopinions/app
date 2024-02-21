@@ -1,6 +1,7 @@
+/* eslint-disable eqeqeq */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import { createStore, fetchStores } from '../../api/api';
+import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
 
 type StoresState = ApiResponseState<Store[]>;
@@ -13,10 +14,17 @@ export const fetchStoresAsync = createAsyncThunk<Store[]>(
   },
 );
 
+export const fetchStoreByIdAsync = createAsyncThunk<Store, string>(
+  'stores/fetchStoreById',
+  async (storeId: string) => {
+    const response = await fetchStoreById(storeId);
+    return response.data;
+  },
+);
+
 export const createStoreAsync = createAsyncThunk(
   'stores/createStore',
   async (store: Store) => {
-    console.log(store);
     const response = await createStore(store);
     return response.data;
   },
@@ -38,21 +46,44 @@ const storesSlice = createSlice({
       })
       .addCase(fetchStoresAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') state.data = action.payload;
+        if (state.status == 'succeeded') {
+          state.data = action.payload;
+        }
       })
       .addCase(fetchStoresAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') state.error = action.error.message;
+        if (state.status == 'failed') {
+          state.error = action.error.message;
+        }
+      })
+      .addCase(fetchStoreByIdAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchStoreByIdAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if (state.status == 'succeeded') {
+          state.data = [action.payload];
+        }
+      })
+      .addCase(fetchStoreByIdAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        if (state.status == 'failed') {
+          state.error = action.error.message;
+        }
       })
       .addCase(createStoreAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(createStoreAsync.fulfilled, (state, action) => {
-        if (state.status !== 'failed') state.data.push(action.payload);
+        if (state.status !== 'failed') {
+          state.data.push(action.payload);
+        }
       })
       .addCase(createStoreAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') state.error = action.error.message;
+        if (state.status == 'failed') {
+          state.error = action.error.message;
+        }
       });
   },
 });

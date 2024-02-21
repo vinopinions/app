@@ -20,9 +20,9 @@ const StoreCard = (props: StoreCardProps): React.ReactElement => {
         </Text>
         <View style={{ flex: 1 }}>
           <Text text60 $textDefault style={{ textAlign: 'right' }}>
-            {wines == null || wines === undefined || wines.length == 0
+            {wines == null || wines === undefined || wines.length === 0
               ? 'No ratings yet'
-              : wines.length == 1
+              : wines.length === 1
                 ? wines.length + ' wine rating'
                 : wines.length + ' wine ratings'}
           </Text>

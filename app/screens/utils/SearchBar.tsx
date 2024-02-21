@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { TextField } from 'react-native-ui-lib';
+import React from 'react';
 
 interface SearchBarProps {
   searchQuery: string;

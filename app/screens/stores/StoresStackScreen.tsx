@@ -1,4 +1,5 @@
 import { RouteProp } from '@react-navigation/native';
+import React from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
