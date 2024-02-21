@@ -3,8 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { registerRootComponent } from 'expo';
 import React from 'react';
 import { NativeModules } from 'react-native';
-import { Button } from 'react-native-ui-lib';
-
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -24,7 +22,7 @@ const App = () => {
 };
 
 const Layout = () => {
-  const { authState, logout } = useAuth();
+  const { authState } = useAuth();
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -37,7 +35,6 @@ const Layout = () => {
               // https://reactnavigation.org/docs/native-stack-navigator/#headertitlealign
               headerTitleAlign: 'center',
               title: 'Vinopinions',
-              headerRight: () => <Button onPress={logout} label="Sign Out" />,
             }}
           />
         ) : (
