@@ -1,0 +1,34 @@
+{
+  "name": "VinopinionsAPP Devcontainer",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "overrideCommand": true,
+  "postCreateCommand": "yarn install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "javascript.preferences.importModuleSpecifier": "relative",
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "extensions": [
+        // code format/lint/check
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        // other syntax
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
+        // database
+        "cweijan.vscode-database-client2",
+        // utils
+        "yoavbls.pretty-ts-errors",
+        "meganrogge.template-string-converter",
+        "visualstudioexptteam.vscodeintellicode",
+        // expo/react-native
+        "expo.vscode-expo-tools"
+      ]
+    }
+  }
+}
