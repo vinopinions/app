@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Keyboard, TouchableOpacity } from 'react-native';
+import { Alert, Keyboard, StyleSheet, TouchableOpacity } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import { Button, Text, TextField, View } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 import { createWineRatingAsync } from '../../features/ratings/ratingsSlice';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
-import Rating from '../../models/Rating';
 import Wine from '../../models/Wine';
 import { AppDispatch } from '../../store/store';
 import {
@@ -52,24 +51,21 @@ const CreateRatingScreen: React.FC<{
   return (
     <TouchableOpacity
       onPress={Keyboard.dismiss}
-      style={{ flex: 1 }}
+      style={styles.container}
       activeOpacity={1}
     >
       <View flex>
         <View>
-          <Text
-            text40
-            style={{ paddingBottom: 10, paddingTop: 20, paddingLeft: 10 }}
-          >
+          <Text text40 style={styles.wineNameText}>
             {wine.name}
           </Text>
         </View>
-        <Text text50 style={{ marginTop: 15, marginLeft: 10 }}>
+        <Text text50 style={styles.ratingText}>
           Rating:
         </Text>
         <View>
           <StarRating
-            style={{ paddingLeft: 5 }}
+            style={styles.starRating}
             rating={stars}
             maxStars={5}
             onChange={setStars}
@@ -79,13 +75,7 @@ const CreateRatingScreen: React.FC<{
         <View>
           <TextField
             multiline={true}
-            style={{
-              borderWidth: 0.5,
-              height: 100,
-              fontSize: 20,
-              margin: 10,
-              marginTop: 5,
-            }}
+            style={styles.inputTextField}
             value={text}
             onChangeText={setText}
             enableErrors
@@ -99,7 +89,7 @@ const CreateRatingScreen: React.FC<{
         <View>
           <Button
             label="Submit rating"
-            style={{ margin: 10 }}
+            style={styles.submitButton}
             onPress={onSubmitButtonPress}
             disabled={submitButtonDisabled}
           />
@@ -110,3 +100,27 @@ const CreateRatingScreen: React.FC<{
 };
 
 export default CreateRatingScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  submitButton: {
+    margin: 10,
+  },
+  starRating: {
+    paddingLeft: 5,
+  },
+  ratingText: {
+    marginTop: 15,
+    marginLeft: 10,
+  },
+  wineNameText: { paddingBottom: 10, paddingTop: 20, paddingLeft: 10 },
+  inputTextField: {
+    borderWidth: 0.5,
+    height: 100,
+    fontSize: 20,
+    margin: 10,
+    marginTop: 5,
+  },
+});

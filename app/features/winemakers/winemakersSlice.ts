@@ -37,13 +37,13 @@ const winemakersSlice = createSlice({
       })
       .addCase(fetchWinemakersAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.data = action.payload;
         }
       })
       .addCase(fetchWinemakersAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -57,7 +57,7 @@ const winemakersSlice = createSlice({
       })
       .addCase(createWinemakerAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       });

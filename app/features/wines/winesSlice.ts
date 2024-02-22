@@ -59,13 +59,13 @@ const winesSlice = createSlice({
       })
       .addCase(fetchWinesAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.data = action.payload;
         }
       })
       .addCase(fetchWinesAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -74,13 +74,13 @@ const winesSlice = createSlice({
       })
       .addCase(fetchWineByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.data = [action.payload];
         }
       })
       .addCase(fetchWineByIdAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -89,7 +89,7 @@ const winesSlice = createSlice({
       })
       .addCase(updateStoresForWineAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           const index = state.data.findIndex(
             (wine) => wine.id === action.payload.id,
           );
@@ -100,18 +100,18 @@ const winesSlice = createSlice({
       })
       .addCase(updateStoresForWineAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
       .addCase(createWineAsync.fulfilled, (state, action) => {
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.data.push(action.payload);
         }
       })
       .addCase(createWineAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       });

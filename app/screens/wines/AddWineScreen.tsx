@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { faker } from '@faker-js/faker';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import React from 'react';
 import {
   Button,
   Picker,
@@ -16,9 +16,8 @@ import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice'
 import { createWineAsync } from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
 import Winemaker from '../../models/Winemaker';
-import { AppDispatch, RootState } from '../../store/store';
 import WineDto from '../../models/dtos/Wine.dto';
-import { faker } from '@faker-js/faker';
+import { AppDispatch, RootState } from '../../store/store';
 
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -87,14 +86,14 @@ const AddWineScreen = ({ navigation }) => {
       {
         {
           0: (
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
               <TextField
                 autoFocus
                 floatingPlaceholder
                 style={styles.textInput}
                 placeholder="Name"
                 value={name}
-                onChangeText={(name) => setName(name)}
+                onChangeText={(value) => setName(value)}
               />
 
               <TextField
@@ -102,7 +101,7 @@ const AddWineScreen = ({ navigation }) => {
                 floatingPlaceholder
                 placeholder="Year"
                 value={'' + (year ?? '')}
-                onChangeText={(year) => setYear(+year)}
+                onChangeText={(value) => setYear(+value)}
                 maxLength={4}
                 enableErrors
                 validate={['number']}
@@ -122,7 +121,7 @@ const AddWineScreen = ({ navigation }) => {
                 style={styles.textInput}
                 placeholder="Heritage"
                 value={heritage}
-                onChangeText={(heritage) => setHeritage(heritage)}
+                onChangeText={(value) => setHeritage(value)}
               />
               <Picker
                 placeholder="Winemaker"
@@ -131,7 +130,7 @@ const AddWineScreen = ({ navigation }) => {
                 value={winemaker?.id}
                 enableModalBlur={false}
                 onChange={(id) =>
-                  setWinemaker(winemakers.find((wm) => wm.id == id))
+                  setWinemaker(winemakers.find((wm) => wm.id === id))
                 }
                 topBarProps={{ title: 'Winemakers' }}
                 showSearch
@@ -168,7 +167,7 @@ const AddWineScreen = ({ navigation }) => {
             </View>
           ),
           1: (
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
               <WineCard
                 wine={{
                   id: faker.string.uuid(),
@@ -217,5 +216,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',
+  },
+  container: {
+    flex: 1,
   },
 });

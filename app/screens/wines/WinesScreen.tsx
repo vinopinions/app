@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddButton from '../../components/PlusButton';
+import SearchBar from '../../components/SearchBar';
 import WineCardList from '../../components/WineCardList';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
 import { AppDispatch, RootState } from '../../store/store';
-import SearchBar from '../utils/SearchBar';
 
 const WinesScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);

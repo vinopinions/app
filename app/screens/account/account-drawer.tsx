@@ -5,11 +5,11 @@ import EditProfileScreen from './edit-profile-screen';
 
 const { Navigator, Screen } = createDrawerNavigator();
 
-const DrawerContent = () => <></>;
+const createDrawerContent = () => <></>;
 
 export const AccountDrawer = () => (
   <Navigator
-    drawerContent={() => <DrawerContent />}
+    drawerContent={createDrawerContent}
     screenOptions={{ drawerPosition: 'right' }}
   >
     <Screen

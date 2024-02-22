@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import User from '../../models/User';
 import { fetchCurrentUser } from '../../api/api';
+import User from '../../models/User';
 
 type CurrentUserState = ApiResponseState<User>;
 
@@ -29,13 +29,13 @@ const currentUserSlice = createSlice({
       })
       .addCase(fetchCurrentUserAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
+        if (state.status === 'succeeded') {
           state.data = action.payload;
         }
       })
       .addCase(fetchCurrentUserAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       });

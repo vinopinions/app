@@ -1,6 +1,6 @@
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TextField } from 'react-native-ui-lib';
-import React from 'react';
 
 interface SearchBarProps {
   searchQuery: string;
@@ -14,8 +14,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, handleSearch }) => {
       placeholderTextColor="grey"
       onChangeText={handleSearch}
       value={searchQuery}
-      containerStyle={styles.searchBarContainer}
-      style={{ fontSize: 20, alignContent: 'flex-start' }}
+      containerStyle={styles.container}
+      style={styles.textField}
     />
   );
 };
@@ -23,7 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, handleSearch }) => {
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  searchBarContainer: {
+  container: {
     backgroundColor: 'white',
     borderWidth: 0.5,
     borderRadius: 5,
@@ -31,4 +31,5 @@ const styles = StyleSheet.create({
     paddingTop: 1.5,
     margin: 8,
   },
+  textField: { fontSize: 20, alignContent: 'flex-start' },
 });
