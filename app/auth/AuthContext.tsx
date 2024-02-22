@@ -40,6 +40,12 @@ export const AuthProvider = ({
     dispatch(loadAccessTokenAsync());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (authState.status === 'failed') {
+      dispatch(logoutAsync());
+    }
+  }, [dispatch, authState]);
+
   const login = async (credentials: Credentials) => {
     await dispatch(loginAsync(credentials));
   };

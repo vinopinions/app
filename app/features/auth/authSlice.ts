@@ -56,8 +56,8 @@ export const loadAccessTokenAsync = createAsyncThunk(
       return Promise.reject();
     }
 
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-    // check if the token is still valid by sending a request to a protected endpoint in the backend
+    axios.defaults.headers.common.Authorization = `Bearer ${token}abc`;
+    // check if the token is still valid by sending a request to a protected endpoint of the api
     return await fetchCurrentUser().then(() => token);
   },
 );
