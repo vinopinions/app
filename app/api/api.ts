@@ -17,6 +17,7 @@ import {
 } from '../constants/UrlConstants';
 import Store from '../models/Store';
 import Winemaker from '../models/Winemaker';
+import RatingDto from '../models/dtos/Rating.dto';
 import WineDto from '../models/dtos/Wine.dto';
 import { createDefaultAxiosInstance } from './utils';
 

@@ -1,23 +1,21 @@
 import axios, { CreateAxiosDefaults } from 'axios';
+import { Alert } from 'react-native';
 
 export const createDefaultAxiosInstance = (
   axiosConfig?: CreateAxiosDefaults<unknown>,
 ) => {
   const instance = axios.create(axiosConfig);
 
-  instance.interceptors.request.use(
-    (config) => {
-      if (axios.defaults.headers.common.Authorization) {
-        config.headers.Authorization =
-          axios.defaults.headers.common.Authorization;
-      }
-      return config;
-    },
-    (error) => {
-      Promise.reject(error);
-    },
-  );
+  // sometimes the Authorization header was not set, so this is our fix
+  instance.interceptors.request.use((config) => {
+    if (axios.defaults.headers.common.Authorization) {
+      config.headers.Authorization =
+        axios.defaults.headers.common.Authorization;
+    }
+    return config;
+  });
 
+  // request logging interceptor
   instance.interceptors.request.use(
     (config) => {
       const timestamp = new Date().toISOString();
@@ -34,6 +32,7 @@ export const createDefaultAxiosInstance = (
     },
   );
 
+  // response logging interceptor
   instance.interceptors.response.use(
     (response) => {
       const timestamp = new Date().toISOString();
@@ -51,6 +50,7 @@ export const createDefaultAxiosInstance = (
     },
   );
 
+  // bad response status interceptor
   instance.interceptors.response.use(
     (response) => {
       return response;
@@ -59,13 +59,11 @@ export const createDefaultAxiosInstance = (
       if (error.response) {
         const status = error.response.status;
 
-        /*eslint no-alert: "off"*/
-        // TODO: enable eslint rule and implement own handling
         if (status === 401) {
-          alert('Unauthorized');
+          Alert.alert('Unauthorized');
         } else if (status === 404) {
           // Handle not found error
-          alert(`Endpoint ${error.config.url} not found`);
+          Alert.alert(`Endpoint ${error.config.url} not found`);
         }
 
         return Promise.reject(error);
