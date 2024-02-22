@@ -57,12 +57,15 @@ export const createDefaultAxiosInstance = (
     },
     (error) => {
       if (error.response.data.message) {
-        Alert.alert(error.response.data.message);
-        return Promise.reject(error);
+        const message = error.response.data.message;
+        Alert.alert(
+          error.response.data.error,
+          Array.isArray(message) ? message.join('. ') : message,
+        );
       } else {
         console.error('Network error or other issue:', error.message);
-        return Promise.reject(error);
       }
+      return Promise.reject(error);
     },
   );
 
