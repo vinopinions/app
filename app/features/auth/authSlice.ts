@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import { login, signup } from '../../api/api';
+import { fetchCurrentUser, login, signup } from '../../api/api';
 import { Credentials } from '../../auth/AuthContext';
 
 const TOKEN_KEY = 'api-jwt';
@@ -20,6 +20,7 @@ export type AuthState =
       status: 'failed';
       error: string;
     };
+
 export const loginAsync = createAsyncThunk(
   'auth/login',
   async (credentials: Credentials): Promise<{ access_token: string }> => {
@@ -48,12 +49,16 @@ export const logoutAsync = createAsyncThunk('auth/logout', async () => {
 export const loadAccessTokenAsync = createAsyncThunk(
   'auth/loadAccessToken',
   async (): Promise<string> => {
+    // load token from secure store
     const token = await SecureStore.getItemAsync(TOKEN_KEY);
+    // fail if no token was found
     if (!token) {
       return Promise.reject();
     }
 
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    // check if the token is still valid by sending a request to a protected endpoint in the backend
+    return await fetchCurrentUser().then(() => token);
   },
 );
 
@@ -102,6 +107,13 @@ const authSlice = createSlice({
           state.accessToken = null;
           state.authenticated = false;
         }
+      })
+      .addCase(loadAccessTokenAsync.rejected, (state) => {
+        state.status = 'failed';
+        axios.defaults.headers.common.Authorization = '';
+      })
+      .addCase(loadAccessTokenAsync.pending, (state) => {
+        state.status = 'loading';
       })
       .addCase(loadAccessTokenAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
