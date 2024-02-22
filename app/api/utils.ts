@@ -56,16 +56,8 @@ export const createDefaultAxiosInstance = (
       return response;
     },
     (error) => {
-      if (error.response) {
-        const status = error.response.status;
-
-        if (status === 401) {
-          Alert.alert('Unauthorized');
-        } else if (status === 404) {
-          // Handle not found error
-          Alert.alert(`Endpoint ${error.config.url} not found`);
-        }
-
+      if (error.response.data.message) {
+        Alert.alert(error.response.data.message);
         return Promise.reject(error);
       } else {
         console.error('Network error or other issue:', error.message);
