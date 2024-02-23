@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { fetchCurrentUser, login, signup } from '../../api/api';
 import { Credentials } from '../../auth/AuthContext';
@@ -56,9 +56,18 @@ export const loadAccessTokenAsync = createAsyncThunk(
       return Promise.reject();
     }
 
-    axios.defaults.headers.common.Authorization = `Bearer ${token}abc`;
     // check if the token is still valid by sending a request to a protected endpoint of the api
-    return await fetchCurrentUser().then(() => token);
+    const checkResponse = await fetchCurrentUser({
+      // allow all responses to prevent error interceptors to be called
+      validateStatus: () => true,
+    });
+
+    if (checkResponse.status !== HttpStatusCode.Ok) {
+      Promise.reject();
+    }
+
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    return token;
   },
 );
 
