@@ -30,7 +30,6 @@
     "react-native-gesture-handler": "~2.14.0",
     "react-native-reanimated": "~3.6.2",
     "react-native-star-rating-widget": "^1.7.3",
-    "react-native-svg": "14.1.0",
     "react-native-ui-lib": "^7.12.2",
     "react-redux": "^9.0.4"
   },
