@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { createWineRatingAsync } from '../../features/ratings/ratingsSlice';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
+import RatingDto from '../../models/dtos/Rating.dto';
 import { AppDispatch } from '../../store/store';
 import {
   CreateRatingScreenNavigationProp,
