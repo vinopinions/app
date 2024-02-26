@@ -1,8 +1,8 @@
 type Winemaker = {
   id: string;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export function isWinemaker(obj: unknown): obj is Winemaker {

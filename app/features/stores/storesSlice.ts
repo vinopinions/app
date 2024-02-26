@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
+import CreateStoreDto from '../../models/dtos/Store.dto';
 
 type StoresState = ApiResponseState<Store[]>;
 
@@ -24,7 +25,7 @@ export const fetchStoreByIdAsync = createAsyncThunk<Store, string>(
 
 export const createStoreAsync = createAsyncThunk(
   'stores/createStore',
-  async (store: Store) => {
+  async (store: CreateStoreDto) => {
     const response = await createStore(store);
     return response.data;
   },

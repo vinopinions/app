@@ -7,8 +7,8 @@ type Rating = {
   text: string;
   user: User;
   wine: Wine;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export function isRating(obj: unknown): obj is Rating {
