@@ -17,9 +17,9 @@ export interface Credentials {
 
 interface AuthProps {
   authState: AuthState;
-  signup: (credentials: Credentials) => Promise<unknown>;
-  login: (credentials: Credentials) => Promise<unknown>;
-  logout: () => Promise<unknown>;
+  signup: (credentials: Credentials) => Promise<void>;
+  login: (credentials: Credentials) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthProps>(null);
@@ -34,11 +34,17 @@ export const AuthProvider = ({
   children: ReactNode | ReactNode[];
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const authState = useSelector((state: RootState) => state.auth);
+  const authState: AuthState = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     dispatch(loadAccessTokenAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authState.status === 'failed') {
+      dispatch(logoutAsync());
+    }
+  }, [dispatch, authState]);
 
   const login = async (credentials: Credentials) => {
     await dispatch(loginAsync(credentials));

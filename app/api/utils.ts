@@ -1,23 +1,21 @@
 import axios, { CreateAxiosDefaults } from 'axios';
+import { Alert } from 'react-native';
 
 export const createDefaultAxiosInstance = (
   axiosConfig?: CreateAxiosDefaults<unknown>,
 ) => {
   const instance = axios.create(axiosConfig);
 
-  instance.interceptors.request.use(
-    (config) => {
-      if (axios.defaults.headers.common.Authorization) {
-        config.headers.Authorization =
-          axios.defaults.headers.common.Authorization;
-      }
-      return config;
-    },
-    (error) => {
-      Promise.reject(error);
-    },
-  );
+  // sometimes the Authorization header was not set, so this is our fix
+  instance.interceptors.request.use((config) => {
+    if (axios.defaults.headers.common.Authorization) {
+      config.headers.Authorization =
+        axios.defaults.headers.common.Authorization;
+    }
+    return config;
+  });
 
+  // request logging interceptor
   instance.interceptors.request.use(
     (config) => {
       const timestamp = new Date().toISOString();
@@ -34,6 +32,7 @@ export const createDefaultAxiosInstance = (
     },
   );
 
+  // response logging interceptor
   instance.interceptors.response.use(
     (response) => {
       const timestamp = new Date().toISOString();
@@ -51,28 +50,22 @@ export const createDefaultAxiosInstance = (
     },
   );
 
+  // bad response status interceptor
   instance.interceptors.response.use(
     (response) => {
       return response;
     },
     (error) => {
-      if (error.response) {
-        const status = error.response.status;
-
-        /*eslint no-alert: "off"*/
-        // TODO: enable eslint rule and implement own handling
-        if (status === 401) {
-          alert('Unauthorized');
-        } else if (status === 404) {
-          // Handle not found error
-          alert(`Endpoint ${error.config.url} not found`);
-        }
-
-        return Promise.reject(error);
+      if (error.response.data.message) {
+        const message = error.response.data.message;
+        Alert.alert(
+          error.response.data.error,
+          Array.isArray(message) ? message.join('. ') : message,
+        );
       } else {
         console.error('Network error or other issue:', error.message);
-        return Promise.reject(error);
       }
+      return Promise.reject(error);
     },
   );
 
