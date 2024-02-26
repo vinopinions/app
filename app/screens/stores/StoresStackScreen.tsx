@@ -1,10 +1,9 @@
 import { RouteProp } from '@react-navigation/native';
-import React from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
 } from '@react-navigation/stack';
-import Store from '../../models/Store';
+import React from 'react';
 import AddStoreScreen from './AddStoreScreen';
 import StoreDetailsScreen from './StoreDetailsScreen';
 import StoresScreen from './StoresScreen';
@@ -13,7 +12,7 @@ const StoresStack = createStackNavigator();
 
 export type StoresStackParamList = {
   StoresScreen: undefined;
-  StoreDetailsScreen: { store: Store };
+  StoreDetailsScreen: { storeId: string };
 };
 
 export type StoresScreenNavigationProp = StackNavigationProp<

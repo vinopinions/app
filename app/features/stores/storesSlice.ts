@@ -1,5 +1,10 @@
+import { RootState } from './../../store/store';
 /* eslint-disable eqeqeq */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
@@ -11,6 +16,7 @@ export const fetchStoresAsync = createAsyncThunk<Store[]>(
   'stores/fetchStores',
   async () => {
     const response = await fetchStores();
+    console.log(response.data);
     return response.data;
   },
 );
@@ -90,3 +96,23 @@ const storesSlice = createSlice({
 });
 
 export default storesSlice.reducer;
+
+export const selectAllStores = createSelector(
+  [
+    (state: RootState) =>
+      state.stores.status !== 'failed' ? state.stores.data : [],
+  ],
+  (stores) => stores,
+);
+
+export const selectStoreById = createSelector(
+  [
+    (state: RootState) =>
+      state.stores.status !== 'failed' ? state.stores.data : [],
+    (state: RootState, storeId: string) => storeId,
+  ],
+  (stores, storeId): Store => {
+    console.log({ storeId });
+    return stores.find((store) => store.id === storeId);
+  },
+);

@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import WineCardList from '../../components/WineCardList';
-import { fetchWinesAsync } from '../../features/wines/winesSlice';
+import {
+  fetchStoresAsync,
+  selectStoreById,
+} from '../../features/stores/storesSlice';
+import {
+  fetchWinesAsync,
+  selectWinesByStoreId,
+} from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
 import Wine from '../../models/Wine';
 import { AppDispatch, RootState } from '../../store/store';
@@ -13,23 +20,28 @@ const StoreDetailsScreen: React.FC<{ route: StoreDetailsScreenRouteProp }> = ({
   route,
 }): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
-  const store: Store = route.params.store;
-  const [wines, setWines] = useState<Wine[]>([]);
-  const allWines = useSelector((state: RootState) =>
-    state.wines.status !== 'failed' ? state.wines.data : [],
+
+  const store: Store | undefined = useSelector<RootState, Store>((state) =>
+    selectStoreById(state, route.params.storeId),
+  );
+
+  const wines: Wine[] = useSelector<RootState, Wine[]>((state) =>
+    selectWinesByStoreId(state, route.params.storeId),
   );
 
   useEffect(() => {
+    dispatch(fetchStoresAsync());
     dispatch(fetchWinesAsync());
-  }, [dispatch, store.id, store.wines]);
+  }, [dispatch]);
 
-  useEffect(() => {
-    setWines(
-      allWines.filter((wine) =>
-        wine.stores.some((wineStore) => wineStore.id === store.id),
-      ),
+  if (store === undefined) {
+    // TODO: insert skeleton
+    return (
+      <View>
+        <Text>loading</Text>
+      </View>
     );
-  }, [store.id, allWines]);
+  }
 
   return (
     <View>

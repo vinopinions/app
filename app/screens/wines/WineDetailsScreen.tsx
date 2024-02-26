@@ -1,28 +1,27 @@
-import Wine from '../../models/Wine';
-import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {
-  WineDetailsScreenRouteProp,
-  WinesScreenNavigationProp,
-} from './WinesStackScreen';
+import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import Store from '../../models/Store';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchStoresAsync } from '../../features/stores/storesSlice';
-import { useNavigation } from '@react-navigation/native';
 import RatingCardList from '../../components/ratings/RatingCardList';
 import StoreCardList from '../../components/stores/StoreCardList';
+import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import {
   fetchWinesAsync,
   updateStoresForWineAsync,
 } from '../../features/wines/winesSlice';
+import Store from '../../models/Store';
+import Wine from '../../models/Wine';
+import { AppDispatch, RootState } from '../../store/store';
+import {
+  WineDetailsScreenRouteProp,
+  WinesScreenNavigationProp,
+} from './WinesStackScreen';
 
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
   route,

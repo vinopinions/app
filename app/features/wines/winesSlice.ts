@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import {
   createWine,
@@ -8,6 +12,7 @@ import {
 } from '../../api/api';
 import Wine from '../../models/Wine';
 import WineDto from '../../models/dtos/Wine.dto';
+import { RootState } from '../../store/store';
 
 type WinesState = ApiResponseState<Wine[]>;
 
@@ -119,3 +124,25 @@ const winesSlice = createSlice({
 });
 
 export default winesSlice.reducer;
+
+const selectWines = (state: RootState) =>
+  state.wines.status !== 'failed' ? state.wines.data : [];
+
+export const selectAllWines = createSelector(
+  [selectWines],
+  (wines: Wine[]) => wines,
+);
+
+export const selectWineById = createSelector(
+  [selectWines, (state: RootState, wineId: string) => wineId],
+  (wines: Wine[], wineId: string): Wine =>
+    wines.find((wine) => wine.id === wineId),
+);
+
+export const selectWinesByStoreId = createSelector(
+  [selectWines, (state: RootState, storeId: string) => storeId],
+  (wines: Wine[], storeId: string): Wine[] =>
+    wines.filter((wine: Wine) =>
+      wine.stores.some((store) => store.id === storeId),
+    ),
+);
