@@ -31,8 +31,6 @@ const StoreDetailsScreen: React.FC<{ route: StoreDetailsScreenRouteProp }> = ({
     );
   }, [store.id, allWines]);
 
-  console.log({ wines, allWines });
-
   return (
     <View>
       <Text text40 style={styles.text}>
