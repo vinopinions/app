@@ -1,8 +1,10 @@
 {
-  "main": "./app/App.tsx",
   "expo": {
-    "name": "VinopinionsApp",
+    "name": "Vinopinions",
+    "description": "Share your favorite wines with your friends!",
     "slug": "vinopinions",
+    "owner": "vinopinions",
+    "sdkVersion": "^50.0.7",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,33 +16,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "com.laylaoskarschule.vinopinions"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "userInterfaceStyle": "automatic",
-      "package": "com.laylaoskarschule.vinopinions"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      }
     },
     "extra": {
       "eas": {
         "projectId": "4b072a01-ec61-4a03-beb2-ad67258e3e33"
       }
-    },
-    "owner": "layla-oskar-schule",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/4b072a01-ec61-4a03-beb2-ad67258e3e33"
-    },
-    "plugins": ["expo-secure-store"]
+    }
   }
 }

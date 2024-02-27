@@ -1,3 +1,4 @@
+// https://docs.expo.dev/build/eas-json/
 {
   "cli": {
     "version": ">= 5.9.1"
@@ -6,14 +7,18 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
-    },
-    "preview": {
-      "distribution": "internal",
-      "channel": "preview"
+      "channel": "development",
+      "extends": "production",
+      "env": {
+        "API_URL": "https://api-dev.vinopinions.app/v1"
+      }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "node": "20.11.1",
+      "env": {
+        "API_URL": "https://api.vinopinions.app/v1"
+      }
     }
   },
   "submit": {
