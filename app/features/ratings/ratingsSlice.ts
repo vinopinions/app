@@ -1,8 +1,8 @@
 /* eslint-disable eqeqeq */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import Rating from '../../models/Rating';
 import { createWineRating, deleteRating } from '../../api/api';
+import Rating from '../../models/Rating';
 
 type RatigsState = ApiResponseState<Rating[]>;
 

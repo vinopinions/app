@@ -1,8 +1,14 @@
+import { RootState } from './../../store/store';
 /* eslint-disable eqeqeq */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
+import CreateStoreDto from '../../models/dtos/Store.dto';
 
 type StoresState = ApiResponseState<Store[]>;
 
@@ -24,7 +30,7 @@ export const fetchStoreByIdAsync = createAsyncThunk<Store, string>(
 
 export const createStoreAsync = createAsyncThunk(
   'stores/createStore',
-  async (store: Store) => {
+  async (store: CreateStoreDto) => {
     const response = await createStore(store);
     return response.data;
   },
@@ -89,3 +95,26 @@ const storesSlice = createSlice({
 });
 
 export default storesSlice.reducer;
+
+export const selectAllStores = createSelector(
+  [
+    (state: RootState) =>
+      state.stores.status !== 'failed' ? state.stores.data : [],
+  ],
+  (stores) => stores,
+  // https://github.com/reduxjs/reselect/discussions/662
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
+);
+
+export const selectStoreById = createSelector(
+  [
+    (state: RootState) =>
+      state.stores.status !== 'failed' ? state.stores.data : [],
+    (state: RootState, storeId: string) => storeId,
+  ],
+  (stores, storeId): Store => {
+    return stores.find((store) => store.id === storeId);
+  },
+);

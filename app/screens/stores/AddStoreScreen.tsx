@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
@@ -10,7 +11,7 @@ import {
 import { useDispatch } from 'react-redux';
 import StoreCard from '../../components/stores/StoreCard';
 import { createStoreAsync } from '../../features/stores/storesSlice';
-import Store from '../../models/Store';
+import CreateStoreDto from '../../models/dtos/Store.dto';
 import { AppDispatch } from '../../store/store';
 
 const AddStoreScreen = ({ navigation }) => {
@@ -29,7 +30,7 @@ const AddStoreScreen = ({ navigation }) => {
                 return navigation.goBack();
             }
             */
-      const store: Store = { name, address, url, wines: [] };
+      const store: CreateStoreDto = { name, address, url, wines: [] };
       await dispatch(createStoreAsync(store));
       navigation.goBack();
     };
@@ -83,10 +84,13 @@ const AddStoreScreen = ({ navigation }) => {
             <View style={styles.container}>
               <StoreCard
                 store={{
+                  id: faker.string.uuid(),
                   name,
                   address,
                   url,
                   wines: [],
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
                 }}
               />
               <Button

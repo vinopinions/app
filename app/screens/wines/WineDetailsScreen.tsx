@@ -1,48 +1,48 @@
-import Wine from '../../models/Wine';
-import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
 } from 'react-native';
+import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
+import { useDispatch, useSelector } from 'react-redux';
+import RatingCardList from '../../components/ratings/RatingCardList';
+import StoreCardList from '../../components/stores/StoreCardList';
+import {
+  fetchStoresAsync,
+  selectAllStores,
+} from '../../features/stores/storesSlice';
+import {
+  fetchWinesAsync,
+  selectWineById,
+  updateStoresForWineAsync,
+} from '../../features/wines/winesSlice';
+import Store from '../../models/Store';
+import Wine from '../../models/Wine';
+import { AppDispatch, RootState } from '../../store/store';
 import {
   WineDetailsScreenRouteProp,
   WinesScreenNavigationProp,
 } from './WinesStackScreen';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import Store from '../../models/Store';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchStoresAsync } from '../../features/stores/storesSlice';
-import { useNavigation } from '@react-navigation/native';
-import RatingCardList from '../../components/ratings/RatingCardList';
-import StoreCardList from '../../components/stores/StoreCardList';
-import {
-  fetchWinesAsync,
-  updateStoresForWineAsync,
-} from '../../features/wines/winesSlice';
 
 const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
   route,
 }): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
-  const stores: Store[] = useSelector((state: RootState) =>
-    state.stores.status !== 'failed' ? state.stores.data : [],
+  const stores: Store[] = useSelector(selectAllStores);
+  const wine: Wine = useSelector<RootState, Wine>((state) =>
+    selectWineById(state, route.params.wineId),
   );
-  const wine: Wine = useSelector((state: RootState) =>
-    state.wines.status !== 'failed'
-      ? state.wines.data.find((w) => w.id === route.params.wine.id)
-      : route.params.wine,
-  );
+
   const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation<WinesScreenNavigationProp>();
 
   useEffect(() => {
     dispatch(fetchStoresAsync());
-  }, [dispatch, route.params.wine.id]);
+  }, [dispatch]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

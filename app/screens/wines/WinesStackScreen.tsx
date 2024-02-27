@@ -1,69 +1,42 @@
-import { RouteProp } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {
-  StackNavigationProp,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import Wine from '../../models/Wine';
+import CreateRatingScreen from '../rating/CreateRatingScreen';
 import AddWineScreen from './AddWineScreen';
 import WineDetailsScreen from './WineDetailsScreen';
-import CreateRatingScreen from '../rating/CreateRatingScreen';
 import WinesScreen from './WinesScreen';
-import StoreDetailsScreen from '../stores/StoreDetailsScreen';
 
-const WinesStack = createStackNavigator();
+const WinesStack = createStackNavigator<WinesStackParamList>();
 
 export type WinesStackParamList = {
-  WinesScreen: undefined;
-  AddWineScreen: undefined;
-  WineDetailsScreen: { wine: Wine };
-  CreateRatingScreen: { wine: Wine };
+  [WINES_STACK_SCREEN_NAMES.WINES_SCREEN]: undefined;
+  [WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN]: { wineId: string };
+  [WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN]: undefined;
+  [WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN]: { wine: Wine };
 };
-
-export type WinesScreenNavigationProp = StackNavigationProp<
-  WinesStackParamList,
-  'WinesScreen'
->;
-export type WineDetailsScreenRouteProp = RouteProp<
-  WinesStackParamList,
-  'WineDetailsScreen'
->;
-export type CreateRatingScreenRouteProp = RouteProp<
-  WinesStackParamList,
-  'CreateRatingScreen'
->;
-export type CreateRatingScreenNavigationProp = StackNavigationProp<
-  WinesStackParamList,
-  'CreateRatingScreen'
->;
 
 const WinesStackScreen = () => {
   return (
     <WinesStack.Navigator>
       <WinesStack.Screen
-        options={{ headerShown: false }}
-        name="WinesScreen"
+        name={WINES_STACK_SCREEN_NAMES.WINES_SCREEN}
         component={WinesScreen}
+        options={{ headerShown: false }}
       />
       <WinesStack.Screen
-        options={{ headerShown: false }}
-        name="WineDetailsScreen"
+        name={WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN}
         component={WineDetailsScreen}
       />
       <WinesStack.Screen
-        name="AddWineScreen"
+        name={WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN}
         options={{ title: 'New Wine' }}
         component={AddWineScreen}
       />
       <WinesStack.Screen
-        name="CreateRatingScreen"
+        name={WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN}
         options={{ title: 'New Rating' }}
         component={CreateRatingScreen}
-      />
-      <WinesStack.Screen
-        name="StoreDetailsScreen"
-        options={{ title: 'Store Details' }}
-        component={StoreDetailsScreen}
       />
     </WinesStack.Navigator>
   );

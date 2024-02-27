@@ -22,7 +22,7 @@ const StoreCardList = ({
   const navigation = useNavigation<StoresScreenNavigationProp>();
 
   const onCardSelection = (store: Store) => {
-    navigation.navigate('StoreDetailsScreen', { store: store });
+    navigation.navigate('StoreDetailsScreen', { storeId: store.id });
   };
 
   return (

@@ -16,9 +16,9 @@ import {
   WINES_ID_ENDPOINT_URL,
   WINES_ID_RATINGS_ENDPOINT_URL,
 } from '../constants/UrlConstants';
-import Store from '../models/Store';
 import Winemaker from '../models/Winemaker';
 import RatingDto from '../models/dtos/Rating.dto';
+import StoreDto from '../models/dtos/Store.dto';
 import WineDto from '../models/dtos/Wine.dto';
 import { createDefaultAxiosInstance } from './utils';
 
@@ -101,7 +101,7 @@ export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
     options,
   );
 
-export const createStore = (store: Store, options?: AxiosRequestConfig) =>
+export const createStore = (store: StoreDto, options?: AxiosRequestConfig) =>
   apiStores.post('', store, options);
 
 export const createWineRating = (
