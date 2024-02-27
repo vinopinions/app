@@ -16,7 +16,6 @@ export const fetchStoresAsync = createAsyncThunk<Store[]>(
   'stores/fetchStores',
   async () => {
     const response = await fetchStores();
-    console.log(response.data);
     return response.data;
   },
 );
@@ -103,6 +102,10 @@ export const selectAllStores = createSelector(
       state.stores.status !== 'failed' ? state.stores.data : [],
   ],
   (stores) => stores,
+  // https://github.com/reduxjs/reselect/discussions/662
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
 );
 
 export const selectStoreById = createSelector(
@@ -112,7 +115,6 @@ export const selectStoreById = createSelector(
     (state: RootState, storeId: string) => storeId,
   ],
   (stores, storeId): Store => {
-    console.log({ storeId });
     return stores.find((store) => store.id === storeId);
   },
 );

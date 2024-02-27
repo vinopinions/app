@@ -5,11 +5,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddButton from '../../components/PlusButton';
 import SearchBar from '../../components/SearchBar';
 import WineCardList from '../../components/WineCardList';
+import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
 import { AppDispatch, RootState } from '../../store/store';
+import { WinesScreenNavigationProp } from './WinesStackScreen';
 
-const WinesScreen = ({ navigation }) => {
+const WinesScreen = ({
+  navigation,
+}: {
+  navigation: WinesScreenNavigationProp;
+}) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const wines = useSelector((state: RootState) =>
@@ -48,12 +54,14 @@ const WinesScreen = ({ navigation }) => {
   }, [dispatch]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.navigate('AddWineScreen');
+    navigation.push(WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN);
   }, [navigation]);
+
   return (
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
       <WineCardList
+        navigation={navigation}
         refreshing={refreshing}
         onRefresh={onRefresh}
         wines={searchResults}

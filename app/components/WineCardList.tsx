@@ -1,3 +1,4 @@
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
@@ -7,8 +8,12 @@ import {
   StyleSheet,
   ViewStyle,
 } from 'react-native';
+import {
+  BOTTOM_TAB_STACK_SCREEN_NAMES,
+  WINES_STACK_SCREEN_NAMES,
+} from '../constants/RouteNames';
 import Wine from '../models/Wine';
-import { WinesScreenNavigationProp } from '../screens/wines/WinesStackScreen';
+import { BottomTabStackParamList } from '../navigation/BottomTabNavigator';
 import WineCard from './WineCard';
 
 interface WineCardListProps {
@@ -24,10 +29,14 @@ const WineCardList = ({
   refreshing,
   onRefresh,
 }: WineCardListProps): React.ReactElement => {
-  const navigation = useNavigation<WinesScreenNavigationProp>();
+  const navigation =
+    useNavigation<BottomTabNavigationProp<BottomTabStackParamList>>();
 
   const onCardSelection = (wine: Wine) => {
-    navigation.navigate('WineDetailsScreen', { wine: wine });
+    navigation.navigate(BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN, {
+      screen: WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN,
+      params: { wineId: wine.id },
+    });
   };
 
   return (

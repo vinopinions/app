@@ -1,8 +1,15 @@
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import WineCardList from '../../components/WineCardList';
+import {
+  BOTTOM_TAB_STACK_SCREEN_NAMES,
+  STORES_STACK_SCREEN_NAMES,
+} from '../../constants/RouteNames';
 import {
   fetchStoresAsync,
   selectStoreById,
@@ -13,14 +20,23 @@ import {
 } from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
 import Wine from '../../models/Wine';
+import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
-import { StoreDetailsScreenRouteProp } from './StoresStackScreen';
+import { StoresStackParamList } from './StoresStackScreen';
 
-const StoreDetailsScreen: React.FC<{ route: StoreDetailsScreenRouteProp }> = ({
+const StoreDetailsScreen = ({
   route,
-}): React.ReactElement => {
+}: CompositeScreenProps<
+  NativeStackScreenProps<
+    StoresStackParamList,
+    STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN
+  >,
+  BottomTabScreenProps<
+    BottomTabStackParamList,
+    BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN
+  >
+>) => {
   const dispatch: AppDispatch = useDispatch();
-
   const store: Store | undefined = useSelector<RootState, Store>((state) =>
     selectStoreById(state, route.params.storeId),
   );

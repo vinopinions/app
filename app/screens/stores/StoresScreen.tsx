@@ -5,11 +5,17 @@ import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import StoreCardList from '../../components/stores/StoreCardList';
+import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import Store from '../../models/Store';
 import { AppDispatch, RootState } from '../../store/store';
+import { StoresScreenNavigationProp } from './StoresStackScreen';
 
-const StoresScreen = ({ navigation }) => {
+const StoresScreen = ({
+  navigation,
+}: {
+  navigation: StoresScreenNavigationProp;
+}) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const stores = useSelector((state: RootState) =>
@@ -54,7 +60,7 @@ const StoresScreen = ({ navigation }) => {
   }, [dispatch]);
 
   const onAddButtonPress = () => {
-    navigation.navigate('AddStoreScreen');
+    navigation.push(STORES_STACK_SCREEN_NAMES.STORE_ADD_SCREEN);
   };
 
   return (

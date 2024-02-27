@@ -1,12 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import React from 'react';
 import { Button, ButtonProps } from 'react-native-ui-lib';
 import { useAuth } from '../auth/AuthContext';
+import { BOTTOM_TAB_STACK_SCREEN_NAMES } from '../constants/RouteNames';
 import { AccountDrawer } from '../screens/account/account-drawer';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import HomeScreen from '../screens/home/HomeScreen';
-import StoresStackScreen from '../screens/stores/StoresStackScreen';
-import WinesStackScreen from '../screens/wines/WinesStackScreen';
+import StoresStackScreen, {
+  StoresStackParamList,
+} from '../screens/stores/StoresStackScreen';
+import WinesStackScreen, {
+  WinesStackParamList,
+} from '../screens/wines/WinesStackScreen';
 import {
   AccountIcon,
   AccountIconOutline,
@@ -20,13 +26,15 @@ import {
   WineIconOutline,
 } from '../utils/icons';
 
-const HomeRouteName = 'Home';
-const WinesStackRouteName = 'WinesStack';
-const StoresRouteName = 'Stores';
-const FriendsRouteName = 'Friends';
-const AccountRouteName = 'Account';
+const BottomTab = createBottomTabNavigator<BottomTabStackParamList>();
 
-const BottomTab = createBottomTabNavigator();
+export type BottomTabStackParamList = {
+  [BOTTOM_TAB_STACK_SCREEN_NAMES.HOME_SCREEN]: undefined;
+  [BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN]: NavigatorScreenParams<WinesStackParamList>;
+  [BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN]: NavigatorScreenParams<StoresStackParamList>;
+  [BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN]: undefined;
+  [BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN]: undefined;
+};
 
 const createSignOutButton = (props: ButtonProps) => (
   <Button {...props} label="Sign Out" />
@@ -36,48 +44,33 @@ const BottomTabNavigator = () => {
   const { logout } = useAuth();
   return (
     <BottomTab.Navigator
+      initialRouteName={BOTTOM_TAB_STACK_SCREEN_NAMES.HOME_SCREEN}
       screenOptions={({ route }) => ({
-        headerShown: false,
         tabBarIcon: ({ size, color, focused }) => {
           return getIconForScreen(route.name, size, color, focused);
         },
       })}
     >
       <BottomTab.Screen
-        name={HomeRouteName}
+        name={BOTTOM_TAB_STACK_SCREEN_NAMES.HOME_SCREEN}
         component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          headerShown: false,
-        }}
       />
       <BottomTab.Screen
-        name={WinesStackRouteName}
+        name={BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN}
         component={WinesStackScreen}
-        options={{
-          headerShown: false,
-          title: 'Wines',
-        }}
       />
       <BottomTab.Screen
-        name={StoresRouteName}
+        name={BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN}
         component={StoresStackScreen}
-        options={{
-          headerShown: false,
-        }}
       />
       <BottomTab.Screen
-        name={FriendsRouteName}
+        name={BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN}
         component={FriendsScreen}
-        options={{
-          headerShown: false,
-        }}
       />
       <BottomTab.Screen
-        name={AccountRouteName}
+        name={BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN}
         component={AccountDrawer}
         options={{
-          headerShown: true,
           headerRight: () => createSignOutButton({ onPress: logout }),
         }}
       />
@@ -94,31 +87,31 @@ const getIconForScreen = (
   focused: boolean,
 ): React.JSX.Element => {
   switch (routeName) {
-    case HomeRouteName:
+    case BOTTOM_TAB_STACK_SCREEN_NAMES.HOME_SCREEN:
       return focused ? (
         <HomeIcon size={size} color={color} />
       ) : (
         <HomeIconOutline size={size} color={color} />
       );
-    case WinesStackRouteName:
+    case BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN:
       return focused ? (
         <WineIcon size={size} color={color} />
       ) : (
         <WineIconOutline size={size} color={color} />
       );
-    case StoresRouteName:
+    case BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN:
       return focused ? (
         <StoreIcon size={size} color={color} />
       ) : (
         <StoreIconOutline size={size} color={color} />
       );
-    case FriendsRouteName:
+    case BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN:
       return focused ? (
         <FriendsIcon size={size} color={color} />
       ) : (
         <FriendsIconOutline size={size} color={color} />
       );
-    case AccountRouteName:
+    case BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN:
       return focused ? (
         <AccountIcon size={size} color={color} />
       ) : (

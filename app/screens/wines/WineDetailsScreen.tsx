@@ -10,9 +10,13 @@ import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCardList from '../../components/ratings/RatingCardList';
 import StoreCardList from '../../components/stores/StoreCardList';
-import { fetchStoresAsync } from '../../features/stores/storesSlice';
+import {
+  fetchStoresAsync,
+  selectAllStores,
+} from '../../features/stores/storesSlice';
 import {
   fetchWinesAsync,
+  selectWineById,
   updateStoresForWineAsync,
 } from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
@@ -27,21 +31,18 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
   route,
 }): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
-  const stores: Store[] = useSelector((state: RootState) =>
-    state.stores.status !== 'failed' ? state.stores.data : [],
+  const stores: Store[] = useSelector(selectAllStores);
+  const wine: Wine = useSelector<RootState, Wine>((state) =>
+    selectWineById(state, route.params.wineId),
   );
-  const wine: Wine = useSelector((state: RootState) =>
-    state.wines.status !== 'failed'
-      ? state.wines.data.find((w) => w.id === route.params.wine.id)
-      : route.params.wine,
-  );
+
   const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation<WinesScreenNavigationProp>();
 
   useEffect(() => {
     dispatch(fetchStoresAsync());
-  }, [dispatch, route.params.wine.id]);
+  }, [dispatch]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

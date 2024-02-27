@@ -131,6 +131,9 @@ const selectWines = (state: RootState) =>
 export const selectAllWines = createSelector(
   [selectWines],
   (wines: Wine[]) => wines,
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
 );
 
 export const selectWineById = createSelector(
