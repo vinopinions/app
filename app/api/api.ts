@@ -4,6 +4,7 @@ import {
   AUTH_ENDPOINT_URL,
   AUTH_LOGIN_ENDPOINT_URL,
   AUTH_SIGNUP_ENDPOINT_URL,
+  FEED_URL,
   ID_URL_PARAMETER,
   RATINGS_ENDPOINT_URL,
   RATINGS_ID_ENDPOINT_URL,
@@ -50,6 +51,10 @@ export const apiRatings = createDefaultAxiosInstance({
   baseURL: RATINGS_ENDPOINT_URL,
 });
 
+export const apiFeed = createDefaultAxiosInstance({
+  baseURL: FEED_URL,
+});
+
 export const login = (credentials: Credentials, options?: AxiosRequestConfig) =>
   apiAuth.post(AUTH_LOGIN_ENDPOINT_URL, credentials, options);
 
@@ -93,7 +98,7 @@ export const createWinemaker = (
 ) => apiWinemakers.post('', winemaker, options);
 
 export const fetchStores = (options?: AxiosRequestConfig) =>
-  apiStores.get('/', options);
+  apiStores.get('', options);
 
 export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
   apiStores.get(
@@ -120,3 +125,18 @@ export const deleteRating = (ratingId: string, options?: AxiosRequestConfig) =>
     RATINGS_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, ratingId),
     options,
   );
+
+export const fetchFeed = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFeed.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });

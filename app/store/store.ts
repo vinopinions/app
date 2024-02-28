@@ -1,10 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
+import feedSlice from '../features/feed/feedSlice';
+import ratingsSlice from '../features/ratings/ratingsSlice';
 import storesReducer from '../features/stores/storesSlice';
+import currentUserReducer from '../features/users/currentUserSlice';
 import winemakersReducer from '../features/winemakers/winemakersSlice';
 import winesReducer from '../features/wines/winesSlice';
-import currentUserReducer from '../features/users/currentUserSlice';
-import ratingsSlice from '../features/ratings/ratingsSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   stores: storesReducer,
   currentUser: currentUserReducer,
   ratings: ratingsSlice,
+  feed: feedSlice,
 });
 
 export const store = configureStore({
