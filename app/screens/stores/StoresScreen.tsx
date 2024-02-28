@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -9,13 +10,14 @@ import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import Store from '../../models/Store';
 import { AppDispatch, RootState } from '../../store/store';
-import { StoresScreenNavigationProp } from './StoresStackScreen';
+import { StoresStackParamList } from './StoresStackScreen';
 
 const StoresScreen = ({
   navigation,
-}: {
-  navigation: StoresScreenNavigationProp;
-}) => {
+}: NativeStackScreenProps<
+  StoresStackParamList,
+  STORES_STACK_SCREEN_NAMES.STORES_SCREEN
+>) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const stores = useSelector((state: RootState) =>

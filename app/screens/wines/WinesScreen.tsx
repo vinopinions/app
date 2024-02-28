@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
@@ -9,13 +10,14 @@ import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
 import { AppDispatch, RootState } from '../../store/store';
-import { WinesScreenNavigationProp } from './WinesStackScreen';
+import { WinesStackParamList } from './WinesStackScreen';
 
 const WinesScreen = ({
   navigation,
-}: {
-  navigation: WinesScreenNavigationProp;
-}) => {
+}: NativeStackScreenProps<
+  WinesStackParamList,
+  WINES_STACK_SCREEN_NAMES.WINES_SCREEN
+>) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const wines = useSelector((state: RootState) =>
@@ -61,7 +63,6 @@ const WinesScreen = ({
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
       <WineCardList
-        navigation={navigation}
         refreshing={refreshing}
         onRefresh={onRefresh}
         wines={searchResults}
