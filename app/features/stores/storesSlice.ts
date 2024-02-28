@@ -1,5 +1,3 @@
-import { RootState } from './../../store/store';
-/* eslint-disable eqeqeq */
 import {
   createAsyncThunk,
   createSelector,
@@ -9,6 +7,7 @@ import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import Store from '../../models/Store';
 import CreateStoreDto from '../../models/dtos/Store.dto';
+import { RootState } from './../../store/store';
 
 type StoresState = ApiResponseState<Store[]>;
 
@@ -52,13 +51,11 @@ const storesSlice = createSlice({
       })
       .addCase(fetchStoresAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
-          state.data = action.payload;
-        }
+        state.data = action.payload;
       })
       .addCase(fetchStoresAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -67,13 +64,11 @@ const storesSlice = createSlice({
       })
       .addCase(fetchStoreByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status == 'succeeded') {
-          state.data = [action.payload];
-        }
+        state.data = [action.payload];
       })
       .addCase(fetchStoreByIdAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -81,13 +76,12 @@ const storesSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(createStoreAsync.fulfilled, (state, action) => {
-        if (state.status !== 'failed') {
-          state.data.push(action.payload);
-        }
+        state.status = 'succeeded';
+        state.data.push(action.payload);
       })
       .addCase(createStoreAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       });
@@ -97,10 +91,7 @@ const storesSlice = createSlice({
 export default storesSlice.reducer;
 
 export const selectAllStores = createSelector(
-  [
-    (state: RootState) =>
-      state.stores.status !== 'failed' ? state.stores.data : [],
-  ],
+  [(state: RootState) => state.stores.data],
   (stores) => stores,
   // https://github.com/reduxjs/reselect/discussions/662
   {
@@ -110,8 +101,7 @@ export const selectAllStores = createSelector(
 
 export const selectStoreById = createSelector(
   [
-    (state: RootState) =>
-      state.stores.status !== 'failed' ? state.stores.data : [],
+    (state: RootState) => state.stores.data,
     (state: RootState, storeId: string) => storeId,
   ],
   (stores, storeId): Store => {

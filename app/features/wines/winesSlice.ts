@@ -125,8 +125,7 @@ const winesSlice = createSlice({
 
 export default winesSlice.reducer;
 
-const selectWines = (state: RootState) =>
-  state.wines.status !== 'failed' ? state.wines.data : [];
+const selectWines = (state: RootState) => state.wines.data;
 
 export const selectAllWines = createSelector(
   [selectWines],

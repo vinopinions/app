@@ -21,12 +21,8 @@ import { AppDispatch, RootState } from '../../store/store';
 
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
-  const winemakers = useSelector((state: RootState) =>
-    state.winemakers.status !== 'failed' ? state.winemakers.data : [],
-  );
-  const allStores = useSelector((state: RootState) =>
-    state.stores.status !== 'failed' ? state.stores.data : [],
-  );
+  const winemakers = useSelector((state: RootState) => state.winemakers.data);
+  const allStores = useSelector((state: RootState) => state.stores.data);
 
   const [name, setName] = useState<string>();
   const [year, setYear] = useState<number>();

@@ -51,9 +51,8 @@ const winemakersSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(createWinemakerAsync.fulfilled, (state, action) => {
-        if (state.status !== 'failed') {
-          state.data.push(action.payload);
-        }
+        state.status = 'succeeded';
+        state.data.push(action.payload);
       })
       .addCase(createWinemakerAsync.rejected, (state, action) => {
         state.status = 'failed';

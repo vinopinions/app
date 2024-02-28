@@ -20,8 +20,8 @@ const RatingCardList = ({
   style,
 }: RatingCardListProps): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
-  const currentUser: User | undefined = useSelector((state: RootState) =>
-    state.currentUser.status !== 'failed' ? state.currentUser.data : undefined,
+  const currentUser: User | undefined = useSelector(
+    (state: RootState) => state.currentUser.data,
   );
 
   useEffect(() => {
