@@ -41,7 +41,7 @@ const HomeScreen = () => {
         )}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        onEndReachedThreshold={0.2}
+        onEndReachedThreshold={0.4}
         onEndReached={onEndReached}
       />
     </View>

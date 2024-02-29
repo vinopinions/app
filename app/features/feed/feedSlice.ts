@@ -55,7 +55,16 @@ const feedSlice = createSlice({
       })
       .addCase(_fetchFeedAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+
+        // if we get the first page, we reset the state completely, else we just update the state and keep the data from the previous pages
+        if (action.payload.meta.page === 1) {
+          state.data = action.payload;
+        } else {
+          state.data = {
+            ...action.payload,
+            data: [...state.data.data, ...action.payload.data],
+          };
+        }
       })
       .addCase(_fetchFeedAsync.rejected, (state, action) => {
         state.status = 'failed';
