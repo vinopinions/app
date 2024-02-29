@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
-import Wine from '../models/Wine';
+import Wine from '../../models/Wine';
 
 type WineCardProps = CardProps & {
   wine: Wine;

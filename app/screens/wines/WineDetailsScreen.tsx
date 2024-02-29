@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import RatingCardList from '../../components/ratings/RatingCardList';
-import StoreCardList from '../../components/stores/StoreCardList';
+import RatingCard from '../../components/ratings/RatingCard';
+import StoreCard from '../../components/stores/StoreCard';
 import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import {
   fetchStoresAsync,
@@ -119,12 +119,20 @@ const WineDetailsScreen = ({
         <View marginB-5>
           <Text text60>Ratings:</Text>
         </View>
-        <RatingCardList ratings={wine.ratings} />
+        <ScrollView>
+          {wine.ratings.map((rating, index) => (
+            <RatingCard rating={rating} key={index} />
+          ))}
+        </ScrollView>
       </View>
       <View>
         <View marginB-5>
           <Text text60>Stores:</Text>
-          <StoreCardList stores={wine.stores || []} />
+          <ScrollView>
+            {stores.map((store, index) => (
+              <StoreCard store={store} key={index} />
+            ))}
+          </ScrollView>
         </View>
       </View>
     </ScrollView>

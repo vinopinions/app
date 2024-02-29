@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import React from 'react';
 import { NativeModules } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -20,6 +21,16 @@ const App = () => {
 
 const Layout = () => {
   const { authState } = useAuth();
+
+  if (authState.status === 'loading') {
+    // TODO: Add loading indicator
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return authState.status === 'succeeded' && authState.authenticated ? (
     <NavigationContainer>
       <BottomTabNavigator />

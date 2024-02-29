@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import AddButton from '../../components/PlusButton';
 import SearchBar from '../../components/SearchBar';
-import WineCardList from '../../components/WineCardList';
+import WineCard from '../../components/wines/WineCard';
 import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
@@ -60,11 +60,15 @@ const WinesScreen = ({
   return (
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-      <WineCardList
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        wines={searchResults}
-      />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {searchResults.map((wine, index) => (
+          <WineCard wine={wine} key={index} />
+        ))}
+      </ScrollView>
       <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
     </View>
   );

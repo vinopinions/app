@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
-import StoreCardList from '../../components/stores/StoreCardList';
+import StoreCard from '../../components/stores/StoreCard';
 import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import Store from '../../models/Store';
@@ -66,11 +66,15 @@ const StoresScreen = ({
   return (
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-      <StoreCardList
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        stores={searchResults}
-      />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {searchResults.map((store, index) => (
+          <StoreCard store={store} key={index} />
+        ))}
+      </ScrollView>
       <View style={styles.buttonContainer}>
         <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
       </View>

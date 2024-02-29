@@ -10,7 +10,7 @@ import {
   WizardStepStates,
 } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import WineCard from '../../components/WineCard';
+import WineCard from '../../components/wines/WineCard';
 import { fetchStoresAsync } from '../../features/stores/storesSlice';
 import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
 import { createWineAsync } from '../../features/wines/winesSlice';
