@@ -11,6 +11,8 @@ type Wine = {
   winemaker: Winemaker;
   stores: Store[];
   ratings: Rating[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export function isWine(obj: unknown): obj is Wine {
@@ -20,7 +22,9 @@ export function isWine(obj: unknown): obj is Wine {
     'name' in obj &&
     'year' in obj &&
     'grapeVariety' in obj &&
-    'heritage' in obj
+    'heritage' in obj &&
+    'createdAt' in obj &&
+    'updatedAt' in obj
   );
 }
 
