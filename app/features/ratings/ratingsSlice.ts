@@ -1,10 +1,10 @@
-/* eslint-disable eqeqeq */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import Rating from '../../models/Rating';
 import { createWineRating, deleteRating } from '../../api/api';
+import Rating from '../../models/Rating';
+import RatingDto from '../../models/dtos/Rating.dto';
 
-type RatigsState = ApiResponseState<Rating[]>;
+type RatingsState = ApiResponseState<Rating[]>;
 
 interface CreateWineRatingParams {
   wineId: string;
@@ -26,21 +26,20 @@ export const deleteRatingAsync = createAsyncThunk(
   },
 );
 
-const initialState: RatigsState = {
+const initialState: RatingsState = {
   data: [],
   status: 'idle',
 };
 
 const ratingsSlice = createSlice({
   name: 'ratings',
-  initialState: initialState as RatigsState,
+  initialState: initialState as RatingsState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(createWineRatingAsync.fulfilled, (state, action) => {
-        if (state.status == 'succeeded') {
-          state.data.push(action.payload);
-        }
+        state.status = 'succeeded';
+        state.data.push(action.payload);
       })
       .addCase(createWineRatingAsync.rejected, (state, action) => {
         state.status = 'failed';
@@ -49,9 +48,8 @@ const ratingsSlice = createSlice({
         }
       })
       .addCase(deleteRatingAsync.fulfilled, (state, action) => {
-        if (state.status == 'succeeded') {
-          state.data.filter((d) => d.id !== action.payload[0].id);
-        }
+        state.status = 'succeeded';
+        state.data.filter((d) => d.id !== action.payload[0].id);
       })
       .addCase(deleteRatingAsync.rejected, (state, action) => {
         state.status = 'failed';

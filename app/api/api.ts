@@ -4,6 +4,7 @@ import {
   AUTH_ENDPOINT_URL,
   AUTH_LOGIN_ENDPOINT_URL,
   AUTH_SIGNUP_ENDPOINT_URL,
+  FEED_URL,
   ID_URL_PARAMETER,
   RATINGS_ENDPOINT_URL,
   RATINGS_ID_ENDPOINT_URL,
@@ -16,9 +17,9 @@ import {
   WINES_ID_ENDPOINT_URL,
   WINES_ID_RATINGS_ENDPOINT_URL,
 } from '../constants/UrlConstants';
-import Store from '../models/Store';
 import Winemaker from '../models/Winemaker';
 import RatingDto from '../models/dtos/Rating.dto';
+import StoreDto from '../models/dtos/Store.dto';
 import WineDto from '../models/dtos/Wine.dto';
 import { createDefaultAxiosInstance } from './utils';
 
@@ -50,6 +51,10 @@ export const apiRatings = createDefaultAxiosInstance({
   baseURL: RATINGS_ENDPOINT_URL,
 });
 
+export const apiFeed = createDefaultAxiosInstance({
+  baseURL: FEED_URL,
+});
+
 export const login = (credentials: Credentials, options?: AxiosRequestConfig) =>
   apiAuth.post(AUTH_LOGIN_ENDPOINT_URL, credentials, options);
 
@@ -67,8 +72,20 @@ export const fetchWineById = (wineId: string, options?: AxiosRequestConfig) =>
     options,
   );
 
-export const fetchWines = (options?: AxiosRequestConfig) =>
-  apiWines.get('', options);
+export const fetchWines = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiWines.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
 
 export const createWine = (wine: WineDto, options?: AxiosRequestConfig) =>
   apiWines.post('', wine, options);
@@ -92,8 +109,20 @@ export const createWinemaker = (
   options?: AxiosRequestConfig,
 ) => apiWinemakers.post('', winemaker, options);
 
-export const fetchStores = (options?: AxiosRequestConfig) =>
-  apiStores.get('/', options);
+export const fetchStores = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiStores.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
 
 export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
   apiStores.get(
@@ -101,7 +130,7 @@ export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
     options,
   );
 
-export const createStore = (store: Store, options?: AxiosRequestConfig) =>
+export const createStore = (store: StoreDto, options?: AxiosRequestConfig) =>
   apiStores.post('', store, options);
 
 export const createWineRating = (
@@ -120,3 +149,18 @@ export const deleteRating = (ratingId: string, options?: AxiosRequestConfig) =>
     RATINGS_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, ratingId),
     options,
   );
+
+export const fetchFeed = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFeed.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });

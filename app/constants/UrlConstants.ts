@@ -1,5 +1,5 @@
 // base
-export const API_BASE_URL = 'https://api-dev.vinopinions.spots.host/v1';
+export const API_BASE_URL = 'https://api-dev.vinopinions.app/v1';
 // parameter
 export const ID_URL_PARAMETER = ':id';
 export const USERNAME_URL_PARAMETER = ':username';
@@ -36,3 +36,5 @@ export const WINEMAKERS_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 export const WINES_ENDPOINT_URL = `${API_BASE_URL}/wines`;
 export const WINES_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 export const WINES_ID_RATINGS_ENDPOINT_URL = `/${ID_URL_PARAMETER}/ratings`;
+// feed
+export const FEED_URL = `${API_BASE_URL}/feed`;

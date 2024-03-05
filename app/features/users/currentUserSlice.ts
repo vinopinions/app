@@ -29,9 +29,7 @@ const currentUserSlice = createSlice({
       })
       .addCase(fetchCurrentUserAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status === 'succeeded') {
-          state.data = action.payload;
-        }
+        state.data = action.payload;
       })
       .addCase(fetchCurrentUserAsync.rejected, (state, action) => {
         state.status = 'failed';
