@@ -1,15 +1,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import StoreCard from '../../components/stores/StoreCard';
 import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
-import { fetchStoresAsync } from '../../features/stores/storesSlice';
+import {
+  fetchStoresAsync,
+  selectStorePage,
+} from '../../features/stores/storesSlice';
+import Page from '../../models/Page';
 import Store from '../../models/Store';
-import { AppDispatch, RootState } from '../../store/store';
+import { AppDispatch } from '../../store/store';
 import { StoresStackParamList } from './StoresStackScreen';
 
 const StoresScreen = ({
@@ -20,61 +24,60 @@ const StoresScreen = ({
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
-  const stores = useSelector((state: RootState) => state.stores.data);
+  const storePage: Page<Store> = useSelector(selectStorePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Store[]>(stores);
+  const [searchResults, setSearchResults] = useState<Store[]>(storePage.data);
+
+  const performSearch = useCallback(() => {
+    if (searchQuery === '') {
+      setSearchResults(storePage.data);
+    } else {
+      const results = storePage.data.filter((w) =>
+        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setSearchResults(results);
+    }
+  }, [searchQuery, storePage.data]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
   useEffect(() => {
-    const performSearch = () => {
-      if (searchQuery === '') {
-        setSearchResults(stores);
-      } else {
-        const results = stores.filter((s) =>
-          s.name.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
-        setSearchResults(results);
-      }
-    };
     performSearch();
-  }, [searchQuery, stores]);
+  }, [searchQuery, performSearch, storePage.data]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    try {
-      await dispatch(fetchStoresAsync());
-    } finally {
-      setRefreshing(false);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
+    dispatch(fetchStoresAsync());
     setRefreshing(false);
-  }, [stores]);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchStoresAsync());
   }, [dispatch]);
 
-  const onAddButtonPress = () => {
+  const onEndReached = useCallback(async () => {
+    if (storePage.meta.hasNextPage) {
+      dispatch(fetchStoresAsync({ page: storePage.meta.page + 1 }));
+    }
+  }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page]);
+
+  const onAddButtonPress = useCallback(() => {
     navigation.push(STORES_STACK_SCREEN_NAMES.STORE_ADD_SCREEN);
-  };
+  }, [navigation]);
 
   return (
     <View style={styles.screen}>
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {searchResults.map((store, index) => (
-          <StoreCard store={store} key={index} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={searchResults}
+        renderItem={({ item }: { item: Store }) => <StoreCard store={item} />}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        onEndReachedThreshold={0.4}
+        onEndReached={onEndReached}
+      />
       <View style={styles.buttonContainer}>
         <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
       </View>

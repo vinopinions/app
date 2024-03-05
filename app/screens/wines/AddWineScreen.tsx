@@ -11,7 +11,10 @@ import {
 } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import WineCard from '../../components/wines/WineCard';
-import { fetchStoresAsync } from '../../features/stores/storesSlice';
+import {
+  fetchStoresAsync,
+  selectAllStores,
+} from '../../features/stores/storesSlice';
 import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
 import { createWineAsync } from '../../features/wines/winesSlice';
 import Store from '../../models/Store';
@@ -22,7 +25,7 @@ import { AppDispatch, RootState } from '../../store/store';
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
   const winemakers = useSelector((state: RootState) => state.winemakers.data);
-  const allStores = useSelector((state: RootState) => state.stores.data);
+  const allStores = useSelector(selectAllStores);
 
   const [name, setName] = useState<string>();
   const [year, setYear] = useState<number>();
@@ -174,6 +177,8 @@ const AddWineScreen = ({ navigation }) => {
                   winemaker,
                   stores: [],
                   ratings: [],
+                  createdAt: faker.date.anytime().toISOString(),
+                  updatedAt: faker.date.anytime().toISOString(),
                 }}
               />
               <Button

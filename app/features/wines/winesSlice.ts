@@ -174,6 +174,7 @@ export const selectWinePage = createSelector(
 export const selectAllWines = createSelector(
   [selectWines],
   (wines: Wine[]) => wines,
+  // https://github.com/reduxjs/reselect/discussions/662
   {
     devModeChecks: { identityFunctionCheck: 'never' },
   },

@@ -18,11 +18,10 @@ export type WinesStackParamList = {
 
 const WinesStackScreen = () => {
   return (
-    <WinesStack.Navigator>
+    <WinesStack.Navigator screenOptions={{ headerShown: false }}>
       <WinesStack.Screen
         name={WINES_STACK_SCREEN_NAMES.WINES_SCREEN}
         component={WinesScreen}
-        options={{ headerShown: false }}
       />
       <WinesStack.Screen
         name={WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN}
@@ -30,12 +29,10 @@ const WinesStackScreen = () => {
       />
       <WinesStack.Screen
         name={WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN}
-        options={{ title: 'New Wine' }}
         component={AddWineScreen}
       />
       <WinesStack.Screen
         name={WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN}
-        options={{ title: 'New Rating' }}
         component={CreateRatingScreen}
       />
     </WinesStack.Navigator>

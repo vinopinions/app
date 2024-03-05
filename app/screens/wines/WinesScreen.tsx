@@ -58,9 +58,7 @@ const WinesScreen = ({
   }, [dispatch]);
 
   const onEndReached = useCallback(async () => {
-    console.log('Trying to reload');
     if (winePage.meta.hasNextPage) {
-      console.log('reloading');
       dispatch(fetchWinesAsync({ page: winePage.meta.page + 1 }));
     }
   }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page]);

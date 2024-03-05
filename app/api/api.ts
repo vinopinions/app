@@ -109,8 +109,20 @@ export const createWinemaker = (
   options?: AxiosRequestConfig,
 ) => apiWinemakers.post('', winemaker, options);
 
-export const fetchStores = (options?: AxiosRequestConfig) =>
-  apiStores.get('', options);
+export const fetchStores = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiStores.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
 
 export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
   apiStores.get(
