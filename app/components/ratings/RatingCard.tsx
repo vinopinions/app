@@ -17,7 +17,7 @@ import { AppDispatch } from '../../store/store';
 
 type RatingCardProps = CardProps & {
   rating: Rating;
-  currentUser: User | undefined;
+  currentUser?: User | undefined;
 };
 
 const RatingCard = (props: RatingCardProps): React.ReactElement => {

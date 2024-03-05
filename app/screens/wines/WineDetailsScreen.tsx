@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   RefreshControl,
@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import RatingCardList from '../../components/ratings/RatingCardList';
-import StoreCardList from '../../components/stores/StoreCardList';
+import RatingCard from '../../components/ratings/RatingCard';
+import StoreCard from '../../components/stores/StoreCard';
+import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import {
   fetchStoresAsync,
   selectAllStores,
@@ -22,14 +23,15 @@ import {
 import Store from '../../models/Store';
 import Wine from '../../models/Wine';
 import { AppDispatch, RootState } from '../../store/store';
-import {
-  WineDetailsScreenRouteProp,
-  WinesScreenNavigationProp,
-} from './WinesStackScreen';
+import { WinesStackParamList } from './WinesStackScreen';
 
-const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
+const WineDetailsScreen = ({
   route,
-}): React.ReactElement => {
+  navigation,
+}: NativeStackScreenProps<
+  WinesStackParamList,
+  WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN
+>): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
   const stores: Store[] = useSelector(selectAllStores);
   const wine: Wine = useSelector<RootState, Wine>((state) =>
@@ -37,8 +39,6 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
   );
 
   const [refreshing, setRefreshing] = useState(false);
-
-  const navigation = useNavigation<WinesScreenNavigationProp>();
 
   useEffect(() => {
     dispatch(fetchStoresAsync());
@@ -84,7 +84,9 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
           marginB-10
           label="Rate wine"
           onPress={() =>
-            navigation.navigate('CreateRatingScreen', { wine: wine })
+            navigation.push(WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN, {
+              wine: wine,
+            })
           }
         />
         <Picker
@@ -117,12 +119,20 @@ const WineDetailsScreen: React.FC<{ route: WineDetailsScreenRouteProp }> = ({
         <View marginB-5>
           <Text text60>Ratings:</Text>
         </View>
-        <RatingCardList ratings={wine.ratings} />
+        <ScrollView>
+          {wine.ratings.map((rating, index) => (
+            <RatingCard rating={rating} key={index} />
+          ))}
+        </ScrollView>
       </View>
       <View>
         <View marginB-5>
           <Text text60>Stores:</Text>
-          <StoreCardList stores={wine.stores || []} />
+          <ScrollView>
+            {stores.map((store, index) => (
+              <StoreCard store={store} key={index} />
+            ))}
+          </ScrollView>
         </View>
       </View>
     </ScrollView>

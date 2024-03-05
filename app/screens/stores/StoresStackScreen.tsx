@@ -16,7 +16,7 @@ export type StoresStackParamList = {
 
 const StoresStackScreen = () => {
   return (
-    <StoresStack.Navigator>
+    <StoresStack.Navigator screenOptions={{ headerShown: false }}>
       <StoresStack.Screen
         name={STORES_STACK_SCREEN_NAMES.STORES_SCREEN}
         component={StoresScreen}

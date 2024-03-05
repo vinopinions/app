@@ -2,10 +2,10 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import WineCardList from '../../components/WineCardList';
+import WineCard from '../../components/wines/WineCard';
 import {
   BOTTOM_TAB_STACK_SCREEN_NAMES,
   STORES_STACK_SCREEN_NAMES,
@@ -71,7 +71,11 @@ const StoreDetailsScreen = ({
         Website: {store.url}
       </Text>
       <View>
-        <WineCardList wines={wines} />
+        <ScrollView>
+          {wines.map((wine, index) => (
+            <WineCard wine={wine} key={index} />
+          ))}
+        </ScrollView>
       </View>
     </View>
   );

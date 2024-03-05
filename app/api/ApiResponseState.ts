@@ -5,6 +5,7 @@ type ApiResponseState<T> =
     }
   | {
       status: 'failed';
+      data: T;
       error: string;
     };
 

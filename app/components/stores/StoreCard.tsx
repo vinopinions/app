@@ -15,15 +15,6 @@ const StoreCard = ({ store, ...props }: StoreCardProps): React.ReactElement => {
         <Text text70 $textDefault>
           {store.address}
         </Text>
-        <View style={styles.container}>
-          <Text text60 $textDefault style={styles.text}>
-            {store.wines === undefined || store.wines.length === 0
-              ? 'No ratings yet'
-              : store.wines.length === 1
-                ? store.wines.length + ' wine rating'
-                : store.wines.length + ' wine ratings'}
-          </Text>
-        </View>
       </View>
     </Card>
   );
