@@ -7,29 +7,24 @@ import ApiResponseState from '../../api/ApiResponseState';
 import { fetchFeed } from '../../api/api';
 import Page from '../../models/Page';
 import Rating from '../../models/Rating';
+import FetchPageParams from '../../models/dtos/FetchPageParams';
 import { RootState } from '../../store/store';
 
-type CurrentFeedState = ApiResponseState<Page<Rating>>;
+type FeedState = ApiResponseState<Page<Rating>>;
 
-type FetchFeedAsyncParams = {
-  page?: number;
-  take?: number;
-  order?: 'ASC' | 'DESC';
-};
-
-export const _fetchFeedAsync = createAsyncThunk<
-  Page<Rating>,
-  FetchFeedAsyncParams
->('feed', async ({ page, take, order }: FetchFeedAsyncParams) => {
-  const response = await fetchFeed(page, take, order);
-  return response.data;
-});
+export const _fetchFeedAsync = createAsyncThunk<Page<Rating>, FetchPageParams>(
+  'feed',
+  async ({ page, take, order }: FetchPageParams) => {
+    const response = await fetchFeed(page, take, order);
+    return response.data;
+  },
+);
 // workaround since optional parameters don't seem to be working with `createAsyncThunk`
 // even though it is described here: https://github.com/reduxjs/redux-toolkit/issues/489
-export const fetchFeedAsync = (params: FetchFeedAsyncParams = {}) =>
+export const fetchFeedAsync = (params: FetchPageParams = {}) =>
   _fetchFeedAsync(params);
 
-export const initialState: CurrentFeedState = {
+export const initialState: FeedState = {
   data: {
     data: [],
     meta: {
@@ -46,7 +41,7 @@ export const initialState: CurrentFeedState = {
 
 const feedSlice = createSlice({
   name: 'feed',
-  initialState: initialState as CurrentFeedState,
+  initialState: initialState as FeedState,
   reducers: {},
   extraReducers: (builder) => {
     builder

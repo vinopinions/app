@@ -10,19 +10,26 @@ import {
   fetchWines,
   updateStoresForWine,
 } from '../../api/api';
+import Page from '../../models/Page';
 import Wine from '../../models/Wine';
+import FetchPageParams from '../../models/dtos/FetchPageParams';
 import WineDto from '../../models/dtos/Wine.dto';
 import { RootState } from '../../store/store';
 
-type WinesState = ApiResponseState<Wine[]>;
+type WinesState = ApiResponseState<Page<Wine>>;
 
-export const fetchWinesAsync = createAsyncThunk<Wine[]>(
+export const _fetchWinesAsync = createAsyncThunk<Page<Wine>, FetchPageParams>(
   'wines/fetchWines',
-  async () => {
-    const response = await fetchWines();
+  async ({ page, take, order }: FetchPageParams) => {
+    const response = await fetchWines(page, take, order);
     return response.data;
   },
 );
+
+// workaround since optional parameters don't seem to be working with `createAsyncThunk`
+// even though it is described here: https://github.com/reduxjs/redux-toolkit/issues/489
+export const fetchWinesAsync = (params: FetchPageParams = {}) =>
+  _fetchWinesAsync(params);
 
 export const fetchWineByIdAsync = createAsyncThunk<Wine, string>(
   'wines/fetchWineById',
@@ -49,7 +56,17 @@ export const updateStoresForWineAsync = createAsyncThunk<
 });
 
 const initialState: WinesState = {
-  data: [],
+  data: {
+    data: [],
+    meta: {
+      page: 0,
+      take: 0,
+      itemCount: 0,
+      pageCount: 0,
+      hasPreviousPage: false,
+      hasNextPage: false,
+    },
+  },
   status: 'idle',
 };
 
@@ -59,16 +76,28 @@ const winesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchWinesAsync.pending, (state) => {
+      .addCase(_fetchWinesAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchWinesAsync.fulfilled, (state, action) => {
+      .addCase(_fetchWinesAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status === 'succeeded') {
+
+        // initialize wines with empty relations
+        action.payload.data = action.payload.data.map((wine) => {
+          return { ...wine, ratings: [], stores: [] };
+        });
+
+        // if we get the first page, we reset the state completely, else we just update the state and keep the data from the previous pages
+        if (action.payload.meta.page === 1) {
           state.data = action.payload;
+        } else {
+          state.data = {
+            ...action.payload,
+            data: [...state.data.data, ...action.payload.data],
+          };
         }
       })
-      .addCase(fetchWinesAsync.rejected, (state, action) => {
+      .addCase(_fetchWinesAsync.rejected, (state, action) => {
         state.status = 'failed';
         if (state.status === 'failed') {
           state.error = action.error.message;
@@ -79,8 +108,17 @@ const winesSlice = createSlice({
       })
       .addCase(fetchWineByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status === 'succeeded') {
-          state.data = [action.payload];
+
+        // initialize wine with empty relations
+        action.payload = { ...action.payload, ratings: [], stores: [] };
+
+        const index = state.data.data.findIndex(
+          (wine) => wine.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.data.data[index] = action.payload;
+        } else {
+          state.data.data.push(action.payload);
         }
       })
       .addCase(fetchWineByIdAsync.rejected, (state, action) => {
@@ -94,13 +132,11 @@ const winesSlice = createSlice({
       })
       .addCase(updateStoresForWineAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status === 'succeeded') {
-          const index = state.data.findIndex(
-            (wine) => wine.id === action.payload.id,
-          );
-          if (index !== -1) {
-            state.data[index].stores = action.payload.stores;
-          }
+        const index = state.data.data.findIndex(
+          (wine) => wine.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.data.data[index].stores = action.payload.stores;
         }
       })
       .addCase(updateStoresForWineAsync.rejected, (state, action) => {
@@ -110,9 +146,8 @@ const winesSlice = createSlice({
         }
       })
       .addCase(createWineAsync.fulfilled, (state, action) => {
-        if (state.status === 'succeeded') {
-          state.data.push(action.payload);
-        }
+        state.status = 'succeeded';
+        state.data.data.push(action.payload);
       })
       .addCase(createWineAsync.rejected, (state, action) => {
         state.status = 'failed';
@@ -125,7 +160,16 @@ const winesSlice = createSlice({
 
 export default winesSlice.reducer;
 
-const selectWines = (state: RootState) => state.wines.data;
+const _selectWinePage = (state: RootState) => state.wines.data;
+const selectWines = (state: RootState) => state.wines.data.data;
+
+export const selectWinePage = createSelector(
+  [_selectWinePage],
+  (winePage: Page<Wine>) => winePage,
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
+);
 
 export const selectAllWines = createSelector(
   [selectWines],
