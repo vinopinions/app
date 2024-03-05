@@ -23,12 +23,12 @@ export type AuthState =
 
 export const loginAsync = createAsyncThunk(
   'auth/login',
-  async (credentials: Credentials): Promise<{ access_token: string }> => {
+  async (credentials: Credentials): Promise<string> => {
     const response = await login(credentials);
     const token = response.data.access_token;
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     SecureStore.setItemAsync(TOKEN_KEY, token);
-    return response.data;
+    return token;
   },
 );
 
@@ -58,12 +58,15 @@ export const loadAccessTokenAsync = createAsyncThunk(
 
     // check if the token is still valid by sending a request to a protected endpoint of the api
     const checkResponse = await fetchCurrentUser({
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
       // allow all responses to prevent error interceptors to be called
       validateStatus: () => true,
     });
 
     if (checkResponse.status !== HttpStatusCode.Ok) {
-      Promise.reject();
+      return Promise.reject();
     }
 
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -89,7 +92,7 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         if (state.status === 'succeeded') {
           state.authenticated = true;
-          state.accessToken = action.payload.access_token;
+          state.accessToken = action.payload;
         }
       })
       .addCase(loginAsync.rejected, (state, action) => {

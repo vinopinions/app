@@ -36,3 +36,5 @@ export const WINEMAKERS_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 export const WINES_ENDPOINT_URL = `${API_BASE_URL}/wines`;
 export const WINES_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 export const WINES_ID_RATINGS_ENDPOINT_URL = `/${ID_URL_PARAMETER}/ratings`;
+// feed
+export const FEED_URL = `${API_BASE_URL}/feed`;
