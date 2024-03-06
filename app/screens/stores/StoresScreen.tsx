@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
+import Store from '../../api/pagination/Store';
 import SearchBar from '../../components/SearchBar';
 import StoreCard from '../../components/stores/StoreCard';
 import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
@@ -12,7 +13,6 @@ import {
   selectStorePage,
 } from '../../features/stores/storesSlice';
 import Page from '../../models/Page';
-import Store from '../../models/Store';
 import { AppDispatch } from '../../store/store';
 import { StoresStackParamList } from './StoresStackScreen';
 
@@ -72,7 +72,16 @@ const StoresScreen = ({
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
       <FlatList
         data={searchResults}
-        renderItem={({ item }: { item: Store }) => <StoreCard store={item} />}
+        renderItem={({ item }: { item: Store }) => (
+          <StoreCard
+            store={item}
+            onPress={() =>
+              navigation.push(STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN, {
+                storeId: item.id,
+              })
+            }
+          />
+        )}
         refreshing={refreshing}
         onRefresh={onRefresh}
         onEndReachedThreshold={0.4}

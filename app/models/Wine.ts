@@ -1,5 +1,3 @@
-import Rating from './Rating';
-import Store from './Store';
 import Winemaker from './Winemaker';
 
 type Wine = {
@@ -9,8 +7,6 @@ type Wine = {
   grapeVariety: string;
   heritage: string;
   winemaker: Winemaker;
-  stores: Store[];
-  ratings: Rating[];
   createdAt: string;
   updatedAt: string;
 };

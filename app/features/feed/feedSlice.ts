@@ -5,9 +5,9 @@ import {
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { fetchFeed } from '../../api/api';
+import FetchPageParams from '../../api/pagination/FetchPageParams';
 import Page from '../../models/Page';
 import Rating from '../../models/Rating';
-import FetchPageParams from '../../models/dtos/FetchPageParams';
 import { RootState } from '../../store/store';
 
 type FeedState = ApiResponseState<Page<Rating>>;

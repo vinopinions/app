@@ -1,70 +1,36 @@
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
-import { Button, Picker, PickerModes, Text, View } from 'react-native-ui-lib';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
-import StoreCard from '../../components/stores/StoreCard';
-import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import {
-  fetchStoresAsync,
-  selectAllStores,
-} from '../../features/stores/storesSlice';
+  BOTTOM_TAB_STACK_SCREEN_NAMES,
+  WINES_STACK_SCREEN_NAMES,
+} from '../../constants/RouteNames';
 import {
-  fetchWinesAsync,
+  fetchRatingsForWineAsync,
+  selectRatingsRelationsByWineId as selectRatingRelationsByWineId,
+} from '../../features/wines/wineRatingsSlice';
+import {
+  fetchWineByIdAsync,
   selectWineById,
-  updateStoresForWineAsync,
 } from '../../features/wines/winesSlice';
-import Store from '../../models/Store';
+import Page from '../../models/Page';
+import Rating from '../../models/Rating';
 import Wine from '../../models/Wine';
+import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
 import { WinesStackParamList } from './WinesStackScreen';
 
-const WineDetailsScreen = ({
-  route,
-  navigation,
-}: NativeStackScreenProps<
-  WinesStackParamList,
-  WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN
->): React.ReactElement => {
-  const dispatch: AppDispatch = useDispatch();
-  const stores: Store[] = useSelector(selectAllStores);
-  const wine: Wine = useSelector<RootState, Wine>((state) =>
-    selectWineById(state, route.params.wineId),
-  );
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchStoresAsync());
-  }, [dispatch]);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    try {
-      await dispatch(fetchStoresAsync());
-      await dispatch(fetchWinesAsync());
-    } finally {
-      setRefreshing(false);
-    }
-  }, [dispatch]);
-
+const renderHeader = (wine: Wine) => {
   return (
-    <ScrollView
-      style={styles.scrollView}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+    <>
       <View marginB-5>
         <Text text40 style={styles.text}>
-          {wine && wine.name} von{' '}
-          {wine && wine.winemaker && wine.winemaker.name}
+          {`${wine.name} von ${wine.winemaker.name}`}
         </Text>
       </View>
       <View marginB-10>
@@ -78,7 +44,7 @@ const WineDetailsScreen = ({
           {wine && wine.year}
         </Text>
       </View>
-      <View row>
+      {/* <View row>
         <Button
           marginR-10
           marginB-10
@@ -93,7 +59,7 @@ const WineDetailsScreen = ({
           label="Add Store"
           mode={PickerModes.MULTI}
           useSafeArea
-          value={wine.stores.map((s) => s.id)}
+          value={storesPage.data.map((s) => s.id)}
           onChange={(items) => {
             dispatch(
               updateStoresForWineAsync({
@@ -110,32 +76,86 @@ const WineDetailsScreen = ({
             );
           }}
         >
-          {stores.map((s) => (
+          {storesPage.data.map((s) => (
             <Picker.Item key={s.id} value={s.id} label={s.name} />
           ))}
         </Picker>
-      </View>
+      </View> */}
+    </>
+  );
+};
+
+const WineDetailsScreen = ({
+  route,
+  navigation,
+}: CompositeScreenProps<
+  NativeStackScreenProps<
+    WinesStackParamList,
+    WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN
+  >,
+  BottomTabScreenProps<
+    BottomTabStackParamList,
+    BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN
+  >
+>): React.ReactElement => {
+  const dispatch: AppDispatch = useDispatch();
+  const wine: Wine = useSelector<RootState, Wine>((state) =>
+    selectWineById(state, route.params.wineId),
+  );
+  const ratingsPage: Page<Rating> = useSelector<RootState, Page<Rating>>(
+    (state) => selectRatingRelationsByWineId(state, route.params.wineId),
+  );
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    onRefresh();
+  }, [dispatch, route.params.wineId]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      dispatch(fetchWineByIdAsync(route.params.wineId));
+      dispatch(fetchRatingsForWineAsync({ wineId: route.params.wineId }));
+    } finally {
+      setRefreshing(false);
+    }
+  }, [dispatch]);
+
+  const onRatingsEndReached = useCallback(async () => {
+    if (ratingsPage.meta.hasNextPage) {
+      dispatch(
+        fetchRatingsForWineAsync({
+          wineId: route.params.wineId,
+          page: ratingsPage.meta.page + 1,
+        }),
+      );
+    }
+  }, [dispatch, ratingsPage.meta.hasNextPage, ratingsPage.meta.page]);
+
+  if (wine === undefined) {
+    // TODO: insert skeleton
+    return (
       <View>
-        <View marginB-5>
-          <Text text60>Ratings:</Text>
-        </View>
-        <ScrollView>
-          {wine.ratings.map((rating, index) => (
-            <RatingCard rating={rating} key={index} />
-          ))}
-        </ScrollView>
+        <Text>loading</Text>
       </View>
-      <View>
-        <View marginB-5>
-          <Text text60>Stores:</Text>
-          <ScrollView>
-            {stores.map((store, index) => (
-              <StoreCard store={store} key={index} />
-            ))}
-          </ScrollView>
-        </View>
-      </View>
-    </ScrollView>
+    );
+  }
+
+  return (
+    <FlatList
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      ListHeaderComponentStyle={styles.listHeader}
+      ListHeaderComponent={() => renderHeader(wine)}
+      data={ratingsPage.data}
+      renderItem={({ item }: { item: Rating }) => <RatingCard rating={item} />}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      onEndReachedThreshold={0.4}
+      onEndReached={onRatingsEndReached}
+    />
   );
 };
 
@@ -151,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 8,
   },
-  scrollView: {
+  listHeader: {
     padding: 10,
   },
 });

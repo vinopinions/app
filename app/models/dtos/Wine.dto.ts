@@ -1,5 +1,5 @@
+import Store from '../../api/pagination/Store';
 import Rating from '../Rating';
-import Store from '../Store';
 import Winemaker from '../Winemaker';
 
 type WineDto = {

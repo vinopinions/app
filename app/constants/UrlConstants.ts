@@ -23,6 +23,7 @@ export const RATINGS_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 // stores
 export const STORES_ENDPOINT_URL = `${API_BASE_URL}/stores`;
 export const STORES_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
+export const STORES_ID_WINES_ENDPOINT_URL = `${STORES_ID_ENDPOINT_URL}/wines`;
 // users
 export const USERS_ENDPOINT_URL = `${API_BASE_URL}/users`;
 export const USERS_USERNAME_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}`;
@@ -35,6 +36,7 @@ export const WINEMAKERS_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
 // wines
 export const WINES_ENDPOINT_URL = `${API_BASE_URL}/wines`;
 export const WINES_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;
-export const WINES_ID_RATINGS_ENDPOINT_URL = `/${ID_URL_PARAMETER}/ratings`;
+export const WINES_ID_STORES_ENDPOINT_URL = `${WINES_ID_ENDPOINT_URL}/stores`;
+export const WINES_ID_RATINGS_ENDPOINT_URL = `${WINES_ID_ENDPOINT_URL}/ratings`;
 // feed
 export const FEED_URL = `${API_BASE_URL}/feed`;

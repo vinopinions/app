@@ -1,9 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { View } from 'react-native-ui-lib';
+import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
-import AddButton from '../../components/PlusButton';
 import SearchBar from '../../components/SearchBar';
 import WineCard from '../../components/wines/WineCard';
 import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
@@ -72,13 +71,24 @@ const WinesScreen = ({
       <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
       <FlatList
         data={searchResults}
-        renderItem={({ item }: { item: Wine }) => <WineCard wine={item} />}
+        renderItem={({ item }: { item: Wine }) => (
+          <WineCard
+            wine={item}
+            onPress={() =>
+              navigation.push(WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN, {
+                wineId: item.id,
+              })
+            }
+          />
+        )}
         refreshing={refreshing}
         onRefresh={onRefresh}
         onEndReachedThreshold={0.4}
         onEndReached={onEndReached}
       />
-      <AddButton onPress={() => onAddButtonPress()} style={styles.plusButton} />
+      <View style={styles.buttonContainer}>
+        <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
+      </View>
     </View>
   );
 };
@@ -90,9 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   wineListContainer: {},
-  plusButton: {
-    position: 'absolute',
-    right: 50,
-    bottom: 50,
+  buttonContainer: {
+    padding: 10,
   },
 });
