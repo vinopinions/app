@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
-import Store from '../../models/Store';
+import Store from '../../api/pagination/Store';
 
 type StoreCardProps = CardProps & { store: Store };
 

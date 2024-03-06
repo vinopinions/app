@@ -10,6 +10,7 @@ import {
   WizardStepStates,
 } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
+import Store from '../../api/pagination/Store';
 import WineCard from '../../components/wines/WineCard';
 import {
   fetchStoresAsync,
@@ -17,7 +18,6 @@ import {
 } from '../../features/stores/storesSlice';
 import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
 import { createWineAsync } from '../../features/wines/winesSlice';
-import Store from '../../models/Store';
 import Winemaker from '../../models/Winemaker';
 import WineDto from '../../models/dtos/Wine.dto';
 import { AppDispatch, RootState } from '../../store/store';
@@ -175,8 +175,8 @@ const AddWineScreen = ({ navigation }) => {
                   grapeVariety,
                   heritage,
                   winemaker,
-                  stores: [],
-                  ratings: [],
+                  storesPage: [],
+                  ratingsPage: [],
                   createdAt: faker.date.anytime().toISOString(),
                   updatedAt: faker.date.anytime().toISOString(),
                 }}

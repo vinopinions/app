@@ -10,12 +10,14 @@ import {
   RATINGS_ID_ENDPOINT_URL,
   STORES_ENDPOINT_URL,
   STORES_ID_ENDPOINT_URL,
+  STORES_ID_WINES_ENDPOINT_URL,
   USERS_ENDPOINT_URL,
   USERS_ME_ENDPOINT_URL,
   WINEMAKERS_ENDPOINT_URL,
   WINES_ENDPOINT_URL,
   WINES_ID_ENDPOINT_URL,
   WINES_ID_RATINGS_ENDPOINT_URL,
+  WINES_ID_STORES_ENDPOINT_URL,
 } from '../constants/UrlConstants';
 import Winemaker from '../models/Winemaker';
 import RatingDto from '../models/dtos/Rating.dto';
@@ -87,6 +89,41 @@ export const fetchWines = (
     ...options,
   });
 
+export const fetchStoresForWine = (
+  wineId: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiWines.get(WINES_ID_STORES_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId), {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const fetchRatingsForWine = (
+  wineId: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiWines.get(
+    WINES_ID_RATINGS_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
+  );
+
 export const createWine = (wine: WineDto, options?: AxiosRequestConfig) =>
   apiWines.post('', wine, options);
 
@@ -128,6 +165,25 @@ export const fetchStoreById = (storeId: string, options?: AxiosRequestConfig) =>
   apiStores.get(
     STORES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, storeId),
     options,
+  );
+
+export const fetchWinesForStore = (
+  storeId: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiStores.get(
+    STORES_ID_WINES_ENDPOINT_URL.replace(ID_URL_PARAMETER, storeId),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
   );
 
 export const createStore = (store: StoreDto, options?: AxiosRequestConfig) =>

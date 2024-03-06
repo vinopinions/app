@@ -1,11 +1,8 @@
-import Wine from './Wine';
-
 type Store = {
   id: string;
   name: string;
   address?: string;
   url?: string;
-  wines: Wine[] | undefined;
   createdAt: string;
   updatedAt: string;
 };
@@ -17,7 +14,6 @@ export const isStore = (obj: unknown): obj is Store => {
     'name' in obj &&
     'address' in obj &&
     'url' in obj &&
-    'wines' in obj &&
     'createdAt' in obj &&
     'updatedAt' in obj
   );

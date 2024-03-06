@@ -5,13 +5,15 @@ import {
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
+import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
+import FetchPageParams from '../../api/pagination/FetchPageParams';
+import PaginationState from '../../api/pagination/PaginationState';
+import Store from '../../api/pagination/Store';
 import Page from '../../models/Page';
-import Store from '../../models/Store';
-import FetchPageParams from '../../models/dtos/FetchPageParams';
 import CreateStoreDto from '../../models/dtos/Store.dto';
 import { RootState } from './../../store/store';
 
-type StoresState = ApiResponseState<Page<Store>>;
+type StoresState = ApiResponseState<PaginationState<Store>>;
 
 export const _fetchStoresAsync = createAsyncThunk<Page<Store>, FetchPageParams>(
   'stores/fetchStores',
@@ -43,17 +45,7 @@ export const createStoreAsync = createAsyncThunk(
 );
 
 const initialState: StoresState = {
-  data: {
-    data: [],
-    meta: {
-      page: 0,
-      take: 0,
-      itemCount: 0,
-      pageCount: 0,
-      hasPreviousPage: false,
-      hasNextPage: false,
-    },
-  },
+  data: EmptyPaginationState,
   status: 'idle',
 };
 
@@ -97,7 +89,7 @@ const storesSlice = createSlice({
         state.status = 'succeeded';
 
         // initialize wine with empty relations
-        action.payload = { ...action.payload, wines: [] };
+        action.payload = { ...action.payload };
 
         const index = state.data.data.findIndex(
           (store) => store.id === action.payload.id,
@@ -156,12 +148,4 @@ export const selectStoreById = createSelector(
   [selectStores, (state: RootState, storeId: string) => storeId],
   (stores: Store[], storeId: string): Store =>
     stores.find((store) => store.id === storeId),
-);
-
-export const selectStoresByWineId = createSelector(
-  [selectStores, (state: RootState, storeId: string) => storeId],
-  (stores: Store[], wineId: string): Store[] =>
-    stores.filter((store: Store) =>
-      store.wines.some((wine) => wine.id === wineId),
-    ),
 );
