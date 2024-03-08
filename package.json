@@ -33,7 +33,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-star-rating-widget": "^1.7.3",
     "react-native-svg": "^15.1.0",
-    "react-native-ui-lib": "^7.17.0",
+    "react-native-ui-lib": "^7.17.2",
     "react-redux": "^9.0.4"
   },
   "devDependencies": {
