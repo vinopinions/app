@@ -87,7 +87,6 @@ const renderHeader = (wine: Wine) => {
 
 const WineDetailsScreen = ({
   route,
-  navigation,
 }: CompositeScreenProps<
   NativeStackScreenProps<
     WinesStackParamList,
@@ -108,10 +107,6 @@ const WineDetailsScreen = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    onRefresh();
-  }, [dispatch, route.params.wineId]);
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -120,7 +115,11 @@ const WineDetailsScreen = ({
     } finally {
       setRefreshing(false);
     }
-  }, [dispatch]);
+  }, [dispatch, route.params.wineId]);
+
+  useEffect(() => {
+    onRefresh();
+  }, [dispatch, onRefresh, route.params.wineId]);
 
   const onRatingsEndReached = useCallback(async () => {
     if (ratingsPage.meta.hasNextPage) {
@@ -131,7 +130,12 @@ const WineDetailsScreen = ({
         }),
       );
     }
-  }, [dispatch, ratingsPage.meta.hasNextPage, ratingsPage.meta.page]);
+  }, [
+    dispatch,
+    ratingsPage.meta.hasNextPage,
+    ratingsPage.meta.page,
+    route.params.wineId,
+  ]);
 
   if (wine === undefined) {
     // TODO: insert skeleton
