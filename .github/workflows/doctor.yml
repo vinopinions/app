@@ -1,0 +1,27 @@
+name: Expo Doctor
+
+on:
+  pull_request:
+    branches: ['developer', 'master']
+  workflow_call:
+
+jobs:
+  doctor:
+    name: Doctor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Install expo-doctor
+        run: yarn add expo-doctor@1.5.0 --ignore-scripts
+
+      - name: Run expo-doctor
+        run: npx expo-doctor
