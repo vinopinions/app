@@ -2609,12 +2609,12 @@
     react-is "^16.13.0"
     use-latest-callback "^0.1.7"
 
-"@react-navigation/drawer@^6.6.11":
-  version "6.6.11"
-  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-6.6.11.tgz#0414a8569e4d42134f043eb4743f8eb93ceb7d80"
-  integrity sha512-UTrgz5HJjpLt8aHZFH1mETEazwUEEVV8bJ+jaOpTl/FgwCHLCkQHZAydnZETK7fPiik3lmu2lJO1Nasl0LwZoA==
+"@react-navigation/drawer@^6.6.13":
+  version "6.6.13"
+  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-6.6.13.tgz#efd346066d17c5cb7ed9d60ffc7e2e528653a370"
+  integrity sha512-fMHucgHqY+n8cOR/GgIK6sYs/L1jnaOEiDcH4lmmPJYSDwKy+Srjl32Z5v1/OG2dzgtMyKFxz2/QfMPas8PQaA==
   dependencies:
-    "@react-navigation/elements" "^1.3.26"
+    "@react-navigation/elements" "^1.3.28"
     color "^4.2.3"
     warn-once "^0.1.0"
 
