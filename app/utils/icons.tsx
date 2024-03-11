@@ -52,3 +52,19 @@ export const RatingIcon = (props: Partial<IconProps<'star'>>) => (
 export const RatingIconOutline = (props: Partial<IconProps<'staro'>>) => (
   <AntDesign {...props} name="staro" />
 );
+
+export const LocationIcon = (props: Partial<IconProps<'location'>>) => (
+  <Ionicons {...props} name="location" />
+);
+
+export const LocationIconOutline = (
+  props: Partial<IconProps<'location-outline'>>,
+) => <Ionicons {...props} name="location-outline" />;
+
+export const InternetIcon = (props: Partial<IconProps<'globe'>>) => (
+  <Ionicons {...props} name="globe" />
+);
+
+export const InternIconOutline = (
+  props: Partial<IconProps<'globe-outline'>>,
+) => <Ionicons {...props} name="globe-outline" />;
