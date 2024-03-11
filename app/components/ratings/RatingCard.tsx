@@ -66,10 +66,8 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
           </Text>
         </View>
         <View style={styles.iconTextContainer}>
-          <AccountIconOutline size={20} />
-          <Text text50 $textDefault>
-            {props.rating.user.username}
-          </Text>
+          <AccountIconOutline size={15} />
+          <Text $textDefault>{props.rating.user.username}</Text>
         </View>
         <View>
           <StarRatingDisplay
