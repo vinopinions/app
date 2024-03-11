@@ -11,8 +11,10 @@ import {
   STORES_ENDPOINT_URL,
   STORES_ID_ENDPOINT_URL,
   STORES_ID_WINES_ENDPOINT_URL,
+  USERNAME_URL_PARAMETER,
   USERS_ENDPOINT_URL,
   USERS_ME_ENDPOINT_URL,
+  USERS_USERNAME_FRIENDS_ENDPOINT_URL,
   WINEMAKERS_ENDPOINT_URL,
   WINES_ENDPOINT_URL,
   WINES_ID_ENDPOINT_URL,
@@ -46,6 +48,10 @@ export const apiWineRatings = createDefaultAxiosInstance({
 });
 
 export const apiUsers = createDefaultAxiosInstance({
+  baseURL: USERS_ENDPOINT_URL,
+});
+
+export const apiUserFriends = createDefaultAxiosInstance({
   baseURL: USERS_ENDPOINT_URL,
 });
 
@@ -220,3 +226,25 @@ export const fetchFeed = (
     },
     ...options,
   });
+
+export const fetchFriendsForUser = (
+  username: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUserFriends.get(
+    USERS_USERNAME_FRIENDS_ENDPOINT_URL.replace(
+      USERNAME_URL_PARAMETER,
+      username,
+    ),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
+  );

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { fetchCurrentUser } from '../../api/api';
 import User from '../../models/User';
+import { RootState } from '../../store/store';
 
 type CurrentUserState = ApiResponseState<User>;
 
@@ -41,3 +42,6 @@ const currentUserSlice = createSlice({
 });
 
 export default currentUserSlice.reducer;
+
+export const selectCurrentUser = (state: RootState): User =>
+  state.currentUser.data;

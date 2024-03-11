@@ -9,6 +9,7 @@ import winemakersReducer from '../features/winemakers/winemakersSlice';
 import wineRatingsReducer from '../features/wines/wineRatingsSlice';
 import wineStoresReducer from '../features/wines/wineStoresSlice';
 import winesReducer from '../features/wines/winesSlice';
+import userFriendsSlice from '../features/users/userFriendsSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   currentUser: currentUserReducer,
   ratings: ratingsSlice,
   feed: feedSlice,
+  userFriends: userFriendsSlice,
 });
 
 export const store = configureStore({
