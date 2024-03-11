@@ -87,7 +87,7 @@ const WinesScreen = ({
         onEndReached={onEndReached}
       />
       <View style={styles.buttonContainer}>
-        <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
+        <Button label={'Add Wine'} onPress={() => onAddButtonPress()} />
       </View>
     </View>
   );
