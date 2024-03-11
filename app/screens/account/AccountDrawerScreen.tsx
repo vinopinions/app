@@ -1,13 +1,12 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
-import AccountScreen from './account-screen';
-import EditProfileScreen from './edit-profile-screen';
+import AccountScreen from './AccountScreen';
 
 const { Navigator, Screen } = createDrawerNavigator();
 
 const createDrawerContent = () => <></>;
 
-export const AccountDrawer = () => (
+const AccountDrawerScreen = () => (
   <Navigator
     drawerContent={createDrawerContent}
     screenOptions={{ drawerPosition: 'right' }}
@@ -17,10 +16,7 @@ export const AccountDrawer = () => (
       component={AccountScreen}
       options={{ headerShown: false }}
     />
-    <Screen
-      name="Edit Profile"
-      component={EditProfileScreen}
-      options={{ headerShown: false }}
-    />
   </Navigator>
 );
+
+export default AccountDrawerScreen;
