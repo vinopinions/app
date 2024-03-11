@@ -1,4 +1,8 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import { IconProps } from '@expo/vector-icons/build/createIconSet';
 import React from 'react';
 // https://icons.expo.fyi/
@@ -68,3 +72,27 @@ export const InternetIcon = (props: Partial<IconProps<'globe'>>) => (
 export const InternIconOutline = (
   props: Partial<IconProps<'globe-outline'>>,
 ) => <Ionicons {...props} name="globe-outline" />;
+
+export const WinemakerIcon = (props: Partial<IconProps<'man'>>) => (
+  <Ionicons {...props} name="man" />
+);
+
+export const WinemakerIconOutline = (
+  props: Partial<IconProps<'man-outline'>>,
+) => <Ionicons {...props} name="man-outline" />;
+
+export const CalendarIcon = (props: Partial<IconProps<'calendar'>>) => (
+  <Ionicons {...props} name="calendar" />
+);
+
+export const CalendarIconOutline = (
+  props: Partial<IconProps<'calendar-outline'>>,
+) => <Ionicons {...props} name="calendar-outline" />;
+
+export const GrapeIcon = (props: Partial<IconProps<'fruit-grapes'>>) => (
+  <MaterialCommunityIcons {...props} name="fruit-grapes" />
+);
+
+export const GrapeIconOutline = (
+  props: Partial<IconProps<'fruit-grapes-outline'>>,
+) => <MaterialCommunityIcons {...props} name="fruit-grapes-outline" />;

@@ -2,6 +2,13 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
 import Wine from '../../models/Wine';
+import {
+  CalendarIconOutline,
+  GrapeIconOutline,
+  LocationIconOutline,
+  WineIconOutline,
+  WinemakerIconOutline,
+} from '../../utils/icons';
 
 type WineCardProps = CardProps & {
   wine: Wine;
@@ -11,13 +18,30 @@ const WineCard = (props: WineCardProps): React.ReactElement => {
   return (
     <Card {...props} style={styles.card}>
       <View padding-20>
-        <Text text50 $textDefault>
-          {props.wine.name}
-        </Text>
-        <View row spread>
-          <Text text70 $textDefault>
-            {props.wine.winemaker.name}
+        <View style={styles.iconTextContainer}>
+          <WineIconOutline size={20} />
+          <Text text50 $textDefault>
+            {props.wine.name}
           </Text>
+        </View>
+        <View>
+          <View style={styles.iconTextContainer}>
+            <WinemakerIconOutline size={15} />
+            <Text $textDefault>{props.wine.winemaker.name}</Text>
+          </View>
+
+          <View style={styles.iconTextContainer}>
+            <GrapeIconOutline size={15} />
+            <Text $textDefault>{props.wine.grapeVariety}</Text>
+          </View>
+          <View style={styles.iconTextContainer}>
+            <LocationIconOutline size={15} />
+            <Text $textDefault>{props.wine.heritage}</Text>
+          </View>
+          <View style={styles.iconTextContainer}>
+            <CalendarIconOutline size={15} />
+            <Text $textDefault>{props.wine.year}</Text>
+          </View>
         </View>
       </View>
     </Card>
@@ -37,4 +61,5 @@ const styles = StyleSheet.create({
   ratingText: {
     margin: -5,
   },
+  iconTextContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
 });
