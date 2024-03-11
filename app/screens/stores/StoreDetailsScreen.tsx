@@ -2,13 +2,10 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
-import StoreDetailsScreenHeader, {
-  StoreDetailsScreenHeaderProps,
-} from '../../components/stores/StoreDetailsScreenHeader';
 import WineCard from '../../components/wines/WineCard';
 import {
   BOTTOM_TAB_STACK_SCREEN_NAMES,
@@ -27,6 +24,9 @@ import Page from '../../models/Page';
 import Wine from '../../models/Wine';
 import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
+import StoreDetailsScreenHeader, {
+  StoreDetailsScreenHeaderProps,
+} from './StoreDetailsScreenHeader';
 import { StoresStackParamList } from './StoresStackScreen';
 
 const renderHeader = (props: StoreDetailsScreenHeaderProps) => {
@@ -100,7 +100,6 @@ const StoreDetailsScreen = ({
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      ListHeaderComponentStyle={styles.listHeader}
       ListHeaderComponent={() => renderHeader({ store })}
       data={winesPage.data}
       renderItem={({ item }: { item: Wine }) => (
@@ -125,8 +124,4 @@ const StoreDetailsScreen = ({
 
 export default StoreDetailsScreen;
 
-const styles = StyleSheet.create({
-  listHeader: {
-    padding: 10,
-  },
-});
+// const styles = StyleSheet.create({});

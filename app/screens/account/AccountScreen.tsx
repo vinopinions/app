@@ -1,13 +1,18 @@
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
+import { RefreshControl } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { Text } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
 import {
   fetchCurrentUserAsync,
   selectCurrentUser,
 } from '../../features/users/currentUserSlice';
+import {
+  fetchFriendsForUserAsync,
+  selectFriendRelationsByUserUsername,
+} from '../../features/users/userFriendsSlice';
 import {
   fetchRatingsForUserAsync,
   selectRatingRelationsByUserUsername,
@@ -16,6 +21,13 @@ import Page from '../../models/Page';
 import Rating from '../../models/Rating';
 import User from '../../models/User';
 import { AppDispatch, RootState } from '../../store/store';
+import AccountScreenHeader, {
+  AccountScreenHeaderProps,
+} from './AccountScreenHeader';
+
+const renderHeader = (props: AccountScreenHeaderProps) => {
+  return <AccountScreenHeader {...props} />;
+};
 
 const AccountScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -23,6 +35,9 @@ const AccountScreen = () => {
   const user: User = useSelector(selectCurrentUser);
   const ratingsPage: Page<Rating> = useSelector<RootState, Page<Rating>>(
     (state) => selectRatingRelationsByUserUsername(state, user?.username),
+  );
+  const friendsPage: Page<User> = useSelector<RootState, Page<User>>((state) =>
+    selectFriendRelationsByUserUsername(state, user?.username),
   );
 
   const onRefresh = useCallback(async () => {
@@ -34,27 +49,42 @@ const AccountScreen = () => {
   useEffect(() => {
     if (user) {
       dispatch(fetchRatingsForUserAsync({ username: user.username }));
+      dispatch(fetchFriendsForUserAsync({ username: user.username }));
     }
-  });
+  }, [dispatch, user]);
 
   useEffect(() => {
     onRefresh();
   }, [dispatch, onRefresh]);
 
+  if (user === undefined) {
+    return <Text>loading</Text>;
+  }
+
   return (
-    <View style={styles.screen}>
-      <Text>{user?.username}</Text>
-      {ratingsPage.data.map((rating) => {
-        return <RatingCard rating={rating} />;
-      })}
-    </View>
+    <FlatList
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      ListHeaderComponent={() =>
+        renderHeader({
+          username: user.username,
+          friendAmount: friendsPage.meta.itemCount,
+          ratingAmount: ratingsPage.meta.itemCount,
+        })
+      }
+      data={ratingsPage.data}
+      renderItem={({ item }: { item: Rating }) => {
+        return <RatingCard rating={item} />;
+      }}
+    />
   );
 };
 
 export default AccountScreen;
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   screen: {
+//     flex: 1,
+//   },
+// });

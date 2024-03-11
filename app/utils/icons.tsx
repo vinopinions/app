@@ -1,7 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { IconProps } from '@expo/vector-icons/build/createIconSet';
 import React from 'react';
-// https://icons.expo.fyi/ filter for Ionicons
+// https://icons.expo.fyi/
 
 export const HomeIcon = (props: Partial<IconProps<'home'>>) => (
   <Ionicons {...props} name="home" />
@@ -45,6 +45,10 @@ export const EyeSlashIcon = (props: Partial<IconProps<'eye-off-outline'>>) => (
   <Ionicons {...props} name="eye-off-outline" />
 );
 
-export const PlusIcon = (props: Partial<IconProps<'add-circle-outline'>>) => (
-  <Ionicons {...props} name="add-circle-outline" />
+export const RatingIcon = (props: Partial<IconProps<'star'>>) => (
+  <AntDesign {...props} name="star" />
+);
+
+export const RatingIconOutline = (props: Partial<IconProps<'staro'>>) => (
+  <AntDesign {...props} name="staro" />
 );

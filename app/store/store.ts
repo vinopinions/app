@@ -5,6 +5,7 @@ import ratingsSlice from '../features/ratings/ratingsSlice';
 import storeWinesReducer from '../features/stores/storeWinesSlice';
 import storesReducer from '../features/stores/storesSlice';
 import currentUserReducer from '../features/users/currentUserSlice';
+import userFriendsReducer from '../features/users/userFriendsSlice';
 import userRatingsReducer from '../features/users/userRatingsSlice';
 import winemakersReducer from '../features/winemakers/winemakersSlice';
 import wineRatingsReducer from '../features/wines/wineRatingsSlice';
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   storeWines: storeWinesReducer,
   currentUser: currentUserReducer,
   userRatings: userRatingsReducer,
+  userFriends: userFriendsReducer,
   ratings: ratingsSlice,
   feed: feedSlice,
 });
