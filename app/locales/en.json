@@ -1,0 +1,28 @@
+{
+  "homeScreen": {
+    "name": "Home"
+  },
+  "winesScreen": {
+    "name": "Wines",
+    "createWine": "Add wine"
+  },
+  "storesScreen": {
+    "name": "Stores",
+    "createStore": "Add store"
+  },
+  "friendsScreen": {
+    "name": "Friends"
+  },
+  "accountScreen": {
+    "name": "Account"
+  },
+  "wineDetailsScreen": {
+    "wineFrom": "{{wineName}} by {{winemakerName}}"
+  },
+  "common": {
+    "ratings": "Ratings",
+    "friends": "Friends",
+    "search": "Search",
+    "signOut": "Sign out"
+  }
+}

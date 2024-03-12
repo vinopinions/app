@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ const WinesScreen = ({
   const winePage: Page<Wine> = useSelector(selectWinePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Wine[]>(winePage.data);
+  const { t } = useTranslation();
 
   const performSearch = useCallback(() => {
     if (searchQuery === '') {
@@ -87,7 +89,10 @@ const WinesScreen = ({
         onEndReached={onEndReached}
       />
       <View style={styles.buttonContainer}>
-        <Button label={'Add Wine'} onPress={() => onAddButtonPress()} />
+        <Button
+          label={t('winesScreen.createWine')}
+          onPress={() => onAddButtonPress()}
+        />
       </View>
     </View>
   );

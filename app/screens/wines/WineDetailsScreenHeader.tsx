@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import Wine from '../../models/Wine';
@@ -14,11 +15,16 @@ export type WineDetailsScreenHeaderProps = {
 };
 
 const WineDetailsScreenHeader = ({ wine }: WineDetailsScreenHeaderProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <View marginB-5>
         <Text text40 style={styles.heading}>
-          {`${wine.name} von ${wine.winemaker.name}`}
+          {t('wineDetailsScreen.wineFrom', {
+            wineName: wine.name,
+            winemakerName: wine.winemaker.name,
+          })}
         </Text>
       </View>
       <View marginB-10>

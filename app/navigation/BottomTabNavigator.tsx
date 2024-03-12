@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { TFunction } from 'i18next';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonProps } from 'react-native-ui-lib';
 import { useAuth } from '../auth/AuthContext';
 import { BOTTOM_TAB_STACK_SCREEN_NAMES } from '../constants/RouteNames';
@@ -36,11 +38,13 @@ export type BottomTabStackParamList = {
   [BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN]: undefined;
 };
 
-const createSignOutButton = (props: ButtonProps) => (
-  <Button {...props} label="Sign Out" />
-);
+const createSignOutButton = (
+  props: ButtonProps,
+  t: TFunction<'translation', undefined>,
+) => <Button {...props} label={t('common.signOut')} />;
 
 const BottomTabNavigator = () => {
+  const { t } = useTranslation();
   const { logout } = useAuth();
   return (
     <BottomTab.Navigator
@@ -54,24 +58,37 @@ const BottomTabNavigator = () => {
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.HOME_SCREEN}
         component={HomeScreen}
+        options={{
+          title: t('homeScreen.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN}
         component={WinesStackScreen}
+        options={{
+          title: t('winesScreen.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN}
         component={StoresStackScreen}
+        options={{
+          title: t('storesScreen.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN}
         component={FriendsScreen}
+        options={{
+          title: t('friendsScreen.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN}
         component={AccountDrawer}
         options={{
-          headerRight: () => createSignOutButton({ onPress: logout }),
+          title: t('accountScreen.name'),
+          headerRight: () => createSignOutButton({ onPress: logout }, t),
         }}
       />
     </BottomTab.Navigator>
