@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
@@ -26,14 +27,40 @@ const WinesScreen = ({
   const dispatch: AppDispatch = useDispatch();
   const winePage: Page<Wine> = useSelector(selectWinePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
   const { t } = useTranslation();
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  // load wines with current filter
+  const loadWines = useCallback(() => {
     dispatch(fetchWinesAsync({ filter: searchQuery }));
-    setRefreshing(false);
   }, [dispatch, searchQuery]);
 
+  // debounce the setting of the current search query
+  // Why useMemo instead of useCallback?
+  // https://github.com/facebook/react/issues/19240#issuecomment-652945246
+  const debouncedUpdateQuery = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+    }, 200);
+  }, []);
+
+  // update display text of SearchField and call debounce function to update search query
+  const onSearch = useCallback(
+    (query: string) => {
+      setSearchDisplayText(query);
+      debouncedUpdateQuery(query);
+    },
+    [debouncedUpdateQuery],
+  );
+
+  // load wines on refresh
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    loadWines();
+    setRefreshing(false);
+  }, [loadWines]);
+
+  // initial load of wines
   useEffect(() => {
     onRefresh();
   }, [dispatch, onRefresh]);
@@ -52,10 +79,7 @@ const WinesScreen = ({
 
   return (
     <View style={styles.screen}>
-      <SearchBar
-        searchQuery={searchQuery}
-        handleSearch={(text) => setSearchQuery(text)}
-      />
+      <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={winePage.data}
         renderItem={({ item }: { item: Wine }) => (

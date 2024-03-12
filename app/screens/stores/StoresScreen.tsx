@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
@@ -27,14 +28,40 @@ const StoresScreen = ({
   const dispatch: AppDispatch = useDispatch();
   const storePage: Page<Store> = useSelector(selectStorePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
   const { t } = useTranslation();
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  // load stores with current filter
+  const loadStores = useCallback(() => {
     dispatch(fetchStoresAsync({ filter: searchQuery }));
-    setRefreshing(false);
   }, [dispatch, searchQuery]);
 
+  // debounce the setting of the current search query
+  // Why useMemo instead of useCallback?
+  // https://github.com/facebook/react/issues/19240#issuecomment-652945246
+  const debouncedUpdateQuery = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+    }, 200);
+  }, []);
+
+  // update display text of SearchField and call debounce function to update search query
+  const onSearch = useCallback(
+    (query: string) => {
+      setSearchDisplayText(query);
+      debouncedUpdateQuery(query);
+    },
+    [debouncedUpdateQuery],
+  );
+
+  // load stores on refresh
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    loadStores();
+    setRefreshing(false);
+  }, [loadStores]);
+
+  // initial load of stores
   useEffect(() => {
     onRefresh();
   }, [dispatch, onRefresh]);
@@ -56,10 +83,7 @@ const StoresScreen = ({
 
   return (
     <View style={styles.screen}>
-      <SearchBar
-        searchQuery={searchQuery}
-        handleSearch={(query) => setSearchQuery(query)}
-      />
+      <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={storePage.data}
         renderItem={({ item }: { item: Store }) => (
