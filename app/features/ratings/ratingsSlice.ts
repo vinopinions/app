@@ -43,7 +43,7 @@ const ratingsSlice = createSlice({
       })
       .addCase(createWineRatingAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       })
@@ -53,7 +53,7 @@ const ratingsSlice = createSlice({
       })
       .addCase(deleteRatingAsync.rejected, (state, action) => {
         state.status = 'failed';
-        if (state.status == 'failed') {
+        if (state.status === 'failed') {
           state.error = action.error.message;
         }
       });

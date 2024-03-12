@@ -4,21 +4,21 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import { fetchFriendsForUser } from '../../api/api';
+import { fetchRatingsForUser } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
 import RelationPageStore from '../../api/pagination/RelationPageStore';
 import Page from '../../models/Page';
-import User from '../../models/User';
+import Rating from '../../models/Rating';
 import { RootState } from '../../store/store';
 
-type UserFriendsState = ApiResponseState<RelationPageStore<User>>;
+type UserRatingsState = ApiResponseState<RelationPageStore<Rating>>;
 
-export const fetchFriendsForUserAsync = createAsyncThunk<
-  { username: string; page: Page<User> },
+export const fetchRatingsForUserAsync = createAsyncThunk<
+  { username: string; page: Page<Rating> },
   FetchPageParams & { username: string }
 >(
-  'users/fetchFriendsForUser',
+  'users/fetchRatingsForUser',
   async ({
     username,
     page,
@@ -26,28 +26,28 @@ export const fetchFriendsForUserAsync = createAsyncThunk<
     order,
   }: FetchPageParams & { username: string }): Promise<{
     username: string;
-    page: Page<User>;
+    page: Page<Rating>;
   }> => {
-    const response = await fetchFriendsForUser(username, page, take, order);
+    const response = await fetchRatingsForUser(username, page, take, order);
     return { username, page: response.data };
   },
 );
 
-const initialState: UserFriendsState = {
+const initialState: UserRatingsState = {
   data: {},
   status: 'idle',
 };
 
-const userFriendsSlice = createSlice({
-  name: 'userFriends',
-  initialState: initialState as UserFriendsState,
+const userRatingsSlice = createSlice({
+  name: 'userRatings',
+  initialState: initialState as UserRatingsState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFriendsForUserAsync.pending, (state) => {
+      .addCase(fetchRatingsForUserAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchFriendsForUserAsync.fulfilled, (state, action) => {
+      .addCase(fetchRatingsForUserAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
 
         // if we get the first page, we reset the state completely, else we just update the state and keep the data from the previous pages
@@ -59,7 +59,7 @@ const userFriendsSlice = createSlice({
         } else {
           // check if ratings for user are already tracked
           if (state.data.hasOwnProperty(action.payload.username)) {
-            const existingData: Page<User> =
+            const existingData: Page<Rating> =
               state.data[action.payload.username];
             state.data = {
               ...state.data,
@@ -79,7 +79,7 @@ const userFriendsSlice = createSlice({
           }
         }
       })
-      .addCase(fetchFriendsForUserAsync.rejected, (state, action) => {
+      .addCase(fetchRatingsForUserAsync.rejected, (state, action) => {
         state.status = 'failed';
         if (state.status === 'failed') {
           state.error = action.error.message;
@@ -88,15 +88,15 @@ const userFriendsSlice = createSlice({
   },
 });
 
-export default userFriendsSlice.reducer;
+export default userRatingsSlice.reducer;
 
-const selectUserFriends = (state: RootState): RelationPageStore<User> =>
-  state.userFriends.data;
+const selectUserRatings = (state: RootState): RelationPageStore<Rating> =>
+  state.userRatings.data;
 
-export const selectFriendRelationsByUserUsername = createSelector(
-  [selectUserFriends, (state: RootState, username: string) => username],
+export const selectRatingRelationsByUserUsername = createSelector(
+  [selectUserRatings, (state: RootState, username: string) => username],
   (
-    wineFriendsRelation: RelationPageStore<User>,
+    wineRatingsRelation: RelationPageStore<Rating>,
     username: string,
-  ): Page<User> => wineFriendsRelation[username] ?? EmptyPaginationState,
+  ): Page<Rating> => wineRatingsRelation[username] ?? EmptyPaginationState,
 );

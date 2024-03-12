@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, CardProps, Text, View } from 'react-native-ui-lib';
 import Store from '../../api/pagination/Store';
+import {
+  InternIconOutline,
+  LocationIconOutline,
+  StoreIconOutline,
+} from '../../utils/icons';
 
 type StoreCardProps = CardProps & { store: Store };
 
@@ -9,12 +14,28 @@ const StoreCard = ({ store, ...props }: StoreCardProps): React.ReactElement => {
   return (
     <Card {...props} style={styles.card}>
       <View padding-20>
-        <Text text40 $textDefault>
-          {store.name}
-        </Text>
-        <Text text70 $textDefault>
-          {store.address}
-        </Text>
+        <View style={styles.iconTextContainer}>
+          <StoreIconOutline size={20} />
+          <Text text50 $textDefault>
+            {store.name}
+          </Text>
+        </View>
+        {store.address ? (
+          <View style={styles.iconTextContainer}>
+            <LocationIconOutline size={15} />
+            <Text $textDefault>{store.address}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+        {store.url ? (
+          <View style={styles.iconTextContainer}>
+            <InternIconOutline size={15} />
+            <Text $textDefault>{store.url}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
       </View>
     </Card>
   );
@@ -30,4 +51,5 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   card: { marginBottom: 15 },
+  iconTextContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
 });

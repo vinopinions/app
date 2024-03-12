@@ -23,71 +23,76 @@ import Rating from '../../models/Rating';
 import Wine from '../../models/Wine';
 import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
+import WineDetailsScreenHeader, {
+  WineDetailsScreenHeaderProps,
+} from './WineDetailsScreenHeader';
 import { WinesStackParamList } from './WinesStackScreen';
 
-const renderHeader = (wine: Wine) => {
-  return (
-    <>
-      <View marginB-5>
-        <Text text40 style={styles.text}>
-          {`${wine.name} von ${wine.winemaker.name}`}
-        </Text>
-      </View>
-      <View marginB-10>
-        <Text text70 style={styles.text}>
-          {wine.grapeVariety}
-        </Text>
-        <Text text70 style={styles.text}>
-          {wine && wine.heritage}
-        </Text>
-        <Text text70 style={styles.text}>
-          {wine && wine.year}
-        </Text>
-      </View>
-      {/* <View row>
-        <Button
-          marginR-10
-          marginB-10
-          label="Rate wine"
-          onPress={() =>
-            navigation.push(WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN, {
-              wine: wine,
-            })
-          }
-        />
-        <Picker
-          label="Add Store"
-          mode={PickerModes.MULTI}
-          useSafeArea
-          value={storesPage.data.map((s) => s.id)}
-          onChange={(items) => {
-            dispatch(
-              updateStoresForWineAsync({
-                wineId: wine.id,
-                storeIds: items as string[],
-              }),
-            );
-          }}
-          renderPicker={() => {
-            return (
-              <SafeAreaView>
-                <Button label="Add Store" />
-              </SafeAreaView>
-            );
-          }}
-        >
-          {storesPage.data.map((s) => (
-            <Picker.Item key={s.id} value={s.id} label={s.name} />
-          ))}
-        </Picker>
-      </View> */}
-    </>
-  );
+// const renderHeader = (wine: Wine) => {
+//   return (
+//     <>
+//       <View marginB-5>
+//         <Text text40 style={styles.text}>
+//           {`${wine.name} von ${wine.winemaker.name}`}
+//         </Text>
+//       </View>
+//       <View marginB-10>
+//         <Text text70 style={styles.text}>
+//           {wine.grapeVariety}
+//         </Text>
+//         <Text text70 style={styles.text}>
+//           {wine && wine.heritage}
+//         </Text>
+//         <Text text70 style={styles.text}>
+//           {wine && wine.year}
+//         </Text>
+//       </View>
+//       {/* <View row>
+//         <Button
+//           marginR-10
+//           marginB-10
+//           label="Rate wine"
+//           onPress={() =>
+//             navigation.push(WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN, {
+//               wine: wine,
+//             })
+//           }
+//         />
+//         <Picker
+//           label="Add Store"
+//           mode={PickerModes.MULTI}
+//           useSafeArea
+//           value={storesPage.data.map((s) => s.id)}
+//           onChange={(items) => {
+//             dispatch(
+//               updateStoresForWineAsync({
+//                 wineId: wine.id,
+//                 storeIds: items as string[],
+//               }),
+//             );
+//           }}
+//           renderPicker={() => {
+//             return (
+//               <SafeAreaView>
+//                 <Button label="Add Store" />
+//               </SafeAreaView>
+//             );
+//           }}
+//         >
+//           {storesPage.data.map((s) => (
+//             <Picker.Item key={s.id} value={s.id} label={s.name} />
+//           ))}
+//         </Picker>
+//       </View> */}
+//     </>
+//   );
+// };
+const renderHeader = (props: WineDetailsScreenHeaderProps) => {
+  return <WineDetailsScreenHeader {...props} />;
 };
 
 const WineDetailsScreen = ({
   route,
-  navigation,
 }: CompositeScreenProps<
   NativeStackScreenProps<
     WinesStackParamList,
@@ -108,10 +113,6 @@ const WineDetailsScreen = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    onRefresh();
-  }, [dispatch, route.params.wineId]);
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -120,7 +121,11 @@ const WineDetailsScreen = ({
     } finally {
       setRefreshing(false);
     }
-  }, [dispatch]);
+  }, [dispatch, route.params.wineId]);
+
+  useEffect(() => {
+    onRefresh();
+  }, [dispatch, onRefresh, route.params.wineId]);
 
   const onRatingsEndReached = useCallback(async () => {
     if (ratingsPage.meta.hasNextPage) {
@@ -131,7 +136,12 @@ const WineDetailsScreen = ({
         }),
       );
     }
-  }, [dispatch, ratingsPage.meta.hasNextPage, ratingsPage.meta.page]);
+  }, [
+    dispatch,
+    ratingsPage.meta.hasNextPage,
+    ratingsPage.meta.page,
+    route.params.wineId,
+  ]);
 
   if (wine === undefined) {
     // TODO: insert skeleton
@@ -148,7 +158,7 @@ const WineDetailsScreen = ({
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       ListHeaderComponentStyle={styles.listHeader}
-      ListHeaderComponent={() => renderHeader(wine)}
+      ListHeaderComponent={() => renderHeader({ wine })}
       data={ratingsPage.data}
       renderItem={({ item }: { item: Rating }) => <RatingCard rating={item} />}
       refreshing={refreshing}

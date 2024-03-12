@@ -15,6 +15,7 @@ import {
   USERS_ENDPOINT_URL,
   USERS_ME_ENDPOINT_URL,
   USERS_USERNAME_FRIENDS_ENDPOINT_URL,
+  USERS_USERNAME_RATINGS_ENDPOINT_URL,
   WINEMAKERS_ENDPOINT_URL,
   WINES_ENDPOINT_URL,
   WINES_ID_ENDPOINT_URL,
@@ -73,6 +74,28 @@ export const signup = (
 
 export const fetchCurrentUser = (options?: AxiosRequestConfig) =>
   apiUsers.get(USERS_ME_ENDPOINT_URL, options);
+
+export const fetchRatingsForUser = (
+  username: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get(
+    USERS_USERNAME_RATINGS_ENDPOINT_URL.replace(
+      USERNAME_URL_PARAMETER,
+      username,
+    ),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
+  );
 
 export const fetchWineById = (wineId: string, options?: AxiosRequestConfig) =>
   apiWines.get(

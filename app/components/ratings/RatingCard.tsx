@@ -14,6 +14,7 @@ import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Rating from '../../models/Rating';
 import User from '../../models/User';
 import { AppDispatch } from '../../store/store';
+import { AccountIconOutline, WineIconOutline } from '../../utils/icons';
 
 type RatingCardProps = CardProps & {
   rating: Rating;
@@ -54,12 +55,19 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
     <Card {...props} style={styles.card}>
       <View padding-20>
         <View row spread>
-          <Text text50 $textDefault>
-            {props.rating.user.username}
-          </Text>
+          <View style={styles.iconTextContainer}>
+            <WineIconOutline size={20} />
+            <Text text50 $textDefault>
+              {props.rating.wine.name}
+            </Text>
+          </View>
           <Text marginT-5>
             {new Date(props.rating.createdAt).toLocaleDateString()}
           </Text>
+        </View>
+        <View style={styles.iconTextContainer}>
+          <AccountIconOutline size={15} />
+          <Text $textDefault>{props.rating.user.username}</Text>
         </View>
         <View>
           <StarRatingDisplay
@@ -117,4 +125,5 @@ const styles = StyleSheet.create({
   },
   starRating: { height: 25, width: 15, marginLeft: -8 },
   starRatingStar: { height: 5, width: 5 },
+  iconTextContainer: { flexDirection: 'row', alignItems: 'center' },
 });

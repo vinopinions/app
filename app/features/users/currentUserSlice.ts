@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { fetchCurrentUser } from '../../api/api';
 import User from '../../models/User';
@@ -43,5 +47,12 @@ const currentUserSlice = createSlice({
 
 export default currentUserSlice.reducer;
 
-export const selectCurrentUser = (state: RootState): User =>
-  state.currentUser.data;
+const _selectCurrentUser = (state: RootState) => state.currentUser.data;
+
+export const selectCurrentUser = createSelector(
+  [_selectCurrentUser],
+  (user: User) => user,
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
+);

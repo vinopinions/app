@@ -39,7 +39,7 @@ const initialState: WineRatingsState = {
 };
 
 const wineRatingsSlice = createSlice({
-  name: 'wineRatings',
+  name: 'userRatings',
   initialState: initialState as WineRatingsState,
   reducers: {},
   extraReducers: (builder) => {

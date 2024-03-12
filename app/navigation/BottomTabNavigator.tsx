@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, ButtonProps } from 'react-native-ui-lib';
 import { useAuth } from '../auth/AuthContext';
 import { BOTTOM_TAB_STACK_SCREEN_NAMES } from '../constants/RouteNames';
-import { AccountDrawer } from '../screens/account/account-drawer';
+import AccountDrawer from '../screens/account/AccountDrawerScreen';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import StoresStackScreen, {
