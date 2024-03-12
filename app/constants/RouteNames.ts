@@ -13,6 +13,12 @@ export enum STORES_STACK_SCREEN_NAMES {
   STORE_ADD_SCREEN = 'StoreAddScreen',
 }
 
+// FriendsStack
+export enum FRIENDS_STACK_SCREEN_NAMES {
+  FRIENDS_SCREEN = 'FriendsScreen',
+  FRIEND_ACCOUNT_SCREEN = 'FriendAccountScreen',
+}
+
 // BottomTab
 export enum BOTTOM_TAB_STACK_SCREEN_NAMES {
   HOME_SCREEN = 'Home',

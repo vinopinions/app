@@ -25,6 +25,7 @@ import {
   WineIcon,
   WineIconOutline,
 } from '../utils/icons';
+import FriendsStackScreen from '../screens/friends/FriendsStackScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabStackParamList>();
 
@@ -65,7 +66,7 @@ const BottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN}
-        component={FriendsScreen}
+        component={FriendsStackScreen}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_SCREEN_NAMES.ACCOUNT_SCREEN}

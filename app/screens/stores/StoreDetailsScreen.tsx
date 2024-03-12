@@ -2,7 +2,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
@@ -24,13 +24,26 @@ import Page from '../../models/Page';
 import Wine from '../../models/Wine';
 import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
-import StoreDetailsScreenHeader, {
-  StoreDetailsScreenHeaderProps,
-} from './StoreDetailsScreenHeader';
 import { StoresStackParamList } from './StoresStackScreen';
 
-const renderHeader = (props: StoreDetailsScreenHeaderProps) => {
-  return <StoreDetailsScreenHeader {...props} />;
+const renderHeader = (store: Store) => {
+  return (
+    <>
+      <View marginB-5>
+        <Text text40 style={styles.text}>
+          {store.name}
+        </Text>
+      </View>
+      <View marginB-10>
+        <Text text70 style={styles.text}>
+          {`Adresse: ${store.address}`}
+        </Text>
+        <Text text70 style={styles.text}>
+          {`Website: ${store.url}`}
+        </Text>
+      </View>
+    </>
+  );
 };
 
 const StoreDetailsScreen = ({
@@ -57,6 +70,10 @@ const StoreDetailsScreen = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    onRefresh();
+  }, [dispatch, route.params.storeId]);
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -65,11 +82,7 @@ const StoreDetailsScreen = ({
     } finally {
       setRefreshing(false);
     }
-  }, [dispatch, route.params.storeId]);
-
-  useEffect(() => {
-    onRefresh();
-  }, [dispatch, onRefresh, route.params.storeId]);
+  }, [dispatch]);
 
   const onWinesEndReached = useCallback(async () => {
     if (winesPage.meta.hasNextPage) {
@@ -80,12 +93,7 @@ const StoreDetailsScreen = ({
         }),
       );
     }
-  }, [
-    dispatch,
-    winesPage.meta.hasNextPage,
-    winesPage.meta.page,
-    route.params.storeId,
-  ]);
+  }, [dispatch, winesPage.meta.hasNextPage, winesPage.meta.page]);
 
   if (store === undefined) {
     // TODO: insert skeleton
@@ -100,7 +108,8 @@ const StoreDetailsScreen = ({
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      ListHeaderComponent={() => renderHeader({ store })}
+      ListHeaderComponentStyle={styles.listHeader}
+      ListHeaderComponent={() => renderHeader(store)}
       data={winesPage.data}
       renderItem={({ item }: { item: Wine }) => (
         <WineCard
@@ -124,4 +133,12 @@ const StoreDetailsScreen = ({
 
 export default StoreDetailsScreen;
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    marginTop: 5,
+    marginLeft: 10,
+  },
+  listHeader: {
+    padding: 10,
+  },
+});

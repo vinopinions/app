@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import React, { useEffect } from 'react';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,17 +7,28 @@ import User from '../../models/User';
 import Page from '../../models/Page';
 import {
   fetchFriendsForUserAsync,
-  selectFriendsRelationsByUsername,
+  selectFriendRelationsByUserUsername,
 } from '../../features/users/userFriendsSlice';
-import { fetchCurrentUserAsync, selectCurrentUser } from '../../features/users/currentUserSlice';
+import {
+  fetchCurrentUserAsync,
+  selectCurrentUser,
+} from '../../features/users/currentUserSlice';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FriendsStackParamList } from './FriendsStackScreen';
+import { FRIENDS_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 
-const FriendsScreen = () => {
+const FriendsScreen = ({
+  navigation,
+}: NativeStackScreenProps<
+  FriendsStackParamList,
+  FRIENDS_STACK_SCREEN_NAMES.FRIENDS_SCREEN
+>) => {
   const dispatch: AppDispatch = useDispatch();
   const currentUser: User = useSelector<RootState, User>((state) =>
     selectCurrentUser(state),
   );
   const friendsPage: Page<User> = useSelector<RootState, Page<User>>((state) =>
-    selectFriendsRelationsByUsername(state, currentUser?.username),
+    selectFriendRelationsByUserUsername(state, currentUser?.username),
   );
 
   useEffect(() => {
@@ -32,18 +43,40 @@ const FriendsScreen = () => {
   }
 
   return (
-    <View style={[styles.screen]}>
-      <Text>{friendsPage.data.map((f) => f.username)}</Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      {friendsPage.data.map((friend) => (
+        <TouchableOpacity
+          key={friend.id}
+          onPress={() => navigation.push(FRIENDS_STACK_SCREEN_NAMES.FRIEND_ACCOUNT_SCREEN, {
+              user: friend,
+            })
+          }
+        >
+          <View>
+            <Text style={styles.friendName}>{friend.username}</Text>
+            <View style={styles.separator} />
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
 };
 
 export default FriendsScreen;
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {
+    flexGrow: 1,
+    paddingTop: 20,
+  },
+  separator: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+    width: '100%',
+    marginVertical: 5,
+  },
+  friendName: {
+    padding: 5,
+    fontSize: 22,
   },
 });
