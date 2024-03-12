@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
 import WineCard from '../../components/wines/WineCard';
 import {
-  BOTTOM_TAB_STACK_SCREEN_NAMES,
-  STORES_STACK_SCREEN_NAMES,
-  WINES_STACK_SCREEN_NAMES,
+  BOTTOM_TAB_STACK_NAMES,
+  STORES_STACK_NAMES,
+  WINES_STACK_NAMES,
 } from '../../constants/RouteNames';
 import {
   fetchWinesForStoreAsync,
@@ -27,7 +27,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import StoreDetailsScreenHeader, {
   StoreDetailsScreenHeaderProps,
 } from './StoreDetailsScreenHeader';
-import { StoresStackParamList } from './StoresStackScreen';
+import { StoresStackParamList } from './StoresStack';
 
 const renderHeader = (props: StoreDetailsScreenHeaderProps) => {
   return <StoreDetailsScreenHeader {...props} />;
@@ -39,11 +39,11 @@ const StoreDetailsScreen = ({
 }: CompositeScreenProps<
   NativeStackScreenProps<
     StoresStackParamList,
-    STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN
+    STORES_STACK_NAMES.STORE_DETAILS_SCREEN
   >,
   BottomTabScreenProps<
     BottomTabStackParamList,
-    BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN
+    BOTTOM_TAB_STACK_NAMES.STORES_STACK
   >
 >) => {
   const dispatch: AppDispatch = useDispatch();
@@ -105,13 +105,10 @@ const StoreDetailsScreen = ({
       renderItem={({ item }: { item: Wine }) => (
         <WineCard
           onPress={() =>
-            navigation.navigate(
-              BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN,
-              {
-                screen: WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN,
-                params: { wineId: item.id },
-              },
-            )
+            navigation.navigate(BOTTOM_TAB_STACK_NAMES.WINES_STACK, {
+              screen: WINES_STACK_NAMES.WINE_DETAILS_SCREEN,
+              params: { wineId: item.id },
+            })
           }
           wine={item}
         />

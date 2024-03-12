@@ -4,20 +4,20 @@ import { Alert, Keyboard, StyleSheet, TouchableOpacity } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import { Button, Text, TextField, View } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
-import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import { WINES_STACK_NAMES } from '../../constants/RouteNames';
 import { createWineRatingAsync } from '../../features/ratings/ratingsSlice';
 import { fetchWinesAsync } from '../../features/wines/winesSlice';
 import Wine from '../../models/Wine';
 import RatingDto from '../../models/dtos/Rating.dto';
 import { AppDispatch } from '../../store/store';
-import { WinesStackParamList } from '../wines/WinesStackScreen';
+import { WinesStackParamList } from '../wines/WinesStack';
 
 const CreateRatingScreen = ({
   route,
   navigation,
 }: NativeStackScreenProps<
   WinesStackParamList,
-  WINES_STACK_SCREEN_NAMES.RATING_CREATE_SCREEN
+  WINES_STACK_NAMES.RATING_CREATE_SCREEN
 >): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
   const wine: Wine = route.params.wine;
