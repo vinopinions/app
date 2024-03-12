@@ -90,6 +90,8 @@ const WinesScreen = ({
       />
       <View style={styles.buttonContainer}>
         <Button
+          labelStyle={styles.buttonLabel}
+          style={styles.button}
           label={t('winesScreen.createWine')}
           onPress={() => onAddButtonPress()}
         />
@@ -107,5 +109,17 @@ const styles = StyleSheet.create({
   wineListContainer: {},
   buttonContainer: {
     padding: 10,
+    position: 'absolute',
+    bottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    width: '50%',
+    height: 50,
+  },
+  buttonLabel: {
+    fontSize: 20,
   },
 });
