@@ -103,6 +103,21 @@ export const fetchWineById = (wineId: string, options?: AxiosRequestConfig) =>
     options,
   );
 
+export const fetchUsers = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get('', {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
 export const fetchWines = (
   page?: number,
   take?: number,

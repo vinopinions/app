@@ -17,6 +17,7 @@ export enum STORES_STACK_SCREEN_NAMES {
 export enum FRIENDS_STACK_SCREEN_NAMES {
   FRIENDS_SCREEN = 'FriendsScreen',
   FRIEND_ACCOUNT_SCREEN = 'FriendAccountScreen',
+  ADD_FRIEND_SCREEN = 'AddFriendScreen',
 }
 
 // BottomTab

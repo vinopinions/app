@@ -11,6 +11,7 @@ import wineRatingsReducer from '../features/wines/wineRatingsSlice';
 import wineStoresReducer from '../features/wines/wineStoresSlice';
 import winesReducer from '../features/wines/winesSlice';
 import userFriendsSlice from '../features/users/userFriendsSlice';
+import usersSlice from '../features/users/usersSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   userRatings: userRatingsReducer,
   ratings: ratingsSlice,
   feed: feedSlice,
+  users: usersSlice,
   userFriends: userFriendsSlice,
 });
 

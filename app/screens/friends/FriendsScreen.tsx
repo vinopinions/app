@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet } from 'react-native';
-import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { Button, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import React, { useEffect } from 'react';
 import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,22 +43,39 @@ const FriendsScreen = ({
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {friendsPage.data.map((friend) => (
-        <TouchableOpacity
-          key={friend.id}
-          onPress={() => navigation.push(FRIENDS_STACK_SCREEN_NAMES.FRIEND_ACCOUNT_SCREEN, {
-              user: friend,
-            })
-          }
-        >
-          <View>
-            <Text style={styles.friendName}>{friend.username}</Text>
-            <View style={styles.separator} />
-          </View>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            label="Add Friend"
+            onPress={() =>
+              navigation.push(FRIENDS_STACK_SCREEN_NAMES.ADD_FRIEND_SCREEN)
+            }
+          />
+          <Button style={styles.button} label="Incoming" />
+          <Button style={styles.button} label="Outgoing" />
+        </View>
+        {friendsPage.data.map((friend) => (
+          <TouchableOpacity
+            key={friend.id}
+            onPress={() =>
+              navigation.push(
+                FRIENDS_STACK_SCREEN_NAMES.FRIEND_ACCOUNT_SCREEN,
+                {
+                  user: friend,
+                },
+              )
+            }
+          >
+            <View>
+              <Text style={styles.friendName}>{friend.username}</Text>
+              <View style={styles.separator} />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -78,5 +95,14 @@ const styles = StyleSheet.create({
   friendName: {
     padding: 5,
     fontSize: 22,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 10,
   },
 });
