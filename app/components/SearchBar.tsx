@@ -13,7 +13,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, handleSearch }) => {
 
   return (
     <TextField
-      placeholder={`${t('search')}...`}
+      placeholder={`${t('common.search')}...`}
       placeholderTextColor="grey"
       onChangeText={handleSearch}
       value={searchQuery}
