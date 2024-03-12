@@ -1,3 +1,4 @@
+import { useLocales } from 'expo-localization';
 import * as React from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
@@ -23,6 +24,7 @@ type RatingCardProps = CardProps & {
 
 const RatingCard = (props: RatingCardProps): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();
+  const locales = useLocales();
 
   const handleDelete = () => {
     Alert.alert(
@@ -62,7 +64,9 @@ const RatingCard = (props: RatingCardProps): React.ReactElement => {
             </Text>
           </View>
           <Text marginT-5>
-            {new Date(props.rating.createdAt).toLocaleDateString()}
+            {new Date(props.rating.createdAt).toLocaleDateString(
+              locales[0].languageCode,
+            )}
           </Text>
         </View>
         <View style={styles.iconTextContainer}>

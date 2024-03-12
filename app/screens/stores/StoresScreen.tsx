@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +28,7 @@ const StoresScreen = ({
   const storePage: Page<Store> = useSelector(selectStorePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Store[]>(storePage.data);
+  const { t } = useTranslation();
 
   const performSearch = useCallback(() => {
     if (searchQuery === '') {
@@ -88,7 +90,12 @@ const StoresScreen = ({
         onEndReached={onEndReached}
       />
       <View style={styles.buttonContainer}>
-        <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
+        <Button
+          labelStyle={styles.buttonLabel}
+          style={styles.button}
+          label={t('storesScreen.createStore')}
+          onPress={() => onAddButtonPress()}
+        />
       </View>
     </View>
   );
@@ -102,5 +109,17 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 10,
+    position: 'absolute',
+    bottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    width: '50%',
+    height: 50,
+  },
+  buttonLabel: {
+    fontSize: 20,
   },
 });
