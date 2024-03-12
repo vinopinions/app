@@ -2600,12 +2600,12 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
-"@react-navigation/bottom-tabs@^6.5.16":
-  version "6.5.16"
-  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.5.16.tgz#8b9b2fb482cdcdfcad5146a77878a48090fb64b5"
-  integrity sha512-zw6hlP1YI4APbOoeJSg1JS9h3OPZIp4O2ccAkiIPgw7T6wyKs8dGJyrkkUtTryXoRUqL1D14xp6K1Etgqm7F2A==
+"@react-navigation/bottom-tabs@^6.5.19":
+  version "6.5.19"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.5.19.tgz#dd0bcdedf977e118c128d0b2dcf0ade3628b1be7"
+  integrity sha512-Kz0dbPeeTJ6pbn69/NsllWnaLfe0egdmTDTnatniYTvwJYvaE06r73c+bKxeZ2jYps5xqmQDY+odvxmifCJO+g==
   dependencies:
-    "@react-navigation/elements" "^1.3.26"
+    "@react-navigation/elements" "^1.3.29"
     color "^4.2.3"
     warn-once "^0.1.0"
 
@@ -2630,10 +2630,10 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@react-navigation/elements@^1.3.26", "@react-navigation/elements@^1.3.28":
-  version "1.3.28"
-  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.28.tgz#9784605a958478538f433233af79943ff951a9b7"
-  integrity sha512-pLKI8RsCuBAXaeTVjJo/ZeOFdZLiJXsnT5DoSpRUCq+B10b53kAI+F1sHhMShB8ALaNPD6RvB45zL8aCBwpuyA==
+"@react-navigation/elements@^1.3.26", "@react-navigation/elements@^1.3.28", "@react-navigation/elements@^1.3.29":
+  version "1.3.29"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.29.tgz#1dcbd95c319a8990d66e2aef8e108198d7a93cb2"
+  integrity sha512-sMkqqQHlxdBxrBVw6E2a3LJjb9Hrb1ola8+zRgJn4Ox8iKtjqtWEdg349DPWU77VpIekcMLsqQvEtZox3XkXgA==
 
 "@react-navigation/native-stack@^6.9.24":
   version "6.9.24"
