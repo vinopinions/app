@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BOTTOM_TAB_STACK_NAMES } from '../constants/RouteNames';
 import AccountStack, {
   AccountStackParamList,
@@ -37,6 +38,7 @@ export type BottomTabStackParamList = {
 };
 
 const BottomTabNavigator = () => {
+  const { t } = useTranslation();
   return (
     <BottomTab.Navigator
       initialRouteName={BOTTOM_TAB_STACK_NAMES.HOME_STACK}
@@ -50,22 +52,37 @@ const BottomTabNavigator = () => {
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.HOME_STACK}
         component={HomeStack}
+        options={{
+          title: t('homeStack.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.WINES_STACK}
         component={WinesStack}
+        options={{
+          title: t('winesStack.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.STORES_STACK}
         component={StoresStack}
+        options={{
+          title: t('storesStack.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.FRIENDS_STACK}
         component={FriendsStack}
+        options={{
+          title: t('friendsStack.name'),
+        }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.ACCOUNT_STACK}
         component={AccountStack}
+        options={{
+          title: t('accountStack.name'),
+        }}
       />
     </BottomTab.Navigator>
   );

@@ -1,23 +1,27 @@
 {
-  "homeScreen": {
+  "homeStack": {
     "name": "Home"
   },
-  "winesScreen": {
+  "winesStack": {
     "name": "Weine",
-    "createWine": "Wein hinzufügen"
+    "winesScreen": {
+      "createWine": "Wein hinzufügen"
+    },
+    "wineDetailsScreen": {
+      "wineFrom": "{{wineName}} von {{winemakerName}}"
+    }
   },
-  "storesScreen": {
+  "storesStack": {
     "name": "Stores",
-    "createStore": "Store hinzufügen"
+    "storesScreen": {
+      "createStore": "Store hinzufügen"
+    }
   },
-  "friendsScreen": {
+  "friendsStack": {
     "name": "Freunde"
   },
-  "accountScreen": {
+  "accountStack": {
     "name": "Account"
-  },
-  "wineDetailsScreen": {
-    "wineFrom": "{{wineName}} von {{winemakerName}}"
   },
   "common": {
     "ratings": "Bewertungen",

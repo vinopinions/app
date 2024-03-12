@@ -47,12 +47,14 @@ const Layout = () => {
     );
   }
 
-  return authState.status === 'succeeded' && authState.authenticated ? (
+  if (!(authState.status === 'succeeded' && authState.authenticated)) {
+    return <LoginScreen />;
+  }
+
+  return (
     <NavigationContainer>
       <BottomTabNavigator />
     </NavigationContainer>
-  ) : (
-    <LoginScreen />
   );
 };
 
