@@ -125,6 +125,7 @@ export const fetchWines = (
   page?: number,
   take?: number,
   order?: 'ASC' | 'DESC',
+  filter?: string,
   options?: AxiosRequestConfig,
 ) =>
   apiWines.get('', {
@@ -132,6 +133,7 @@ export const fetchWines = (
       page,
       take,
       order,
+      filter,
     },
     ...options,
   });
@@ -197,6 +199,7 @@ export const fetchStores = (
   page?: number,
   take?: number,
   order?: 'ASC' | 'DESC',
+  filter?: string,
   options?: AxiosRequestConfig,
 ) =>
   apiStores.get('', {
@@ -204,6 +207,7 @@ export const fetchStores = (
       page,
       take,
       order,
+      filter,
     },
     ...options,
   });

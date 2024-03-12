@@ -26,43 +26,25 @@ const WinesScreen = ({
   const dispatch: AppDispatch = useDispatch();
   const winePage: Page<Wine> = useSelector(selectWinePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Wine[]>(winePage.data);
   const { t } = useTranslation();
-
-  const performSearch = useCallback(() => {
-    if (searchQuery === '') {
-      setSearchResults(winePage.data);
-    } else {
-      const results = winePage.data.filter((w) =>
-        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  }, [searchQuery, winePage.data]);
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, performSearch, winePage.data]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchWinesAsync());
+    dispatch(fetchWinesAsync({ filter: searchQuery }));
     setRefreshing(false);
-  }, [dispatch]);
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    dispatch(fetchWinesAsync());
-  }, [dispatch]);
+    onRefresh();
+  }, [dispatch, onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (winePage.meta.hasNextPage) {
-      dispatch(fetchWinesAsync({ page: winePage.meta.page + 1 }));
+      dispatch(
+        fetchWinesAsync({ page: winePage.meta.page + 1, filter: searchQuery }),
+      );
     }
-  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page]);
+  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
     navigation.push(WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN);
@@ -70,9 +52,12 @@ const WinesScreen = ({
 
   return (
     <View style={styles.screen}>
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
+      <SearchBar
+        searchQuery={searchQuery}
+        handleSearch={(text) => setSearchQuery(text)}
+      />
       <FlatList
-        data={searchResults}
+        data={winePage.data}
         renderItem={({ item }: { item: Wine }) => (
           <WineCard
             wine={item}
