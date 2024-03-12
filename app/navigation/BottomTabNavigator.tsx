@@ -53,35 +53,35 @@ const BottomTabNavigator = () => {
         name={BOTTOM_TAB_STACK_NAMES.HOME_STACK}
         component={HomeStack}
         options={{
-          title: t('homeStack.name'),
+          title: t('homeStack.title'),
         }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.WINES_STACK}
         component={WinesStack}
         options={{
-          title: t('winesStack.name'),
+          title: t('winesStack.title'),
         }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.STORES_STACK}
         component={StoresStack}
         options={{
-          title: t('storesStack.name'),
+          title: t('storesStack.title'),
         }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.FRIENDS_STACK}
         component={FriendsStack}
         options={{
-          title: t('friendsStack.name'),
+          title: t('friendsStack.title'),
         }}
       />
       <BottomTab.Screen
         name={BOTTOM_TAB_STACK_NAMES.ACCOUNT_STACK}
         component={AccountStack}
         options={{
-          title: t('accountStack.name'),
+          title: t('accountStack.title'),
         }}
       />
     </BottomTab.Navigator>

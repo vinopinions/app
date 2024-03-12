@@ -1,6 +1,6 @@
 // AccountStack
 export enum ACCOUNT_STACK_NAMES {
-  ACCOUNT_SCREEN = 'AccountScreens',
+  ACCOUNT_SCREEN = 'AccountScreen',
   SETTINGS_SCREEN = 'SettingsScreen',
 }
 

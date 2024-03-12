@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ACCOUNT_STACK_NAMES } from '../../constants/RouteNames';
 import AccountScreen from './AccountScreen';
 import SettingsScreen from './SettingsScreen';
@@ -12,6 +13,8 @@ export type AccountStackParamList = {
 };
 
 const AccountStack = () => {
+  const { t } = useTranslation();
+
   return (
     <AccountStackNavigator.Navigator>
       <AccountStackNavigator.Screen
@@ -21,6 +24,10 @@ const AccountStack = () => {
       <AccountStackNavigator.Screen
         name={ACCOUNT_STACK_NAMES.SETTINGS_SCREEN}
         component={SettingsScreen}
+        options={{
+          title: t('accountStack.settingsScreen.title'),
+          headerBackTitleVisible: false,
+        }}
       />
     </AccountStackNavigator.Navigator>
   );

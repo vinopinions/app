@@ -15,13 +15,15 @@ import { store } from './store/store';
 import de from './locales/de.json';
 import en from './locales/en.json';
 
+const resources = {
+  en: { translation: en },
+  de: { translation: de },
+};
+
 i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   compatibilityJSON: 'v3',
-  resources: {
-    en: { translation: en },
-    de: { translation: de },
-  },
+  resources,
   lng: Localization.getLocales()[0].languageCode,
 });
 
