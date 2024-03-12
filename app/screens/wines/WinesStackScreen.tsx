@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
 import Wine from '../../models/Wine';
-import CreateRatingScreen from '../rating/CreateRatingScreen';
+import CreateRatingScreen from '../ratings/CreateRatingScreen';
 import AddWineScreen from './AddWineScreen';
 import WineDetailsScreen from './WineDetailsScreen';
 import WinesScreen from './WinesScreen';

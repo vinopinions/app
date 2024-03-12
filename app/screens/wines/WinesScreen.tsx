@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
@@ -26,43 +27,51 @@ const WinesScreen = ({
   const dispatch: AppDispatch = useDispatch();
   const winePage: Page<Wine> = useSelector(selectWinePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Wine[]>(winePage.data);
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
   const { t } = useTranslation();
 
-  const performSearch = useCallback(() => {
-    if (searchQuery === '') {
-      setSearchResults(winePage.data);
-    } else {
-      const results = winePage.data.filter((w) =>
-        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  }, [searchQuery, winePage.data]);
+  // load wines with current filter
+  const loadWines = useCallback(() => {
+    dispatch(fetchWinesAsync({ filter: searchQuery }));
+  }, [dispatch, searchQuery]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
+  // debounce the setting of the current search query
+  // Why useMemo instead of useCallback?
+  // https://github.com/facebook/react/issues/19240#issuecomment-652945246
+  const debouncedUpdateQuery = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+    }, 200);
+  }, []);
 
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, performSearch, winePage.data]);
+  // update display text of SearchField and call debounce function to update search query
+  const onSearch = useCallback(
+    (query: string) => {
+      setSearchDisplayText(query);
+      debouncedUpdateQuery(query);
+    },
+    [debouncedUpdateQuery],
+  );
 
+  // load wines on refresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchWinesAsync());
+    loadWines();
     setRefreshing(false);
-  }, [dispatch]);
+  }, [loadWines]);
 
+  // initial load of wines
   useEffect(() => {
-    dispatch(fetchWinesAsync());
-  }, [dispatch]);
+    onRefresh();
+  }, [dispatch, onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (winePage.meta.hasNextPage) {
-      dispatch(fetchWinesAsync({ page: winePage.meta.page + 1 }));
+      dispatch(
+        fetchWinesAsync({ page: winePage.meta.page + 1, filter: searchQuery }),
+      );
     }
-  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page]);
+  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
     navigation.push(WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN);
@@ -70,9 +79,9 @@ const WinesScreen = ({
 
   return (
     <View style={styles.screen}>
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
+      <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
-        data={searchResults}
+        data={winePage.data}
         renderItem={({ item }: { item: Wine }) => (
           <WineCard
             wine={item}
