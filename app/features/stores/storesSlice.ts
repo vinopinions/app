@@ -6,7 +6,7 @@ import {
 import ApiResponseState from '../../api/ApiResponseState';
 import { createStore, fetchStoreById, fetchStores } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
-import FetchPageParams from '../../api/pagination/FetchPageParams';
+import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
 import Store from '../../api/pagination/Store';
 import Page from '../../models/Page';
@@ -15,17 +15,20 @@ import { RootState } from './../../store/store';
 
 type StoresState = ApiResponseState<PaginationState<Store>>;
 
-export const _fetchStoresAsync = createAsyncThunk<Page<Store>, FetchPageParams>(
+export const _fetchStoresAsync = createAsyncThunk<
+  Page<Store>,
+  FilterFetchPageParams
+>(
   'stores/fetchStores',
-  async ({ page, take, order }: FetchPageParams) => {
-    const response = await fetchStores(page, take, order);
+  async ({ page, take, order, filter }: FilterFetchPageParams) => {
+    const response = await fetchStores(page, take, order, filter);
     return response.data;
   },
 );
 
 // workaround since optional parameters don't seem to be working with `createAsyncThunk`
 // even though it is described here: https://github.com/reduxjs/redux-toolkit/issues/489
-export const fetchStoresAsync = (params: FetchPageParams = {}) =>
+export const fetchStoresAsync = (params: FilterFetchPageParams = {}) =>
   _fetchStoresAsync(params);
 
 export const fetchStoreByIdAsync = createAsyncThunk<Store, string>(

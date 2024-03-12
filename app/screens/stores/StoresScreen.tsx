@@ -27,43 +27,28 @@ const StoresScreen = ({
   const dispatch: AppDispatch = useDispatch();
   const storePage: Page<Store> = useSelector(selectStorePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Store[]>(storePage.data);
   const { t } = useTranslation();
-
-  const performSearch = useCallback(() => {
-    if (searchQuery === '') {
-      setSearchResults(storePage.data);
-    } else {
-      const results = storePage.data.filter((w) =>
-        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  }, [searchQuery, storePage.data]);
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, performSearch, storePage.data]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchStoresAsync());
+    dispatch(fetchStoresAsync({ filter: searchQuery }));
     setRefreshing(false);
-  }, [dispatch]);
+  }, [dispatch, searchQuery]);
 
   useEffect(() => {
-    dispatch(fetchStoresAsync());
-  }, [dispatch]);
+    onRefresh();
+  }, [dispatch, onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (storePage.meta.hasNextPage) {
-      dispatch(fetchStoresAsync({ page: storePage.meta.page + 1 }));
+      dispatch(
+        fetchStoresAsync({
+          page: storePage.meta.page + 1,
+          filter: searchQuery,
+        }),
+      );
     }
-  }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page]);
+  }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
     navigation.push(STORES_STACK_SCREEN_NAMES.STORE_ADD_SCREEN);
@@ -71,9 +56,12 @@ const StoresScreen = ({
 
   return (
     <View style={styles.screen}>
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
+      <SearchBar
+        searchQuery={searchQuery}
+        handleSearch={(query) => setSearchQuery(query)}
+      />
       <FlatList
-        data={searchResults}
+        data={storePage.data}
         renderItem={({ item }: { item: Store }) => (
           <StoreCard
             store={item}
