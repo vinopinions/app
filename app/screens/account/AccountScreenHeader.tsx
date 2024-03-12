@@ -4,22 +4,17 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 
 export type AccountScreenHeaderProps = {
-  username: string;
   ratingAmount: number;
   friendAmount: number;
 };
 
 const AccountScreenHeader = ({
-  username,
   ratingAmount,
   friendAmount,
 }: AccountScreenHeaderProps) => {
   const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <View style={styles.headingContainer}>
-        <Text style={styles.heading}>{username}</Text>
-      </View>
       <View style={styles.infoBoxContainer}>
         <View style={styles.infoBox}>
           <Text style={styles.infoBoxContent}>{ratingAmount}</Text>

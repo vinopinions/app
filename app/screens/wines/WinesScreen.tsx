@@ -2,12 +2,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import WineCard from '../../components/wines/WineCard';
-import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import { WINES_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchWinesAsync,
   selectWinePage,
@@ -15,13 +15,13 @@ import {
 import Page from '../../models/Page';
 import Wine from '../../models/Wine';
 import { AppDispatch } from '../../store/store';
-import { WinesStackParamList } from './WinesStackScreen';
+import { WinesStackParamList } from './WinesStack';
 
 const WinesScreen = ({
   navigation,
 }: NativeStackScreenProps<
   WinesStackParamList,
-  WINES_STACK_SCREEN_NAMES.WINES_SCREEN
+  WINES_STACK_NAMES.WINES_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
@@ -74,11 +74,11 @@ const WinesScreen = ({
   }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.push(WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN);
+    navigation.push(WINES_STACK_NAMES.WINE_ADD_SCREEN);
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={winePage.data}
@@ -86,7 +86,7 @@ const WinesScreen = ({
           <WineCard
             wine={item}
             onPress={() =>
-              navigation.push(WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN, {
+              navigation.push(WINES_STACK_NAMES.WINE_DETAILS_SCREEN, {
                 wineId: item.id,
               })
             }
@@ -101,11 +101,11 @@ const WinesScreen = ({
         <Button
           labelStyle={styles.buttonLabel}
           style={styles.button}
-          label={t('winesScreen.createWine')}
+          label={t('winesStack.winesScreen.createWine')}
           onPress={() => onAddButtonPress()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

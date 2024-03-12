@@ -7,8 +7,8 @@ import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
 import {
-  BOTTOM_TAB_STACK_SCREEN_NAMES,
-  WINES_STACK_SCREEN_NAMES,
+  BOTTOM_TAB_STACK_NAMES,
+  WINES_STACK_NAMES,
 } from '../../constants/RouteNames';
 import {
   fetchRatingsForWineAsync,
@@ -26,7 +26,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import WineDetailsScreenHeader, {
   WineDetailsScreenHeaderProps,
 } from './WineDetailsScreenHeader';
-import { WinesStackParamList } from './WinesStackScreen';
+import { WinesStackParamList } from './WinesStack';
 
 // const renderHeader = (wine: Wine) => {
 //   return (
@@ -96,11 +96,11 @@ const WineDetailsScreen = ({
 }: CompositeScreenProps<
   NativeStackScreenProps<
     WinesStackParamList,
-    WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN
+    WINES_STACK_NAMES.WINE_DETAILS_SCREEN
   >,
   BottomTabScreenProps<
     BottomTabStackParamList,
-    BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN
+    BOTTOM_TAB_STACK_NAMES.WINES_STACK
   >
 >): React.ReactElement => {
   const dispatch: AppDispatch = useDispatch();

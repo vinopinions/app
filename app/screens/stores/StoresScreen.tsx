@@ -3,26 +3,26 @@ import { debounce } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
 import SearchBar from '../../components/SearchBar';
 import StoreCard from '../../components/stores/StoreCard';
-import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import { STORES_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchStoresAsync,
   selectStorePage,
 } from '../../features/stores/storesSlice';
 import Page from '../../models/Page';
 import { AppDispatch } from '../../store/store';
-import { StoresStackParamList } from './StoresStackScreen';
+import { StoresStackParamList } from './StoresStack';
 
 const StoresScreen = ({
   navigation,
 }: NativeStackScreenProps<
   StoresStackParamList,
-  STORES_STACK_SCREEN_NAMES.STORES_SCREEN
+  STORES_STACK_NAMES.STORES_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
@@ -78,11 +78,11 @@ const StoresScreen = ({
   }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.push(STORES_STACK_SCREEN_NAMES.STORE_ADD_SCREEN);
+    navigation.push(STORES_STACK_NAMES.STORE_ADD_SCREEN);
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={storePage.data}
@@ -90,7 +90,7 @@ const StoresScreen = ({
           <StoreCard
             store={item}
             onPress={() =>
-              navigation.push(STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN, {
+              navigation.push(STORES_STACK_NAMES.STORE_DETAILS_SCREEN, {
                 storeId: item.id,
               })
             }
@@ -105,11 +105,11 @@ const StoresScreen = ({
         <Button
           labelStyle={styles.buttonLabel}
           style={styles.button}
-          label={t('storesScreen.createStore')}
+          label={t('storesStack.storesScreen.createStore')}
           onPress={() => onAddButtonPress()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
