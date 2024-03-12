@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { HOME_STACK_NAMES } from '../../constants/RouteNames';
 import HomeScreen from './HomeScreen';
 
@@ -10,11 +11,16 @@ export type HomeStackParamList = {
 };
 
 const HomeStack = () => {
+  const { t } = useTranslation();
+
   return (
-    <HomeStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStackNavigator.Navigator>
       <HomeStackNavigator.Screen
         name={HOME_STACK_NAMES.HOME_SCREEN}
         component={HomeScreen}
+        options={{
+          title: t('common.appName'),
+        }}
       />
     </HomeStackNavigator.Navigator>
   );

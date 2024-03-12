@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
@@ -78,7 +78,7 @@ const WinesScreen = ({
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={winePage.data}
@@ -101,11 +101,11 @@ const WinesScreen = ({
         <Button
           labelStyle={styles.buttonLabel}
           style={styles.button}
-          label={t('winesScreen.createWine')}
+          label={t('winesStack.winesScreen.createWine')}
           onPress={() => onAddButtonPress()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

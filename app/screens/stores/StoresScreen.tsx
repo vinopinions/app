@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
@@ -82,7 +82,7 @@ const StoresScreen = ({
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
         data={storePage.data}
@@ -105,11 +105,11 @@ const StoresScreen = ({
         <Button
           labelStyle={styles.buttonLabel}
           style={styles.button}
-          label={t('storesScreen.createStore')}
+          label={t('storesStack.storesScreen.createStore')}
           onPress={() => onAddButtonPress()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

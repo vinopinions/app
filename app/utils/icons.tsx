@@ -96,3 +96,11 @@ export const GrapeIcon = (props: Partial<IconProps<'fruit-grapes'>>) => (
 export const GrapeIconOutline = (
   props: Partial<IconProps<'fruit-grapes-outline'>>,
 ) => <MaterialCommunityIcons {...props} name="fruit-grapes-outline" />;
+
+export const SettingsIcon = (props: Partial<IconProps<'settings'>>) => (
+  <Ionicons {...props} name="settings" />
+);
+
+export const SettingsIconOutline = (
+  props: Partial<IconProps<'settings-outline'>>,
+) => <Ionicons {...props} name="settings-outline" />;

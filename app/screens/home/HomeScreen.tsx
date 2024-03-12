@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
 import { fetchFeedAsync, selectFeed } from '../../features/feed/feedSlice';
@@ -33,27 +33,15 @@ const HomeScreen = () => {
   }, [dispatch, feed.meta.hasNextPage, feed.meta.page]);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <FlatList
-        data={feed.data}
-        renderItem={({ item }: { item: Rating }) => (
-          <RatingCard rating={item} />
-        )}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        onEndReachedThreshold={0.4}
-        onEndReached={onEndReached}
-      />
-    </SafeAreaView>
+    <FlatList
+      data={feed.data}
+      renderItem={({ item }: { item: Rating }) => <RatingCard rating={item} />}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      onEndReachedThreshold={0.4}
+      onEndReached={onEndReached}
+    />
   );
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

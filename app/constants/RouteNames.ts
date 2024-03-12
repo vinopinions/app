@@ -1,6 +1,7 @@
 // AccountStack
 export enum ACCOUNT_STACK_NAMES {
   ACCOUNT_SCREEN = 'AccountScreens',
+  SETTINGS_SCREEN = 'SettingsScreen',
 }
 
 // FriendsStack
