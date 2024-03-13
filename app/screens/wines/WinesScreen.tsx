@@ -1,11 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import WineCard from '../../components/wines/WineCard';
-import { WINES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import { WINES_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchWinesAsync,
   selectWinePage,
@@ -13,69 +15,78 @@ import {
 import Page from '../../models/Page';
 import Wine from '../../models/Wine';
 import { AppDispatch } from '../../store/store';
-import { WinesStackParamList } from './WinesStackScreen';
+import { WinesStackParamList } from './WinesStack';
 
 const WinesScreen = ({
   navigation,
 }: NativeStackScreenProps<
   WinesStackParamList,
-  WINES_STACK_SCREEN_NAMES.WINES_SCREEN
+  WINES_STACK_NAMES.WINES_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const winePage: Page<Wine> = useSelector(selectWinePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Wine[]>(winePage.data);
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
+  const { t } = useTranslation();
 
-  const performSearch = useCallback(() => {
-    if (searchQuery === '') {
-      setSearchResults(winePage.data);
-    } else {
-      const results = winePage.data.filter((w) =>
-        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  }, [searchQuery, winePage.data]);
+  // load wines with current filter
+  const loadWines = useCallback(() => {
+    dispatch(fetchWinesAsync({ filter: searchQuery }));
+  }, [dispatch, searchQuery]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
+  // debounce the setting of the current search query
+  // Why useMemo instead of useCallback?
+  // https://github.com/facebook/react/issues/19240#issuecomment-652945246
+  const debouncedUpdateQuery = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+    }, 200);
+  }, []);
 
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, performSearch, winePage.data]);
+  // update display text of SearchField and call debounce function to update search query
+  const onSearch = useCallback(
+    (query: string) => {
+      setSearchDisplayText(query);
+      debouncedUpdateQuery(query);
+    },
+    [debouncedUpdateQuery],
+  );
 
+  // load wines on refresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchWinesAsync());
+    loadWines();
     setRefreshing(false);
-  }, [dispatch]);
+  }, [loadWines]);
 
+  // initial load of wines
   useEffect(() => {
-    dispatch(fetchWinesAsync());
-  }, [dispatch]);
+    onRefresh();
+  }, [dispatch, onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (winePage.meta.hasNextPage) {
-      dispatch(fetchWinesAsync({ page: winePage.meta.page + 1 }));
+      dispatch(
+        fetchWinesAsync({ page: winePage.meta.page + 1, filter: searchQuery }),
+      );
     }
-  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page]);
+  }, [dispatch, winePage.meta.hasNextPage, winePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.push(WINES_STACK_SCREEN_NAMES.WINE_ADD_SCREEN);
+    navigation.push(WINES_STACK_NAMES.WINE_ADD_SCREEN);
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
+    <SafeAreaView style={styles.screen}>
+      <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
-        data={searchResults}
+        data={winePage.data}
         renderItem={({ item }: { item: Wine }) => (
           <WineCard
             wine={item}
             onPress={() =>
-              navigation.push(WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN, {
+              navigation.push(WINES_STACK_NAMES.WINE_DETAILS_SCREEN, {
                 wineId: item.id,
               })
             }
@@ -87,9 +98,14 @@ const WinesScreen = ({
         onEndReached={onEndReached}
       />
       <View style={styles.buttonContainer}>
-        <Button label={'Add Wine'} onPress={() => onAddButtonPress()} />
+        <Button
+          labelStyle={styles.buttonLabel}
+          style={styles.button}
+          label={t('winesStack.winesScreen.createWine')}
+          onPress={() => onAddButtonPress()}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -102,5 +118,17 @@ const styles = StyleSheet.create({
   wineListContainer: {},
   buttonContainer: {
     padding: 10,
+    position: 'absolute',
+    bottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    width: '50%',
+    height: 50,
+  },
+  buttonLabel: {
+    fontSize: 20,
   },
 });

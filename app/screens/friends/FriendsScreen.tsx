@@ -1,28 +1,31 @@
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import React, { useEffect } from 'react';
-import { AppDispatch, RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import User from '../../models/User';
-import Page from '../../models/Page';
-import {
-  fetchFriendsForUserAsync,
-  selectFriendRelationsByUserUsername,
-} from '../../features/users/userFriendsSlice';
+import { FRIENDS_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchCurrentUserAsync,
   selectCurrentUser,
 } from '../../features/users/currentUserSlice';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FriendsStackParamList } from './FriendsStackScreen';
-import { FRIENDS_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import {
+  fetchFriendsForUserAsync,
+  selectFriendRelationsByUserUsername,
+} from '../../features/users/userFriendsSlice';
+import Page from '../../models/Page';
+import User from '../../models/User';
+import { AppDispatch, RootState } from '../../store/store';
+import { FriendsStackParamList } from './FriendsStack';
 
 const FriendsScreen = ({
   navigation,
 }: NativeStackScreenProps<
   FriendsStackParamList,
-  FRIENDS_STACK_SCREEN_NAMES.FRIENDS_SCREEN
+  FRIENDS_STACK_NAMES.FRIENDS_SCREEN
 >) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
   const currentUser: User = useSelector<RootState, User>((state) =>
     selectCurrentUser(state),
@@ -33,48 +36,80 @@ const FriendsScreen = ({
 
   useEffect(() => {
     dispatch(fetchCurrentUserAsync());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (currentUser) {
-      dispatch(fetchFriendsForUserAsync({ username: currentUser?.username }));
+      dispatch(fetchFriendsForUserAsync({ username: currentUser.username }));
     }
-  }, [currentUser?.username, dispatch]);
+  }, [dispatch, currentUser]);
+
+  const onEndReached = useCallback(async () => {
+    if (friendsPage.meta.hasNextPage) {
+      dispatch(
+        fetchFriendsForUserAsync({
+          username: currentUser.username,
+          page: friendsPage.meta.page + 1,
+        }),
+      );
+    }
+  }, [
+    dispatch,
+    friendsPage.meta.hasNextPage,
+    friendsPage.meta.page,
+    currentUser,
+  ]);
+
+  // load users on refresh
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    dispatch(fetchFriendsForUserAsync({ username: currentUser.username }));
+
+    setRefreshing(false);
+  }, [dispatch, currentUser]);
 
   if (!currentUser) {
     return <Text>Loading...</Text>;
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.buttonContainer}>
-          <Button
-            style={styles.button}
-            label="Add Friend"
-            onPress={() =>
-              navigation.push(FRIENDS_STACK_SCREEN_NAMES.ADD_FRIEND_SCREEN)
-            }
-          />
-          <Button style={styles.button} label="Incoming" />
-          <Button style={styles.button} label="Outgoing" />
-        </View>
-        {friendsPage.data.map((friend) => (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.button}
+          label={t('friendsStack.friendsScreen.addFriend')}
+          onPress={() => navigation.push(FRIENDS_STACK_NAMES.ADD_FRIEND_SCREEN)}
+        />
+        <Button
+          style={styles.button}
+          label={t('friendsStack.friendsScreen.incoming')}
+        />
+        <Button
+          style={styles.button}
+          label={t('friendsStack.friendsScreen.outgoing')}
+        />
+      </View>
+      <FlatList
+        data={friendsPage.data}
+        renderItem={({ item }: { item: User }) => (
           <TouchableOpacity
-            key={friend.id}
             onPress={() =>
-              navigation.push(
-                FRIENDS_STACK_SCREEN_NAMES.FRIEND_ACCOUNT_SCREEN,
-                {
-                  user: friend,
-                },
-              )
+              navigation.push(FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN, {
+                user: item,
+              })
             }
           >
             <View>
-              <Text style={styles.friendName}>{friend.username}</Text>
+              <Text style={styles.friendName}>{item.username}</Text>
               <View style={styles.separator} />
             </View>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
+        )}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        onEndReachedThreshold={0.4}
+        onEndReached={onEndReached}
+      />
     </SafeAreaView>
   );
 };

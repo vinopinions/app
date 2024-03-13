@@ -1,82 +1,96 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
 import SearchBar from '../../components/SearchBar';
 import StoreCard from '../../components/stores/StoreCard';
-import { STORES_STACK_SCREEN_NAMES } from '../../constants/RouteNames';
+import { STORES_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchStoresAsync,
   selectStorePage,
 } from '../../features/stores/storesSlice';
 import Page from '../../models/Page';
 import { AppDispatch } from '../../store/store';
-import { StoresStackParamList } from './StoresStackScreen';
+import { StoresStackParamList } from './StoresStack';
 
 const StoresScreen = ({
   navigation,
 }: NativeStackScreenProps<
   StoresStackParamList,
-  STORES_STACK_SCREEN_NAMES.STORES_SCREEN
+  STORES_STACK_NAMES.STORES_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const storePage: Page<Store> = useSelector(selectStorePage);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Store[]>(storePage.data);
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
+  const { t } = useTranslation();
 
-  const performSearch = useCallback(() => {
-    if (searchQuery === '') {
-      setSearchResults(storePage.data);
-    } else {
-      const results = storePage.data.filter((w) =>
-        w.name.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSearchResults(results);
-    }
-  }, [searchQuery, storePage.data]);
+  // load stores with current filter
+  const loadStores = useCallback(() => {
+    dispatch(fetchStoresAsync({ filter: searchQuery }));
+  }, [dispatch, searchQuery]);
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
+  // debounce the setting of the current search query
+  // Why useMemo instead of useCallback?
+  // https://github.com/facebook/react/issues/19240#issuecomment-652945246
+  const debouncedUpdateQuery = useMemo(() => {
+    return debounce((query: string) => {
+      setSearchQuery(query);
+    }, 200);
+  }, []);
 
-  useEffect(() => {
-    performSearch();
-  }, [searchQuery, performSearch, storePage.data]);
+  // update display text of SearchField and call debounce function to update search query
+  const onSearch = useCallback(
+    (query: string) => {
+      setSearchDisplayText(query);
+      debouncedUpdateQuery(query);
+    },
+    [debouncedUpdateQuery],
+  );
 
+  // load stores on refresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchStoresAsync());
+    loadStores();
     setRefreshing(false);
-  }, [dispatch]);
+  }, [loadStores]);
 
+  // initial load of stores
   useEffect(() => {
-    dispatch(fetchStoresAsync());
-  }, [dispatch]);
+    onRefresh();
+  }, [onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (storePage.meta.hasNextPage) {
-      dispatch(fetchStoresAsync({ page: storePage.meta.page + 1 }));
+      dispatch(
+        fetchStoresAsync({
+          page: storePage.meta.page + 1,
+          filter: searchQuery,
+        }),
+      );
     }
-  }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page]);
+  }, [dispatch, storePage.meta.hasNextPage, storePage.meta.page, searchQuery]);
 
   const onAddButtonPress = useCallback(() => {
-    navigation.push(STORES_STACK_SCREEN_NAMES.STORE_ADD_SCREEN);
+    navigation.push(STORES_STACK_NAMES.STORE_ADD_SCREEN);
   }, [navigation]);
 
   return (
-    <View style={styles.screen}>
-      <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
+    <SafeAreaView style={styles.screen}>
+      <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
       <FlatList
-        data={searchResults}
+        data={storePage.data}
         renderItem={({ item }: { item: Store }) => (
           <StoreCard
             store={item}
             onPress={() =>
-              navigation.push(STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN, {
+              navigation.push(STORES_STACK_NAMES.STORE_DETAILS_SCREEN, {
                 storeId: item.id,
               })
             }
@@ -88,9 +102,14 @@ const StoresScreen = ({
         onEndReached={onEndReached}
       />
       <View style={styles.buttonContainer}>
-        <Button label={'Add Store'} onPress={() => onAddButtonPress()} />
+        <Button
+          labelStyle={styles.buttonLabel}
+          style={styles.button}
+          label={t('storesStack.storesScreen.createStore')}
+          onPress={() => onAddButtonPress()}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -102,5 +121,17 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 10,
+    position: 'absolute',
+    bottom: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  button: {
+    width: '50%',
+    height: 50,
+  },
+  buttonLabel: {
+    fontSize: 20,
   },
 });

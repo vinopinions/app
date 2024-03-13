@@ -1,35 +1,32 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 
 export type AccountScreenHeaderProps = {
-  username: string;
   ratingAmount: number;
   friendAmount: number;
 };
 
 const AccountScreenHeader = ({
-  username,
   ratingAmount,
   friendAmount,
 }: AccountScreenHeaderProps) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <View style={styles.headingContainer}>
-        <Text style={styles.heading}>{username}</Text>
-      </View>
       <View style={styles.infoBoxContainer}>
         <View style={styles.infoBox}>
           <Text style={styles.infoBoxContent}>{ratingAmount}</Text>
-          <Text>Ratings</Text>
+          <Text>{t('common.ratings')}</Text>
         </View>
 
         <View style={styles.infoBox}>
           <Text style={styles.infoBoxContent}>{friendAmount}</Text>
-          <Text>Friends</Text>
+          <Text>{t('common.friends')}</Text>
         </View>
       </View>
-      <Text style={styles.ratingsText}>Ratings</Text>
+      <Text style={styles.ratingsText}>{t('common.ratings')}</Text>
     </View>
   );
 };

@@ -2,15 +2,15 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
 import WineCard from '../../components/wines/WineCard';
 import {
-  BOTTOM_TAB_STACK_SCREEN_NAMES,
-  STORES_STACK_SCREEN_NAMES,
-  WINES_STACK_SCREEN_NAMES,
+  BOTTOM_TAB_STACK_NAMES,
+  STORES_STACK_NAMES,
+  WINES_STACK_NAMES,
 } from '../../constants/RouteNames';
 import {
   fetchWinesForStoreAsync,
@@ -24,26 +24,13 @@ import Page from '../../models/Page';
 import Wine from '../../models/Wine';
 import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
-import { StoresStackParamList } from './StoresStackScreen';
+import StoreDetailsScreenHeader, {
+  StoreDetailsScreenHeaderProps,
+} from './StoreDetailsScreenHeader';
+import { StoresStackParamList } from './StoresStack';
 
-const renderHeader = (store: Store) => {
-  return (
-    <>
-      <View marginB-5>
-        <Text text40 style={styles.text}>
-          {store.name}
-        </Text>
-      </View>
-      <View marginB-10>
-        <Text text70 style={styles.text}>
-          {`Adresse: ${store.address}`}
-        </Text>
-        <Text text70 style={styles.text}>
-          {`Website: ${store.url}`}
-        </Text>
-      </View>
-    </>
-  );
+const renderHeader = (props: StoreDetailsScreenHeaderProps) => {
+  return <StoreDetailsScreenHeader {...props} />;
 };
 
 const StoreDetailsScreen = ({
@@ -52,11 +39,11 @@ const StoreDetailsScreen = ({
 }: CompositeScreenProps<
   NativeStackScreenProps<
     StoresStackParamList,
-    STORES_STACK_SCREEN_NAMES.STORE_DETAILS_SCREEN
+    STORES_STACK_NAMES.STORE_DETAILS_SCREEN
   >,
   BottomTabScreenProps<
     BottomTabStackParamList,
-    BOTTOM_TAB_STACK_SCREEN_NAMES.STORES_STACK_SCREEN
+    BOTTOM_TAB_STACK_NAMES.STORES_STACK
   >
 >) => {
   const dispatch: AppDispatch = useDispatch();
@@ -70,10 +57,6 @@ const StoreDetailsScreen = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    onRefresh();
-  }, [dispatch, route.params.storeId]);
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -82,7 +65,11 @@ const StoreDetailsScreen = ({
     } finally {
       setRefreshing(false);
     }
-  }, [dispatch]);
+  }, [dispatch, route.params.storeId]);
+
+  useEffect(() => {
+    onRefresh();
+  }, [dispatch, onRefresh, route.params.storeId]);
 
   const onWinesEndReached = useCallback(async () => {
     if (winesPage.meta.hasNextPage) {
@@ -93,7 +80,12 @@ const StoreDetailsScreen = ({
         }),
       );
     }
-  }, [dispatch, winesPage.meta.hasNextPage, winesPage.meta.page]);
+  }, [
+    dispatch,
+    winesPage.meta.hasNextPage,
+    winesPage.meta.page,
+    route.params.storeId,
+  ]);
 
   if (store === undefined) {
     // TODO: insert skeleton
@@ -104,41 +96,31 @@ const StoreDetailsScreen = ({
     );
   }
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListHeaderComponentStyle={styles.listHeader}
-      ListHeaderComponent={() => renderHeader(store)}
-      data={winesPage.data}
-      renderItem={({ item }: { item: Wine }) => (
-        <WineCard
-          onPress={() =>
-            navigation.navigate(
-              BOTTOM_TAB_STACK_SCREEN_NAMES.WINES_STACK_SCREEN,
-              {
-                screen: WINES_STACK_SCREEN_NAMES.WINE_DETAILS_SCREEN,
+    <SafeAreaView>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListHeaderComponent={() => renderHeader({ store })}
+        data={winesPage.data}
+        renderItem={({ item }: { item: Wine }) => (
+          <WineCard
+            onPress={() =>
+              navigation.navigate(BOTTOM_TAB_STACK_NAMES.WINES_STACK, {
+                screen: WINES_STACK_NAMES.WINE_DETAILS_SCREEN,
                 params: { wineId: item.id },
-              },
-            )
-          }
-          wine={item}
-        />
-      )}
-      onEndReachedThreshold={0.4}
-      onEndReached={onWinesEndReached}
-    />
+              })
+            }
+            wine={item}
+          />
+        )}
+        onEndReachedThreshold={0.4}
+        onEndReached={onWinesEndReached}
+      />
+    </SafeAreaView>
   );
 };
 
 export default StoreDetailsScreen;
 
-const styles = StyleSheet.create({
-  text: {
-    marginTop: 5,
-    marginLeft: 10,
-  },
-  listHeader: {
-    padding: 10,
-  },
-});
+// const styles = StyleSheet.create({});

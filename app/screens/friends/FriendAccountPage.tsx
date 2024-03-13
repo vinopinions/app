@@ -1,49 +1,43 @@
-import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-ui-lib';
-import { FriendsStackParamList } from './FriendsStackScreen';
-import {
-  BOTTOM_TAB_STACK_SCREEN_NAMES,
-  FRIENDS_STACK_SCREEN_NAMES,
-} from '../../constants/RouteNames';
-import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import AccountScreenHeader, {
-  AccountScreenHeaderProps,
-} from '../account/AccountScreenHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import User from '../../models/User';
-import Page from '../../models/Page';
-import Rating from '../../models/Rating';
-import {
-  fetchRatingsForUserAsync,
-  selectRatingRelationsByUserUsername,
-} from '../../features/users/userRatingsSlice';
+import RatingCard from '../../components/ratings/RatingCard';
+import { FRIENDS_STACK_NAMES } from '../../constants/RouteNames';
+import { fetchCurrentUserAsync } from '../../features/users/currentUserSlice';
 import {
   fetchFriendsForUserAsync,
   selectFriendRelationsByUserUsername,
 } from '../../features/users/userFriendsSlice';
-import { fetchCurrentUserAsync } from '../../features/users/currentUserSlice';
-import RatingCard from '../../components/ratings/RatingCard';
+import {
+  fetchRatingsForUserAsync,
+  selectRatingRelationsByUserUsername,
+} from '../../features/users/userRatingsSlice';
+import Page from '../../models/Page';
+import Rating from '../../models/Rating';
+import User from '../../models/User';
+import { AppDispatch, RootState } from '../../store/store';
+import AccountScreenHeader, {
+  AccountScreenHeaderProps,
+} from '../account/AccountScreenHeader';
+import { FriendsStackParamList } from './FriendsStack';
 
 const renderHeader = (props: AccountScreenHeaderProps) => {
   return <AccountScreenHeader {...props} />;
 };
 
+const renderTitle = (username: string) => {
+  return <Text style={styles.heading}>{username}</Text>;
+};
+
 const FriendAccountScreen = ({
   route,
-}: CompositeScreenProps<
-  NativeStackScreenProps<
-    FriendsStackParamList,
-    FRIENDS_STACK_SCREEN_NAMES.FRIEND_ACCOUNT_SCREEN
-  >,
-  BottomTabScreenProps<
-    BottomTabStackParamList,
-    BOTTOM_TAB_STACK_SCREEN_NAMES.FRIENDS_SCREEN
-  >
+  navigation,
+}: NativeStackScreenProps<
+  FriendsStackParamList,
+  FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
@@ -76,28 +70,48 @@ const FriendAccountScreen = ({
     onRefresh();
   }, [dispatch, onRefresh]);
 
+  useEffect(() => {
+    if (route.params.user) {
+      navigation.setOptions({
+        headerShown: true,
+        headerTitleAlign: 'left',
+        headerTitle: () => {
+          return renderTitle(route.params.user.username);
+        },
+      });
+    }
+  }, [navigation, route.params.user]);
+
   if (route.params.user === undefined) {
     return <Text>loading</Text>;
   }
 
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListHeaderComponent={() =>
-        renderHeader({
-          username: route.params.user.username,
-          friendAmount: friendsPage.meta.itemCount,
-          ratingAmount: ratingsPage.meta.itemCount,
-        })
-      }
-      data={ratingsPage.data}
-      renderItem={({ item }: { item: Rating }) => {
-        return <RatingCard rating={item} />;
-      }}
-    />
+    <SafeAreaView>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListHeaderComponent={() =>
+          renderHeader({
+            friendAmount: friendsPage.meta.itemCount,
+            ratingAmount: ratingsPage.meta.itemCount,
+          })
+        }
+        data={ratingsPage.data}
+        renderItem={({ item }: { item: Rating }) => {
+          return <RatingCard rating={item} />;
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
 export default FriendAccountScreen;
+
+const styles = StyleSheet.create({
+  heading: {
+    fontWeight: 'bold',
+    fontSize: 32,
+  },
+});

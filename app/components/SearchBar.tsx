@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { TextField } from 'react-native-ui-lib';
 
@@ -8,9 +9,11 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, handleSearch }) => {
+  const { t } = useTranslation();
+
   return (
     <TextField
-      placeholder="Search..."
+      placeholder={`${t('common.search')}...`}
       placeholderTextColor="grey"
       onChangeText={handleSearch}
       value={searchQuery}

@@ -1,5 +1,23 @@
+// AccountStack
+export enum ACCOUNT_STACK_NAMES {
+  ACCOUNT_SCREEN = 'AccountScreen',
+  SETTINGS_SCREEN = 'SettingsScreen',
+}
+
+// FriendsStack
+export enum FRIENDS_STACK_NAMES {
+  FRIENDS_SCREEN = 'FriendsScreens',
+  FRIEND_ACCOUNT_SCREEN = 'FriendAccountScreen',
+  ADD_FRIEND_SCREEN = 'AddFriendScreen',
+}
+
+// HomeStack
+export enum HOME_STACK_NAMES {
+  HOME_SCREEN = 'HomeScreen',
+}
+
 // WinesStack
-export enum WINES_STACK_SCREEN_NAMES {
+export enum WINES_STACK_NAMES {
   WINES_SCREEN = 'WinesScreen',
   WINE_DETAILS_SCREEN = 'WineDetailsScreen',
   WINE_ADD_SCREEN = 'WineAddScreen',
@@ -7,24 +25,17 @@ export enum WINES_STACK_SCREEN_NAMES {
 }
 
 // StoreStack
-export enum STORES_STACK_SCREEN_NAMES {
+export enum STORES_STACK_NAMES {
   STORES_SCREEN = 'StoresScreen',
   STORE_DETAILS_SCREEN = 'StoreDetailsScreen',
   STORE_ADD_SCREEN = 'StoreAddScreen',
 }
 
-// FriendsStack
-export enum FRIENDS_STACK_SCREEN_NAMES {
-  FRIENDS_SCREEN = 'FriendsScreen',
-  FRIEND_ACCOUNT_SCREEN = 'FriendAccountScreen',
-  ADD_FRIEND_SCREEN = 'AddFriendScreen',
-}
-
 // BottomTab
-export enum BOTTOM_TAB_STACK_SCREEN_NAMES {
-  HOME_SCREEN = 'Home',
-  WINES_STACK_SCREEN = 'Wines',
-  STORES_STACK_SCREEN = 'Stores',
-  FRIENDS_SCREEN = 'Friends',
-  ACCOUNT_SCREEN = 'Account',
+export enum BOTTOM_TAB_STACK_NAMES {
+  HOME_STACK = 'HomeStack',
+  WINES_STACK = 'WinesStack',
+  STORES_STACK = 'StoresStack',
+  FRIENDS_STACK = 'FriendsStack',
+  ACCOUNT_STACK = 'AccountStack',
 }
