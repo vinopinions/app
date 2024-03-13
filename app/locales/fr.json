@@ -1,0 +1,41 @@
+{
+  "homeStack": {
+    "title": "Home"
+  },
+  "winesStack": {
+    "title": "Wines",
+    "winesScreen": {
+      "createWine": "Add wine"
+    },
+    "wineDetailsScreen": {
+      "wineFrom": "{{wineName}} by {{winemakerName}}"
+    }
+  },
+  "storesStack": {
+    "title": "Stores",
+    "storesScreen": {
+      "createStore": "Add store"
+    }
+  },
+  "friendsStack": {
+    "title": "Friends"
+  },
+  "accountStack": {
+    "title": "Account",
+    "settingsScreen": {
+      "title": "Settings"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "de": "German"
+  },
+  "common": {
+    "ratings": "Ratings",
+    "friends": "Friends",
+    "search": "Search",
+    "signOut": "Sign out",
+    "appName": "Vinopinions",
+    "language": "Language"
+  }
+}
