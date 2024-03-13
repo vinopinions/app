@@ -3,39 +3,39 @@
     "title": "Home"
   },
   "winesStack": {
-    "title": "Weine",
+    "title": "Wines",
     "winesScreen": {
-      "createWine": "Wein hinzufügen"
+      "createWine": "Add wine"
     },
     "wineDetailsScreen": {
-      "wineFrom": "{{wineName}} von {{winemakerName}}"
+      "wineFrom": "{{wineName}} by {{winemakerName}}"
     }
   },
   "storesStack": {
     "title": "Stores",
     "storesScreen": {
-      "createStore": "Store hinzufügen"
+      "createStore": "Add store"
     }
   },
   "friendsStack": {
-    "title": "Freunde"
+    "title": "Friends"
   },
   "accountStack": {
     "title": "Account",
     "settingsScreen": {
-      "title": "Einstellungen"
+      "title": "Settings"
     }
   },
   "languages": {
-    "en": "Englisch",
-    "de": "Deutsch"
+    "en": "English",
+    "de": "German"
   },
   "common": {
     "ratings": "Ratings",
-    "friends": "Freunde",
-    "search": "Suchen",
-    "signOut": "Ausloggen",
+    "friends": "Friends",
+    "search": "Search",
+    "signOut": "Sign out",
     "appName": "Vinopinions",
-    "language": "Sprache"
+    "language": "Language"
   }
 }
