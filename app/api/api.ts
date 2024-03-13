@@ -44,15 +44,7 @@ export const apiStores = createDefaultAxiosInstance({
   baseURL: STORES_ENDPOINT_URL,
 });
 
-export const apiWineRatings = createDefaultAxiosInstance({
-  baseURL: WINES_ENDPOINT_URL,
-});
-
 export const apiUsers = createDefaultAxiosInstance({
-  baseURL: USERS_ENDPOINT_URL,
-});
-
-export const apiUserFriends = createDefaultAxiosInstance({
   baseURL: USERS_ENDPOINT_URL,
 });
 
@@ -242,7 +234,7 @@ export const createWineRating = (
   rating: RatingDto,
   options?: AxiosRequestConfig,
 ) =>
-  apiWineRatings.post(
+  apiWines.post(
     WINES_ID_RATINGS_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId),
     rating,
     options,
@@ -276,7 +268,7 @@ export const fetchFriendsForUser = (
   order?: 'ASC' | 'DESC',
   options?: AxiosRequestConfig,
 ) =>
-  apiUserFriends.get(
+  apiUsers.get(
     USERS_USERNAME_FRIENDS_ENDPOINT_URL.replace(
       USERNAME_URL_PARAMETER,
       username,
