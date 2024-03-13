@@ -12,12 +12,10 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
 import { store } from './store/store';
 
-import de from './locales/de.json';
 import en from './locales/en.json';
 
 const resources = {
   en: { translation: en },
-  de: { translation: de },
 };
 
 i18n.use(initReactI18next).init({
