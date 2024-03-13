@@ -2630,10 +2630,10 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@react-navigation/elements@^1.3.26", "@react-navigation/elements@^1.3.28":
-  version "1.3.28"
-  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.28.tgz#9784605a958478538f433233af79943ff951a9b7"
-  integrity sha512-pLKI8RsCuBAXaeTVjJo/ZeOFdZLiJXsnT5DoSpRUCq+B10b53kAI+F1sHhMShB8ALaNPD6RvB45zL8aCBwpuyA==
+"@react-navigation/elements@^1.3.26", "@react-navigation/elements@^1.3.28", "@react-navigation/elements@^1.3.29":
+  version "1.3.29"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.29.tgz#1dcbd95c319a8990d66e2aef8e108198d7a93cb2"
+  integrity sha512-sMkqqQHlxdBxrBVw6E2a3LJjb9Hrb1ola8+zRgJn4Ox8iKtjqtWEdg349DPWU77VpIekcMLsqQvEtZox3XkXgA==
 
 "@react-navigation/native-stack@^6.9.24":
   version "6.9.24"
@@ -2660,12 +2660,12 @@
   dependencies:
     nanoid "^3.1.23"
 
-"@react-navigation/stack@^6.3.27":
-  version "6.3.27"
-  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.3.27.tgz#a448a7a826eb81365bad78c02246ed126b0c1e4e"
-  integrity sha512-lRjY7REngYIiRLe588baH2vRYnma3NFHaqPdJZbdPSw6X5vUgqejur4IQK4lb+7G7LRnde4uM/3+q0cD5k4x3g==
+"@react-navigation/stack@^6.3.28":
+  version "6.3.28"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.3.28.tgz#f5da48a5673a9f7d18f3e23e38aa6460c1dfcc04"
+  integrity sha512-7+72hPGqfSO3vzTu77cXJy5TLP8CxEJglodOJL+oqGpqtdbHl+/AIt5ZFa8lrxQiM/qVQfCFxocaI7/RUqQqEQ==
   dependencies:
-    "@react-navigation/elements" "^1.3.28"
+    "@react-navigation/elements" "^1.3.29"
     color "^4.2.3"
     warn-once "^0.1.0"
 
