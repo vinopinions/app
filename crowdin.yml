@@ -1,11 +1,9 @@
 files:
-  - source: /app/locales/*.json
+  - source: /app/locales/en.json
     translation: /app/locales/%two_letters_code%.json
-
 commit_message: 'chore(l10n): new translations for %language% (%original_file_name%)'
-
 pull_request_reviewers:
   - devskar
 pull_request_title: 'chore(l10n): update translations'
 pull_request_labels:
-  - 'l10n'
+  - l10n
