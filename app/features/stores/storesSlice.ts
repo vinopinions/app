@@ -64,11 +64,6 @@ const storesSlice = createSlice({
       .addCase(_fetchStoresAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
 
-        // initialize stores with empty relations
-        action.payload.data = action.payload.data.map((store) => {
-          return { ...store, wines: [] };
-        });
-
         // if we get the first page, we reset the state completely, else we just update the state and keep the data from the previous pages
         if (action.payload.meta.page === 1) {
           state.data = action.payload;
@@ -90,9 +85,6 @@ const storesSlice = createSlice({
       })
       .addCase(fetchStoreByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-
-        // initialize wine with empty relations
-        action.payload = { ...action.payload };
 
         const index = state.data.data.findIndex(
           (store) => store.id === action.payload.id,

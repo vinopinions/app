@@ -5,6 +5,10 @@ import {
   AUTH_LOGIN_ENDPOINT_URL,
   AUTH_SIGNUP_ENDPOINT_URL,
   FEED_URL,
+  FRIEND_REQUESTS_ENDPOINT_URL,
+  FRIEND_REQUESTS_INCOMING_ENDPOINT_URL,
+  FRIEND_REQUESTS_OUTGOING_ENDPOINT_URL,
+  FRIEND_REQUESTS_SEND_ENDPOINT_URL,
   ID_URL_PARAMETER,
   RATINGS_ENDPOINT_URL,
   RATINGS_ID_ENDPOINT_URL,
@@ -50,6 +54,10 @@ export const apiUsers = createDefaultAxiosInstance({
 
 export const apiRatings = createDefaultAxiosInstance({
   baseURL: RATINGS_ENDPOINT_URL,
+});
+
+export const apiFriendRequests = createDefaultAxiosInstance({
+  baseURL: FRIEND_REQUESTS_ENDPOINT_URL,
 });
 
 export const apiFeed = createDefaultAxiosInstance({
@@ -245,6 +253,46 @@ export const createWineRating = (
 export const deleteRating = (ratingId: string, options?: AxiosRequestConfig) =>
   apiRatings.delete(
     RATINGS_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, ratingId),
+    options,
+  );
+
+export const fetchIncomingFriendRequests = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.get(FRIEND_REQUESTS_INCOMING_ENDPOINT_URL, {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const fetchOutgoingFriendRequests = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.get(FRIEND_REQUESTS_OUTGOING_ENDPOINT_URL, {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const sendFriendRequest = (
+  username: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_SEND_ENDPOINT_URL,
+    { username },
     options,
   );
 

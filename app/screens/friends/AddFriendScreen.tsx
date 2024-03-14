@@ -4,6 +4,7 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
+import { sendFriendRequestAsync } from '../../features/friend-requests/friendRequestsSlice';
 import {
   fetchUsersAsync,
   selectUserPage,
@@ -65,6 +66,13 @@ const AddFriendScreen = () => {
     }
   }, [dispatch, userPage.meta.hasNextPage, userPage.meta.page, searchQuery]);
 
+  const onAddButtonClick = useCallback(
+    (username: string) => {
+      dispatch(sendFriendRequestAsync(username));
+    },
+    [dispatch],
+  );
+
   return (
     <SafeAreaView>
       <SearchBar searchQuery={searchDisplayText} handleSearch={onSearch} />
@@ -74,7 +82,11 @@ const AddFriendScreen = () => {
           <View>
             <View row spread>
               <Text style={styles.friendName}>{item.username}</Text>
-              <Button style={styles.button} label="Add" />
+              <Button
+                style={styles.button}
+                label="Add"
+                onPress={() => onAddButtonClick(item.username)}
+              />
             </View>
             <View style={styles.separator} />
           </View>
