@@ -4,25 +4,26 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import PaginationState from '../../api/pagination/PaginationState';
-import User from '../../models/User';
-import FetchPageParams from '../../api/pagination/FetchPageParams';
-import Page from '../../models/Page';
 import { fetchUsers } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
+import FetchPageParams from '../../api/pagination/FetchPageParams';
+import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
+import PaginationState from '../../api/pagination/PaginationState';
+import Page from '../../models/Page';
+import User from '../../models/User';
 import { RootState } from '../../store/store';
 
 type UsersState = ApiResponseState<PaginationState<User>>;
 
 export const _fetchUsersAsync = createAsyncThunk<Page<User>, FetchPageParams>(
   'users/fetchUsers',
-  async ({ page, take, order }: FetchPageParams) => {
-    const response = await fetchUsers(page, take, order);
+  async ({ page, take, order, filter }: FilterFetchPageParams) => {
+    const response = await fetchUsers(page, take, order, filter);
     return response.data;
   },
 );
 
-export const fetchUsersAsync = (params: FetchPageParams = {}) =>
+export const fetchUsersAsync = (params: FilterFetchPageParams = {}) =>
   _fetchUsersAsync(params);
 
 const initialState: UsersState = {

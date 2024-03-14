@@ -99,6 +99,7 @@ export const fetchUsers = (
   page?: number,
   take?: number,
   order?: 'ASC' | 'DESC',
+  filter?: string,
   options?: AxiosRequestConfig,
 ) =>
   apiUsers.get('', {
@@ -106,6 +107,7 @@ export const fetchUsers = (
       page,
       take,
       order,
+      filter,
     },
     ...options,
   });

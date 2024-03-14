@@ -16,13 +16,13 @@ const AddFriendScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const userPage: Page<User> = useSelector(selectUserPage);
-  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchDisplayText, setSearchDisplayText] = useState<string>('');
 
   // load users with current filter
   const loadUsers = useCallback(() => {
-    dispatch(fetchUsersAsync(/*{ filter: searchQuery }*/));
-  }, [dispatch /*, searchQuery*/]);
+    dispatch(fetchUsersAsync({ filter: searchQuery, take: 25 }));
+  }, [dispatch, searchQuery]);
 
   // debounce the setting of the current search query
   // Why useMemo instead of useCallback?
@@ -59,11 +59,11 @@ const AddFriendScreen = () => {
       dispatch(
         fetchUsersAsync({
           page: userPage.meta.page + 1,
-          // filter: searchQuery,
+          filter: searchQuery,
         }),
       );
     }
-  }, [dispatch, userPage.meta.hasNextPage, userPage.meta.page]);
+  }, [dispatch, userPage.meta.hasNextPage, userPage.meta.page, searchQuery]);
 
   return (
     <SafeAreaView>
