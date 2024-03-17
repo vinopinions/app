@@ -5,9 +5,11 @@ import {
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import {
+  acceptFriendRequest,
+  declineFriendRequest,
   fetchIncomingFriendRequests,
   fetchOutgoingFriendRequests,
-  sendFriendRequest,
+  revokeFriendRequest,
 } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
@@ -15,6 +17,7 @@ import PaginationState from '../../api/pagination/PaginationState';
 import FriendRequest from '../../models/FriendRequest';
 import Page from '../../models/Page';
 import { RootState } from '../../store/store';
+import { sendFriendRequest } from './../../api/api';
 
 type FriendRequestsData = {
   incoming: PaginationState<FriendRequest>;
@@ -59,8 +62,31 @@ export const fetchOutgoingFriendRequestsAsync = (
 export const sendFriendRequestAsync = createAsyncThunk(
   'friendRequests/send',
   async (username: string) => {
-    const response = await sendFriendRequest(username);
-    return response.data;
+    await sendFriendRequest(username);
+  },
+);
+
+export const acceptFriendRequestAsync = createAsyncThunk<string, string>(
+  'friendRequests/accept',
+  async (id: string) => {
+    await acceptFriendRequest(id);
+    return id;
+  },
+);
+
+export const declineFriendRequestAsync = createAsyncThunk<string, string>(
+  'friendRequests/decline',
+  async (id: string) => {
+    await declineFriendRequest(id);
+    return id;
+  },
+);
+
+export const revokeFriendRequestAsync = createAsyncThunk<string, string>(
+  'friendRequests/revoke',
+  async (id: string) => {
+    await revokeFriendRequest(id);
+    return id;
   },
 );
 
@@ -117,6 +143,56 @@ const friendRequestsSlice = createSlice({
         }
       })
       .addCase(_fetchOutgoingFriendRequestsAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        if (state.status === 'failed') {
+          state.error = action.error.message;
+        }
+      })
+      .addCase(acceptFriendRequestAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(acceptFriendRequestAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+
+        state.data.incoming.data = state.data.incoming.data.filter(
+          (item) => item.id !== action.payload,
+        );
+
+        console.log(state.data.incoming);
+      })
+      .addCase(acceptFriendRequestAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        if (state.status === 'failed') {
+          state.error = action.error.message;
+        }
+      })
+      .addCase(declineFriendRequestAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(declineFriendRequestAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+
+        state.data.incoming.data = state.data.incoming.data.filter(
+          (item) => item.id !== action.payload,
+        );
+      })
+      .addCase(declineFriendRequestAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        if (state.status === 'failed') {
+          state.error = action.error.message;
+        }
+      })
+      .addCase(revokeFriendRequestAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(revokeFriendRequestAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+
+        state.data.outgoing.data = state.data.outgoing.data.filter(
+          (item) => item.id !== action.payload,
+        );
+      })
+      .addCase(revokeFriendRequestAsync.rejected, (state, action) => {
         state.status = 'failed';
         if (state.status === 'failed') {
           state.error = action.error.message;

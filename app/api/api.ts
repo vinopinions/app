@@ -6,6 +6,9 @@ import {
   AUTH_SIGNUP_ENDPOINT_URL,
   FEED_URL,
   FRIEND_REQUESTS_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_ACCEPT_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_DECLINE_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_REVOKE_ENDPOINT_URL,
   FRIEND_REQUESTS_INCOMING_ENDPOINT_URL,
   FRIEND_REQUESTS_OUTGOING_ENDPOINT_URL,
   FRIEND_REQUESTS_SEND_ENDPOINT_URL,
@@ -293,6 +296,27 @@ export const sendFriendRequest = (
   apiFriendRequests.post(
     FRIEND_REQUESTS_SEND_ENDPOINT_URL,
     { username },
+    options,
+  );
+
+export const acceptFriendRequest = (id: string, options?: AxiosRequestConfig) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_ACCEPT_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
+    options,
+  );
+
+export const declineFriendRequest = (
+  id: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_DECLINE_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
+    options,
+  );
+
+export const revokeFriendRequest = (id: string, options?: AxiosRequestConfig) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_REVOKE_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
     options,
   );
 

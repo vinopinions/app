@@ -6,13 +6,17 @@ import User from '../../models/User';
 import AddFriendScreen from './AddFriendScreen';
 import FriendAccountScreen from './FriendAccountPage';
 import FriendsScreen from './FriendsScreen';
+import IncomingFriendRequestsScreen from './IncomingFriendRequestsScreen';
+import OutgoingFriendRequestsScreen from './OutgoingFriendRequestsScreen';
 
 const FriendsStackNavigator = createStackNavigator<FriendsStackParamList>();
 
 export type FriendsStackParamList = {
   [FRIENDS_STACK_NAMES.FRIENDS_SCREEN]: undefined;
   [FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN]: { user: User };
-  [FRIENDS_STACK_NAMES.ADD_FRIEND_SCREEN]: undefined;
+  [FRIENDS_STACK_NAMES.FRIEND_ADD_SCREEN]: undefined;
+  [FRIENDS_STACK_NAMES.FRIEND_REQUESTS_INCOMING_SCREEN]: undefined;
+  [FRIENDS_STACK_NAMES.FRIEND_REQUESTS_OUTGOING_SCREEN]: undefined;
 };
 
 const FriendsStack = () => {
@@ -32,12 +36,20 @@ const FriendsStack = () => {
         component={FriendAccountScreen}
       />
       <FriendsStackNavigator.Screen
-        name={FRIENDS_STACK_NAMES.ADD_FRIEND_SCREEN}
+        name={FRIENDS_STACK_NAMES.FRIEND_ADD_SCREEN}
         component={AddFriendScreen}
         options={{
           title: t('friendsStack.addFriendsScreen.title'),
           headerBackTitleVisible: false,
         }}
+      />
+      <FriendsStackNavigator.Screen
+        name={FRIENDS_STACK_NAMES.FRIEND_REQUESTS_INCOMING_SCREEN}
+        component={IncomingFriendRequestsScreen}
+      />
+      <FriendsStackNavigator.Screen
+        name={FRIENDS_STACK_NAMES.FRIEND_REQUESTS_OUTGOING_SCREEN}
+        component={OutgoingFriendRequestsScreen}
       />
     </FriendsStackNavigator.Navigator>
   );

@@ -5,7 +5,6 @@ import i18n from 'i18next';
 import React from 'react';
 import { initReactI18next } from 'react-i18next';
 import { NativeModules } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -39,15 +38,6 @@ const App = () => {
 
 const Layout = () => {
   const { authState } = useAuth();
-
-  if (authState.status === 'loading') {
-    // TODO: Add loading indicator
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
 
   if (!(authState.status === 'succeeded' && authState.authenticated)) {
     return <LoginScreen />;

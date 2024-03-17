@@ -40,7 +40,9 @@ const FriendsScreen = ({
 
   useEffect(() => {
     if (currentUser) {
-      dispatch(fetchFriendsForUserAsync({ username: currentUser.username }));
+      dispatch(
+        fetchFriendsForUserAsync({ username: currentUser.username, take: 25 }),
+      );
     }
   }, [dispatch, currentUser]);
 
@@ -49,6 +51,7 @@ const FriendsScreen = ({
       dispatch(
         fetchFriendsForUserAsync({
           username: currentUser.username,
+          take: 25,
           page: friendsPage.meta.page + 1,
         }),
       );
@@ -63,7 +66,9 @@ const FriendsScreen = ({
   // load users on refresh
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    dispatch(fetchFriendsForUserAsync({ username: currentUser.username }));
+    dispatch(
+      fetchFriendsForUserAsync({ username: currentUser.username, take: 25 }),
+    );
 
     setRefreshing(false);
   }, [dispatch, currentUser]);
@@ -78,15 +83,21 @@ const FriendsScreen = ({
         <Button
           style={styles.button}
           label={t('friendsStack.friendsScreen.addFriend')}
-          onPress={() => navigation.push(FRIENDS_STACK_NAMES.ADD_FRIEND_SCREEN)}
+          onPress={() => navigation.push(FRIENDS_STACK_NAMES.FRIEND_ADD_SCREEN)}
         />
         <Button
           style={styles.button}
           label={t('friendsStack.friendsScreen.incoming')}
+          onPress={() =>
+            navigation.push(FRIENDS_STACK_NAMES.FRIEND_REQUESTS_INCOMING_SCREEN)
+          }
         />
         <Button
           style={styles.button}
           label={t('friendsStack.friendsScreen.outgoing')}
+          onPress={() =>
+            navigation.push(FRIENDS_STACK_NAMES.FRIEND_REQUESTS_OUTGOING_SCREEN)
+          }
         />
       </View>
       <FlatList
