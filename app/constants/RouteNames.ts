@@ -7,6 +7,10 @@ export enum ACCOUNT_STACK_NAMES {
 // FriendsStack
 export enum FRIENDS_STACK_NAMES {
   FRIENDS_SCREEN = 'FriendsScreens',
+  FRIEND_ACCOUNT_SCREEN = 'FriendAccountScreen',
+  FRIEND_ADD_SCREEN = 'FriendAddScreen',
+  FRIEND_REQUESTS_INCOMING_SCREEN = 'FriendRequestsIncoming',
+  FRIEND_REQUESTS_OUTGOING_SCREEN = 'FriendRequestsOutgoing',
 }
 
 // HomeStack

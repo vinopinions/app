@@ -2,7 +2,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import Store from '../../api/pagination/Store';
@@ -96,26 +96,28 @@ const StoreDetailsScreen = ({
     );
   }
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListHeaderComponent={() => renderHeader({ store })}
-      data={winesPage.data}
-      renderItem={({ item }: { item: Wine }) => (
-        <WineCard
-          onPress={() =>
-            navigation.navigate(BOTTOM_TAB_STACK_NAMES.WINES_STACK, {
-              screen: WINES_STACK_NAMES.WINE_DETAILS_SCREEN,
-              params: { wineId: item.id },
-            })
-          }
-          wine={item}
-        />
-      )}
-      onEndReachedThreshold={0.4}
-      onEndReached={onWinesEndReached}
-    />
+    <SafeAreaView>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListHeaderComponent={() => renderHeader({ store })}
+        data={winesPage.data}
+        renderItem={({ item }: { item: Wine }) => (
+          <WineCard
+            onPress={() =>
+              navigation.navigate(BOTTOM_TAB_STACK_NAMES.WINES_STACK, {
+                screen: WINES_STACK_NAMES.WINE_DETAILS_SCREEN,
+                params: { wineId: item.id },
+              })
+            }
+            wine={item}
+          />
+        )}
+        onEndReachedThreshold={0.4}
+        onEndReached={onWinesEndReached}
+      />
+    </SafeAreaView>
   );
 };
 

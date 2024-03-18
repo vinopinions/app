@@ -1,12 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import feedSlice from '../features/feed/feedSlice';
+import friendRequestsSlice from '../features/friend-requests/friendRequestsSlice';
 import ratingsSlice from '../features/ratings/ratingsSlice';
 import storeWinesReducer from '../features/stores/storeWinesSlice';
 import storesReducer from '../features/stores/storesSlice';
 import currentUserReducer from '../features/users/currentUserSlice';
-import userFriendsReducer from '../features/users/userFriendsSlice';
+import userFriendsSlice from '../features/users/userFriendsSlice';
 import userRatingsReducer from '../features/users/userRatingsSlice';
+import usersSlice from '../features/users/usersSlice';
 import winemakersReducer from '../features/winemakers/winemakersSlice';
 import wineRatingsReducer from '../features/wines/wineRatingsSlice';
 import wineStoresReducer from '../features/wines/wineStoresSlice';
@@ -22,9 +24,11 @@ const rootReducer = combineReducers({
   storeWines: storeWinesReducer,
   currentUser: currentUserReducer,
   userRatings: userRatingsReducer,
-  userFriends: userFriendsReducer,
   ratings: ratingsSlice,
   feed: feedSlice,
+  users: usersSlice,
+  userFriends: userFriendsSlice,
+  friendRequests: friendRequestsSlice,
 });
 
 export const store = configureStore({

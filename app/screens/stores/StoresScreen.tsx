@@ -64,7 +64,7 @@ const StoresScreen = ({
   // initial load of stores
   useEffect(() => {
     onRefresh();
-  }, [dispatch, onRefresh]);
+  }, [onRefresh]);
 
   const onEndReached = useCallback(async () => {
     if (storePage.meta.hasNextPage) {

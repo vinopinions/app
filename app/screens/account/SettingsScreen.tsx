@@ -25,6 +25,7 @@ const SettingsScreen = () => {
       <Picker selectedValue={i18n.language} onValueChange={onLanguageChange}>
         {Object.keys(i18n.options.resources).map((languageCode) => (
           <Picker.Item
+            key={languageCode}
             value={languageCode}
             label={t(`languages.${languageCode}`)}
           />

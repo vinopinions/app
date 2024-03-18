@@ -2,7 +2,12 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
@@ -153,19 +158,23 @@ const WineDetailsScreen = ({
   }
 
   return (
-    <FlatList
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListHeaderComponentStyle={styles.listHeader}
-      ListHeaderComponent={() => renderHeader({ wine })}
-      data={ratingsPage.data}
-      renderItem={({ item }: { item: Rating }) => <RatingCard rating={item} />}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      onEndReachedThreshold={0.4}
-      onEndReached={onRatingsEndReached}
-    />
+    <SafeAreaView>
+      <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListHeaderComponentStyle={styles.listHeader}
+        ListHeaderComponent={() => renderHeader({ wine })}
+        data={ratingsPage.data}
+        renderItem={({ item }: { item: Rating }) => (
+          <RatingCard rating={item} />
+        )}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        onEndReachedThreshold={0.4}
+        onEndReached={onRatingsEndReached}
+      />
+    </SafeAreaView>
   );
 };
 

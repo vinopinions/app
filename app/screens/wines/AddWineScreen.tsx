@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import {
   Button,
   Picker,
@@ -73,7 +73,7 @@ const AddWineScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <Wizard activeIndex={activeIndex}>
         <Wizard.Step
           state={WizardStepStates.ENABLED}
@@ -175,8 +175,6 @@ const AddWineScreen = ({ navigation }) => {
                   grapeVariety,
                   heritage,
                   winemaker,
-                  storesPage: [],
-                  ratingsPage: [],
                   createdAt: faker.date.anytime().toISOString(),
                   updatedAt: faker.date.anytime().toISOString(),
                 }}
@@ -195,7 +193,7 @@ const AddWineScreen = ({ navigation }) => {
           ),
         }[activeIndex]
       }
-    </View>
+    </SafeAreaView>
   );
 };
 

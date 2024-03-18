@@ -1,17 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { Text, TouchableOpacity } from 'react-native-ui-lib';
-import { TouchableOpacityProps } from 'react-native-ui-lib/src/incubator';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
-import { ACCOUNT_STACK_NAMES } from '../../constants/RouteNames';
-import {
-  fetchCurrentUserAsync,
-  selectCurrentUser,
-} from '../../features/users/currentUserSlice';
+import { FRIENDS_STACK_NAMES } from '../../constants/RouteNames';
+import { fetchCurrentUserAsync } from '../../features/users/currentUserSlice';
 import {
   fetchFriendsForUserAsync,
   selectFriendRelationsByUserUsername,
@@ -24,11 +19,10 @@ import Page from '../../models/Page';
 import Rating from '../../models/Rating';
 import User from '../../models/User';
 import { AppDispatch, RootState } from '../../store/store';
-import { SettingsIconOutline } from '../../utils/icons';
 import AccountScreenHeader, {
   AccountScreenHeaderProps,
-} from './AccountScreenHeader';
-import { AccountStackParamList } from './AccountStack';
+} from '../account/AccountScreenHeader';
+import { FriendsStackParamList } from './FriendsStack';
 
 const renderHeader = (props: AccountScreenHeaderProps) => {
   return <AccountScreenHeader {...props} />;
@@ -38,28 +32,21 @@ const renderTitle = (username: string) => {
   return <Text style={styles.heading}>{username}</Text>;
 };
 
-const renderTitleRight = (props?: TouchableOpacityProps) => {
-  return (
-    <TouchableOpacity {...props}>
-      <SettingsIconOutline size={30} />
-    </TouchableOpacity>
-  );
-};
-
-const AccountScreen = ({
+const FriendAccountScreen = ({
+  route,
   navigation,
 }: NativeStackScreenProps<
-  AccountStackParamList,
-  ACCOUNT_STACK_NAMES.ACCOUNT_SCREEN
+  FriendsStackParamList,
+  FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
-  const user: User = useSelector(selectCurrentUser);
   const ratingsPage: Page<Rating> = useSelector<RootState, Page<Rating>>(
-    (state) => selectRatingRelationsByUserUsername(state, user?.username),
+    (state) =>
+      selectRatingRelationsByUserUsername(state, route.params.user?.username),
   );
   const friendsPage: Page<User> = useSelector<RootState, Page<User>>((state) =>
-    selectFriendRelationsByUserUsername(state, user?.username),
+    selectFriendRelationsByUserUsername(state, route.params.user?.username),
   );
 
   const onRefresh = useCallback(async () => {
@@ -69,37 +56,33 @@ const AccountScreen = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(fetchRatingsForUserAsync({ username: user.username }));
-      dispatch(fetchFriendsForUserAsync({ username: user.username }));
+    if (route.params.user) {
+      dispatch(
+        fetchRatingsForUserAsync({ username: route.params.user.username }),
+      );
+      dispatch(
+        fetchFriendsForUserAsync({ username: route.params.user.username }),
+      );
     }
-  }, [dispatch, user]);
+  }, [dispatch, route.params.user]);
 
   useEffect(() => {
     onRefresh();
   }, [dispatch, onRefresh]);
 
   useEffect(() => {
-    if (user) {
+    if (route.params.user) {
       navigation.setOptions({
         headerShown: true,
         headerTitleAlign: 'left',
         headerTitle: () => {
-          return renderTitle(user.username);
-        },
-        headerRight: () => {
-          return renderTitleRight({
-            style: styles.settingsButton,
-            onPress: () => {
-              navigation.push(ACCOUNT_STACK_NAMES.SETTINGS_SCREEN);
-            },
-          });
+          return renderTitle(route.params.user.username);
         },
       });
     }
-  }, [navigation, user]);
+  }, [navigation, route.params.user]);
 
-  if (user === undefined) {
+  if (route.params.user === undefined) {
     return <Text>loading</Text>;
   }
 
@@ -124,14 +107,11 @@ const AccountScreen = ({
   );
 };
 
-export default AccountScreen;
+export default FriendAccountScreen;
 
 const styles = StyleSheet.create({
   heading: {
     fontWeight: 'bold',
     fontSize: 32,
-  },
-  settingsButton: {
-    paddingRight: 10,
   },
 });

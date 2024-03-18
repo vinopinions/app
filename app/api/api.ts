@@ -5,6 +5,13 @@ import {
   AUTH_LOGIN_ENDPOINT_URL,
   AUTH_SIGNUP_ENDPOINT_URL,
   FEED_URL,
+  FRIEND_REQUESTS_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_ACCEPT_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_DECLINE_ENDPOINT_URL,
+  FRIEND_REQUESTS_ID_REVOKE_ENDPOINT_URL,
+  FRIEND_REQUESTS_INCOMING_ENDPOINT_URL,
+  FRIEND_REQUESTS_OUTGOING_ENDPOINT_URL,
+  FRIEND_REQUESTS_SEND_ENDPOINT_URL,
   ID_URL_PARAMETER,
   RATINGS_ENDPOINT_URL,
   RATINGS_ID_ENDPOINT_URL,
@@ -44,16 +51,16 @@ export const apiStores = createDefaultAxiosInstance({
   baseURL: STORES_ENDPOINT_URL,
 });
 
-export const apiWineRatings = createDefaultAxiosInstance({
-  baseURL: WINES_ENDPOINT_URL,
-});
-
 export const apiUsers = createDefaultAxiosInstance({
   baseURL: USERS_ENDPOINT_URL,
 });
 
 export const apiRatings = createDefaultAxiosInstance({
   baseURL: RATINGS_ENDPOINT_URL,
+});
+
+export const apiFriendRequests = createDefaultAxiosInstance({
+  baseURL: FRIEND_REQUESTS_ENDPOINT_URL,
 });
 
 export const apiFeed = createDefaultAxiosInstance({
@@ -93,33 +100,28 @@ export const fetchRatingsForUser = (
     },
   );
 
-export const fetchFriendsForUser = (
-  username: string,
-  page?: number,
-  take?: number,
-  order?: 'ASC' | 'DESC',
-  options?: AxiosRequestConfig,
-) =>
-  apiUsers.get(
-    USERS_USERNAME_FRIENDS_ENDPOINT_URL.replace(
-      USERNAME_URL_PARAMETER,
-      username,
-    ),
-    {
-      params: {
-        page,
-        take,
-        order,
-      },
-      ...options,
-    },
-  );
-
 export const fetchWineById = (wineId: string, options?: AxiosRequestConfig) =>
   apiWines.get(
     WINES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId),
     options,
   );
+
+export const fetchUsers = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  filter?: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get('', {
+    params: {
+      page,
+      take,
+      order,
+      filter,
+    },
+    ...options,
+  });
 
 export const fetchWines = (
   page?: number,
@@ -245,7 +247,7 @@ export const createWineRating = (
   rating: RatingDto,
   options?: AxiosRequestConfig,
 ) =>
-  apiWineRatings.post(
+  apiWines.post(
     WINES_ID_RATINGS_ENDPOINT_URL.replace(ID_URL_PARAMETER, wineId),
     rating,
     options,
@@ -254,6 +256,67 @@ export const createWineRating = (
 export const deleteRating = (ratingId: string, options?: AxiosRequestConfig) =>
   apiRatings.delete(
     RATINGS_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, ratingId),
+    options,
+  );
+
+export const fetchIncomingFriendRequests = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.get(FRIEND_REQUESTS_INCOMING_ENDPOINT_URL, {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const fetchOutgoingFriendRequests = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.get(FRIEND_REQUESTS_OUTGOING_ENDPOINT_URL, {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const sendFriendRequest = (
+  username: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_SEND_ENDPOINT_URL,
+    { username },
+    options,
+  );
+
+export const acceptFriendRequest = (id: string, options?: AxiosRequestConfig) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_ACCEPT_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
+    options,
+  );
+
+export const declineFriendRequest = (
+  id: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_DECLINE_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
+    options,
+  );
+
+export const revokeFriendRequest = (id: string, options?: AxiosRequestConfig) =>
+  apiFriendRequests.post(
+    FRIEND_REQUESTS_ID_REVOKE_ENDPOINT_URL.replace(ID_URL_PARAMETER, id),
     options,
   );
 
@@ -271,3 +334,25 @@ export const fetchFeed = (
     },
     ...options,
   });
+
+export const fetchFriendsForUser = (
+  username: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get(
+    USERS_USERNAME_FRIENDS_ENDPOINT_URL.replace(
+      USERNAME_URL_PARAMETER,
+      username,
+    ),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
+  );

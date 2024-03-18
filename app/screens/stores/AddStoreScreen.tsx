@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import {
   Button,
   TextField,
@@ -38,7 +38,7 @@ const AddStoreScreen = ({ navigation }) => {
   }, [dispatch, navigation, name, address, url]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <Wizard activeIndex={activeIndex}>
         <Wizard.Step
           state={WizardStepStates.ENABLED}
@@ -88,7 +88,6 @@ const AddStoreScreen = ({ navigation }) => {
                   name,
                   address,
                   url,
-                  wines: [],
                   createdAt: new Date().toISOString(),
                   updatedAt: new Date().toISOString(),
                 }}
@@ -107,7 +106,7 @@ const AddStoreScreen = ({ navigation }) => {
           ),
         }[activeIndex]
       }
-    </View>
+    </SafeAreaView>
   );
 };
 
