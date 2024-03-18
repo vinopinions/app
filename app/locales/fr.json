@@ -18,7 +18,15 @@
     }
   },
   "friendsStack": {
-    "title": "Friends"
+    "title": "Friends",
+    "friendsScreen": {
+      "addFriend": "Add friend",
+      "incoming": "Incoming",
+      "outgoing": "Outgoing"
+    },
+    "addFriendsScreen": {
+      "title": "Friends"
+    }
   },
   "accountStack": {
     "title": "Account",
@@ -33,6 +41,7 @@
   "common": {
     "ratings": "Ratings",
     "friends": "Friends",
+    "users": "Users",
     "search": "Search",
     "signOut": "Sign out",
     "appName": "Vinopinions",
