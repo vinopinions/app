@@ -64,7 +64,7 @@ const OutgoingFriendRequestsScreen = () => {
               onPress: () => onRevokeButtonClick(item.id),
             }}
           >
-            <View centerV padding-s4 bg-white style={{ height: 60 }}>
+            <View centerV padding-s4 bg-white style={styles.itemContainer}>
               <Text text70>{item.receiver.username}</Text>
             </View>
           </Drawer>
@@ -81,26 +81,7 @@ const OutgoingFriendRequestsScreen = () => {
 export default OutgoingFriendRequestsScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingTop: 20,
-  },
-  separator: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
-    width: '100%',
-    marginVertical: 5,
-  },
-  friendName: {
-    padding: 5,
-    fontSize: 22,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-  },
-  button: {
-    marginHorizontal: 10,
+  itemContainer: {
+    height: 60,
   },
 });
