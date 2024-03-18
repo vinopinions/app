@@ -37,12 +37,12 @@
     "de": "Deutsch"
   },
   "common": {
-    "ratings": "Bewertungen",
+    "ratings": "Ratings",
     "friends": "Freunde",
     "users": "Users",
     "search": "Suchen",
     "signOut": "Ausloggen",
     "appName": "Vinopinions",
-    "language": "Language"
+    "language": "Sprache"
   }
 }
