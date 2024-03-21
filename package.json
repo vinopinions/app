@@ -42,7 +42,7 @@
     "react-redux": "^9.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
+    "@babel/core": "^7.24.3",
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.1.0",
     "@react-native/eslint-config": "^0.73.2",
