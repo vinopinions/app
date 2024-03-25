@@ -2,12 +2,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native';
+import { FlatList, RefreshControl, SafeAreaView } from 'react-native';
 import { Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
@@ -33,7 +28,6 @@ import WineDetailsScreenHeader, {
 } from './WineDetailsScreenHeader';
 import { WinesStackParamList } from './WinesStack';
 
-// const renderHeader = (wine: Wine) => {
 //   return (
 //     <>
 //       <View marginB-5>
@@ -163,7 +157,6 @@ const WineDetailsScreen = ({
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        ListHeaderComponentStyle={styles.listHeader}
         ListHeaderComponent={() => renderHeader({ wine })}
         data={ratingsPage.data}
         renderItem={({ item }: { item: Rating }) => (
@@ -179,18 +172,3 @@ const WineDetailsScreen = ({
 };
 
 export default WineDetailsScreen;
-
-const styles = StyleSheet.create({
-  text: {
-    marginTop: 5,
-    marginLeft: 10,
-  },
-  pickerContainer: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    padding: 8,
-  },
-  listHeader: {
-    padding: 10,
-  },
-});

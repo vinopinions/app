@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Text, View } from 'react-native-ui-lib';
+import { Image, Text, View } from 'react-native-ui-lib';
 import Store from '../../api/pagination/Store';
 import { InternIconOutline, LocationIconOutline } from '../../utils/icons';
 
@@ -12,6 +12,9 @@ const StoreDetailsScreenHeader = ({ store }: StoreDetailsScreenHeaderProps) => {
   return (
     <>
       <View marginB-5>
+        <View style={styles.container}>
+          <Image source={{ uri: store.image }} style={styles.coverPhoto} />
+        </View>
         <Text text40 style={styles.heading}>
           {store.name}
         </Text>
@@ -49,4 +52,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   iconTextContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  container: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  coverPhoto: {
+    width: '100%',
+    height: 250,
+  },
 });

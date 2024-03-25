@@ -7,6 +7,7 @@ import { Text, TouchableOpacity } from 'react-native-ui-lib';
 import { TouchableOpacityProps } from 'react-native-ui-lib/src/incubator';
 import { useDispatch, useSelector } from 'react-redux';
 import RatingCard from '../../components/ratings/RatingCard';
+import UserView from '../../components/users/UserView';
 import { ACCOUNT_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchCurrentUserAsync,
@@ -34,8 +35,8 @@ const renderHeader = (props: AccountScreenHeaderProps) => {
   return <AccountScreenHeader {...props} />;
 };
 
-const renderTitle = (username: string) => {
-  return <Text style={styles.heading}>{username}</Text>;
+const renderTitle = (user: User) => {
+  return <UserView user={user} />;
 };
 
 const renderTitleRight = (props?: TouchableOpacityProps) => {
@@ -85,7 +86,7 @@ const AccountScreen = ({
         headerShown: true,
         headerTitleAlign: 'left',
         headerTitle: () => {
-          return renderTitle(user.username);
+          return renderTitle(user);
         },
         headerRight: () => {
           return renderTitleRight({

@@ -74,7 +74,7 @@ const FriendAccountScreen = ({
     if (route.params.user) {
       navigation.setOptions({
         headerShown: true,
-        headerTitleAlign: 'left',
+        headerTitleAlign: 'center',
         headerTitle: () => {
           return renderTitle(route.params.user.username);
         },

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
+import UserView from '../../components/users/UserView';
 import { FRIENDS_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchCurrentUserAsync,
@@ -103,18 +104,18 @@ const FriendsScreen = ({
       <FlatList
         data={friendsPage.data}
         renderItem={({ item }: { item: User }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.push(FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN, {
-                user: item,
-              })
-            }
-          >
-            <View>
-              <Text style={styles.friendName}>{item.username}</Text>
-              <View style={styles.separator} />
-            </View>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push(FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN, {
+                  user: item,
+                })
+              }
+            >
+              <UserView user={item} />
+            </TouchableOpacity>
+            <View style={styles.separator} />
+          </>
         )}
         refreshing={refreshing}
         onRefresh={onRefresh}

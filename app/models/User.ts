@@ -1,6 +1,7 @@
 type User = {
   id: string;
   username: string;
+  profilePicture?: string;
   createdAt: string;
   updatedAt: string;
 };
