@@ -24,6 +24,7 @@
     "axios": "^1.6.2",
     "expo": "~50.0.13",
     "expo-image": "~1.10.6",
+    "expo-image-picker": "~14.7.1",
     "expo-localization": "~14.8.3",
     "expo-secure-store": "~12.8.1",
     "i18next": "^23.10.1",
