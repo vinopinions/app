@@ -1,17 +1,32 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
 import { createWinemaker, fetchWinemakers } from '../../api/api';
+import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
+import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
+import PaginationState from '../../api/pagination/PaginationState';
+import Page from '../../models/Page';
 import Winemaker from '../../models/Winemaker';
+import { RootState } from '../../store/store';
 
-type WinemakersState = ApiResponseState<Winemaker[]>;
+type WinemakersState = ApiResponseState<PaginationState<Winemaker>>;
 
-export const fetchWinemakersAsync = createAsyncThunk<Winemaker[]>(
+const _fetchWinemakersAsync = createAsyncThunk<
+  Page<Winemaker>,
+  FilterFetchPageParams
+>(
   'winemakers/fetchWinemakers',
-  async () => {
-    const response = await fetchWinemakers();
+  async ({ page, take, order, filter }: FilterFetchPageParams) => {
+    const response = await fetchWinemakers(page, take, order, filter);
     return response.data;
   },
 );
+
+export const fetchWinemakersAsync = (params: FilterFetchPageParams = {}) =>
+  _fetchWinemakersAsync(params);
 
 export const createWinemakerAsync = createAsyncThunk(
   'winemaker/createWinemaker',
@@ -22,7 +37,7 @@ export const createWinemakerAsync = createAsyncThunk(
 );
 
 const initialState: WinemakersState = {
-  data: [],
+  data: EmptyPaginationState,
   status: 'idle',
 };
 
@@ -32,16 +47,23 @@ const winemakersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchWinemakersAsync.pending, (state) => {
+      .addCase(_fetchWinemakersAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchWinemakersAsync.fulfilled, (state, action) => {
+      .addCase(_fetchWinemakersAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (state.status === 'succeeded') {
+
+        // if we get the first page, we reset the state completely, else we just update the state and keep the data from the previous pages
+        if (action.payload.meta.page === 1) {
           state.data = action.payload;
+        } else {
+          state.data = {
+            ...action.payload,
+            data: [...state.data.data, ...action.payload.data],
+          };
         }
       })
-      .addCase(fetchWinemakersAsync.rejected, (state, action) => {
+      .addCase(_fetchWinemakersAsync.rejected, (state, action) => {
         state.status = 'failed';
         if (state.status === 'failed') {
           state.error = action.error.message;
@@ -52,7 +74,8 @@ const winemakersSlice = createSlice({
       })
       .addCase(createWinemakerAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data.push(action.payload);
+        state.data = EmptyPaginationState;
+        state.data.data = [action.payload];
       })
       .addCase(createWinemakerAsync.rejected, (state, action) => {
         state.status = 'failed';
@@ -64,3 +87,22 @@ const winemakersSlice = createSlice({
 });
 
 export default winemakersSlice.reducer;
+
+const _selectWinemakerPage = (state: RootState) => state.winemakers.data;
+const selectWinemakers = (state: RootState) => state.winemakers.data.data;
+
+export const selectWinemakerPage = createSelector(
+  [_selectWinemakerPage],
+  (winemakerPage: Page<Winemaker>) => winemakerPage,
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
+);
+
+export const selectAllWinemakers = createSelector(
+  [selectWinemakers],
+  (winemakers: Winemaker[]) => winemakers,
+  {
+    devModeChecks: { identityFunctionCheck: 'never' },
+  },
+);

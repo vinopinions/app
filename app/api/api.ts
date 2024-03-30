@@ -189,8 +189,22 @@ export const updateStoresForWine = (
     options,
   );
 
-export const fetchWinemakers = (options?: AxiosRequestConfig) =>
-  apiWinemakers.get('', options);
+export const fetchWinemakers = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  filter?: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiWinemakers.get('', {
+    params: {
+      page,
+      take,
+      order,
+      filter,
+    },
+    ...options,
+  });
 
 export const createWinemaker = (
   winemaker: Winemaker,

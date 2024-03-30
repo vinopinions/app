@@ -14,18 +14,21 @@ import Store from '../../api/pagination/Store';
 import WineCard from '../../components/wines/WineCard';
 import {
   fetchStoresAsync,
-  selectAllStores,
+  selectStorePage,
 } from '../../features/stores/storesSlice';
-import { fetchWinemakersAsync } from '../../features/winemakers/winemakersSlice';
+import {
+  fetchWinemakersAsync,
+  selectWinemakerPage,
+} from '../../features/winemakers/winemakersSlice';
 import { createWineAsync } from '../../features/wines/winesSlice';
 import Winemaker from '../../models/Winemaker';
 import WineDto from '../../models/dtos/Wine.dto';
-import { AppDispatch, RootState } from '../../store/store';
+import { AppDispatch } from '../../store/store';
 
 const AddWineScreen = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
-  const winemakers = useSelector((state: RootState) => state.winemakers.data);
-  const allStores = useSelector(selectAllStores);
+  const winemakerPage = useSelector(selectWinemakerPage);
+  const storePage = useSelector(selectStorePage);
 
   const [name, setName] = useState<string>();
   const [year, setYear] = useState<number>();
@@ -66,8 +69,8 @@ const AddWineScreen = ({ navigation }) => {
   ]);
 
   const updateSelectedStores = (ids: string[]) => {
-    const updatedStores = ids.map(
-      (id) => allStores.find((store) => store.id === id) as Store,
+    const updatedStores = ids.map((id) =>
+      storePage.data.find((store) => store.id === id),
     );
     setStores(updatedStores);
   };
@@ -129,13 +132,13 @@ const AddWineScreen = ({ navigation }) => {
                 value={winemaker?.id}
                 enableModalBlur={false}
                 onChange={(id) =>
-                  setWinemaker(winemakers.find((wm) => wm.id === id))
+                  setWinemaker(winemakerPage.data.find((wm) => wm.id === id))
                 }
                 topBarProps={{ title: 'Winemakers' }}
                 showSearch
                 searchPlaceholder={'Search a winemaker'}
               >
-                {winemakers.map((wm) => (
+                {winemakerPage.data.map((wm) => (
                   <Picker.Item key={wm.id} value={wm.id} label={wm.name} />
                 ))}
               </Picker>
@@ -150,7 +153,7 @@ const AddWineScreen = ({ navigation }) => {
                   updateSelectedStores(itemValue as string[])
                 }
               >
-                {allStores.map((store) => (
+                {storePage.data.map((store) => (
                   <Picker.Item
                     key={store.id}
                     value={store.id}

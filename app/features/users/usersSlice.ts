@@ -6,7 +6,6 @@ import {
 import ApiResponseState from '../../api/ApiResponseState';
 import { fetchUsers } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
-import FetchPageParams from '../../api/pagination/FetchPageParams';
 import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
 import Page from '../../models/Page';
@@ -15,7 +14,7 @@ import { RootState } from '../../store/store';
 
 type UsersState = ApiResponseState<PaginationState<User>>;
 
-export const _fetchUsersAsync = createAsyncThunk<Page<User>, FetchPageParams>(
+const _fetchUsersAsync = createAsyncThunk<Page<User>, FilterFetchPageParams>(
   'users/fetchUsers',
   async ({ page, take, order, filter }: FilterFetchPageParams) => {
     const response = await fetchUsers(page, take, order, filter);
@@ -65,7 +64,6 @@ const usersSlice = createSlice({
 export default usersSlice.reducer;
 
 const _selectUserPage = (state: RootState) => state.users.data;
-const selectUsers = (state: RootState) => state.users.data.data;
 
 export const selectUserPage = createSelector(
   [_selectUserPage],
@@ -73,18 +71,4 @@ export const selectUserPage = createSelector(
   {
     devModeChecks: { identityFunctionCheck: 'never' },
   },
-);
-
-export const selectAllUsers = createSelector(
-  [selectUsers],
-  (users: User[]) => users,
-  {
-    devModeChecks: { identityFunctionCheck: 'never' },
-  },
-);
-
-export const selectUserByName = createSelector(
-  [selectUsers, (state: RootState, username: string) => username],
-  (users: User[], username: string): User =>
-    users.find((user) => user.username === username),
 );
