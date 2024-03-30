@@ -157,8 +157,6 @@ const friendRequestsSlice = createSlice({
         state.data.incoming.data = state.data.incoming.data.filter(
           (item) => item.id !== action.payload,
         );
-
-        console.log(state.data.incoming);
       })
       .addCase(acceptFriendRequestAsync.rejected, (state, action) => {
         state.status = 'failed';

@@ -31,7 +31,7 @@ import {
 } from '../constants/UrlConstants';
 import Winemaker from '../models/Winemaker';
 import RatingDto from '../models/dtos/Rating.dto';
-import StoreDto from '../models/dtos/Store.dto';
+import CreateStoreDto from '../models/dtos/Store.dto';
 import WineDto from '../models/dtos/Wine.dto';
 import { createDefaultAxiosInstance } from './utils';
 
@@ -239,8 +239,15 @@ export const fetchWinesForStore = (
     },
   );
 
-export const createStore = (store: StoreDto, options?: AxiosRequestConfig) =>
-  apiStores.post('', store, options);
+export const createStore = (
+  store: CreateStoreDto,
+  options?: AxiosRequestConfig,
+) =>
+  apiStores.post(
+    '',
+    { name: store.name, address: store.address, url: store.url },
+    options,
+  );
 
 export const createWineRating = (
   wineId: string,
@@ -356,3 +363,24 @@ export const fetchFriendsForUser = (
       ...options,
     },
   );
+
+export const uploadStoreImage = async (storeId: string, uri: string) => {
+  let uriParts = uri.split('.');
+  let fileType = uriParts[uriParts.length - 1];
+
+  const formData: FormData = new FormData();
+  formData.append('file', {
+    uri,
+    name: `photo.${fileType}`,
+    type: `image/${fileType}`,
+  } as any);
+  return await apiStores.put(
+    `${STORES_ID_ENDPOINT_URL.replace(ID_URL_PARAMETER, storeId)}/image`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+};

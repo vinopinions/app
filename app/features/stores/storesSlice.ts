@@ -4,7 +4,12 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import ApiResponseState from '../../api/ApiResponseState';
-import { createStore, fetchStoreById, fetchStores } from '../../api/api';
+import {
+  createStore,
+  fetchStoreById,
+  fetchStores,
+  uploadStoreImage,
+} from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
@@ -41,9 +46,12 @@ export const fetchStoreByIdAsync = createAsyncThunk<Store, string>(
 
 export const createStoreAsync = createAsyncThunk(
   'stores/createStore',
-  async (store: CreateStoreDto) => {
-    const response = await createStore(store);
-    return response.data;
+  async (storeDto: CreateStoreDto): Promise<Store> => {
+    const store: Store = (await createStore(storeDto)).data;
+    if (storeDto.imageUri) {
+      await uploadStoreImage(store.id, storeDto.imageUri);
+    }
+    return (await fetchStoreById(store.id)).data;
   },
 );
 

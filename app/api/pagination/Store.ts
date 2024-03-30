@@ -3,6 +3,7 @@ type Store = {
   name: string;
   address?: string;
   url?: string;
+  image?: string;
   createdAt: string;
   updatedAt: string;
 };

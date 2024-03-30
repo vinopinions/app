@@ -6,6 +6,7 @@ type Wine = {
   year: number;
   grapeVariety: string;
   heritage: string;
+  image?: string;
   winemaker: Winemaker;
   createdAt: string;
   updatedAt: string;

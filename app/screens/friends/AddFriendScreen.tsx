@@ -1,10 +1,13 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import { Button, Text, View } from 'react-native-ui-lib';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
-import { sendFriendRequestAsync } from '../../features/friend-requests/friendRequestsSlice';
+import UserView from '../../components/users/UserView';
+import { FRIENDS_STACK_NAMES } from '../../constants/RouteNames';
 import {
   fetchUsersAsync,
   selectUserPage,
@@ -12,8 +15,14 @@ import {
 import Page from '../../models/Page';
 import User from '../../models/User';
 import { AppDispatch } from '../../store/store';
+import { FriendsStackParamList } from './FriendsStack';
 
-const AddFriendScreen = () => {
+const AddFriendScreen = ({
+  navigation,
+}: NativeStackScreenProps<
+  FriendsStackParamList,
+  FRIENDS_STACK_NAMES.FRIEND_ADD_SCREEN
+>) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const userPage: Page<User> = useSelector(selectUserPage);
@@ -66,11 +75,11 @@ const AddFriendScreen = () => {
     }
   }, [dispatch, userPage.meta.hasNextPage, userPage.meta.page, searchQuery]);
 
-  const onAddButtonClick = useCallback(
-    (username: string) => {
-      dispatch(sendFriendRequestAsync(username));
+  const onUserSelect = useCallback(
+    (user: User) => {
+      navigation.push(FRIENDS_STACK_NAMES.FRIEND_ACCOUNT_SCREEN, { user });
     },
-    [dispatch],
+    [navigation],
   );
 
   return (
@@ -79,17 +88,12 @@ const AddFriendScreen = () => {
       <FlatList
         data={userPage.data}
         renderItem={({ item }: { item: User }) => (
-          <View>
-            <View row spread>
-              <Text style={styles.friendName}>{item.username}</Text>
-              <Button
-                style={styles.button}
-                label="Add"
-                onPress={() => onAddButtonClick(item.username)}
-              />
-            </View>
+          <>
+            <TouchableOpacity onPress={() => onUserSelect(item)}>
+              <UserView user={item} />
+            </TouchableOpacity>
             <View style={styles.separator} />
-          </View>
+          </>
         )}
         refreshing={refreshing}
         onRefresh={onRefresh}
@@ -112,10 +116,6 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgray',
     width: '100%',
     marginVertical: 5,
-  },
-  friendName: {
-    padding: 5,
-    fontSize: 22,
   },
   buttonContainer: {
     flexDirection: 'row',

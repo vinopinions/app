@@ -122,5 +122,3 @@ const StoreDetailsScreen = ({
 };
 
 export default StoreDetailsScreen;
-
-// const styles = StyleSheet.create({});

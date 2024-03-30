@@ -20,6 +20,7 @@ const SettingsScreen = () => {
     },
     [i18n],
   );
+
   return (
     <SafeAreaView>
       <Picker selectedValue={i18n.language} onValueChange={onLanguageChange}>

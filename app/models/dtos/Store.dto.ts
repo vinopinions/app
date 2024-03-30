@@ -1,10 +1,7 @@
-import Wine from '../Wine';
+import Store from '../../api/pagination/Store';
 
-type StoreDto = {
-  name: string;
-  address?: string;
-  url?: string;
-  wines: Wine[] | undefined;
+type CreateStoreDto = Pick<Store, 'name' | 'url' | 'address'> & {
+  imageUri?: string;
 };
 
-export default StoreDto;
+export default CreateStoreDto;

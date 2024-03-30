@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import { Colors, Drawer, Text, View } from 'react-native-ui-lib';
+import { Avatar, Colors, Drawer, Text, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchOutgoingFriendRequestsAsync,
@@ -65,6 +65,11 @@ const OutgoingFriendRequestsScreen = () => {
             }}
           >
             <View centerV padding-s4 bg-white style={styles.itemContainer}>
+              <Avatar
+                source={{
+                  uri: item.receiver.profilePicture,
+                }}
+              />
               <Text text70>{item.receiver.username}</Text>
             </View>
           </Drawer>
