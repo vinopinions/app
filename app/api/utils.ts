@@ -22,8 +22,9 @@ export const createDefaultAxiosInstance = (
       console.log(
         `Request: ${timestamp} ${config.method.toUpperCase()} ${
           config.baseURL
-        }${config.url} ${config.params?.id || ''}`,
+        }${config.url}`,
       );
+
       return config;
     },
     (error) => {
@@ -36,16 +37,22 @@ export const createDefaultAxiosInstance = (
   instance.interceptors.response.use(
     (response) => {
       const timestamp = new Date().toISOString();
-      const { config, status } = response;
+      const { config } = response;
       console.log(
         `Response: ${timestamp} ${config.method.toUpperCase()} ${
-          config.url
-        } ${status} ${config.params?.id || ''}`,
+          config.baseURL
+        }${config.url} ${response.status}`,
       );
       return response;
     },
     (error) => {
-      console.error('Response error:', error);
+      const message = error.response.data.message;
+
+      console.error(
+        'Response error:',
+        error,
+        Array.isArray(message) ? message.join('. ') : message,
+      );
       return Promise.reject(error);
     },
   );

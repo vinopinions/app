@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker';
+import * as ImagePicker from 'expo-image-picker';
+import { ImagePickerAsset } from 'expo-image-picker';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import {
@@ -21,15 +23,30 @@ const AddStoreScreen = ({ navigation }) => {
   const [name, setName] = useState<string>();
   const [address, setAddress] = useState<string>();
   const [url, setUrl] = useState<string>();
+  const [image, setImage] = useState<ImagePickerAsset>(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      allowsMultipleSelection: false,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
+  };
 
   const onFinishButtonPress = React.useCallback(() => {
     const onFinishButtonPressAsync = async () => {
-      const store: CreateStoreDto = { name, address, url, wines: [] };
+      const store: CreateStoreDto = { name, address, url, imageUri: image.uri };
       await dispatch(createStoreAsync(store));
+
       navigation.goBack();
     };
     onFinishButtonPressAsync();
-  }, [dispatch, navigation, name, address, url]);
+  }, [dispatch, navigation, name, address, url, image]);
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -67,6 +84,7 @@ const AddStoreScreen = ({ navigation }) => {
                 value={url}
                 onChangeText={(value) => setUrl(value)}
               />
+              <Button label="Pick Image" onPress={pickImage} />
               <Button
                 style={styles.navigationButton}
                 label="Next"
