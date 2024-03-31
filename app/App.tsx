@@ -13,6 +13,7 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
 import { store } from './store/store';
 
+import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import de from './locales/de.json';
 import en from './locales/en.json';
@@ -47,8 +48,7 @@ const Layout = () => {
   }
 
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.gestureHandlerRootView}>
       <NavigationContainer>
         <BottomTabNavigator />
       </NavigationContainer>
@@ -59,3 +59,9 @@ const Layout = () => {
 registerRootComponent(App);
 
 export default App;
+
+const styles = StyleSheet.create({
+  gestureHandlerRootView: {
+    flex: 1,
+  },
+});
