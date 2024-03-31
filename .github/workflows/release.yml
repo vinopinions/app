@@ -113,13 +113,13 @@ jobs:
 
       - name: Build on EAS
         id: build
-        run: BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --wait) >> $GITHUB_OUTPUT
+        run: echo "BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --wait)" >> $GITHUB_OUTPUT
 
       - name: Get URL's
         id: get_urls
         run: |
-          echo "IOS_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 "Android devices" | grep 'https://expo' >> $GITHUB_OUTPUT
-          echo "ANDROID_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 "iOS devices" | grep 'https://expo' >> $GITHUB_OUTPUT
+          echo "IOS_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          echo "ANDROID_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
 
   discord:
     name: Notify Discord
@@ -143,9 +143,9 @@ jobs:
           echo "CHANGELOG_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
-          echo "RELEASE_VERSION"=${{ needs.release.outputs.version }}
-          echo "IOS_URL"=${{ needs.publish_expo.outputs.iosUrl }}
-          echo "ANDROID_URL"=${{ needs.publish_expo.outputs.androidUrl }}
+          echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
+          echo "IOS_URL=${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
+          echo "ANDROID_URL=${{ needs.publish_expo.outputs.androidUrl }}" >> $GITHUB_ENV
 
       - name: Update template
         run: envsubst < .github/templates/discord-embed-payload.json > discord-embed-payload.json
