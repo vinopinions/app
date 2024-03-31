@@ -1,16 +1,19 @@
+// https://reactnavigation.org/docs/5.x/getting-started/#installing-dependencies-into-a-bare-react-native-project
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import React from 'react';
 import { initReactI18next } from 'react-i18next';
-import { NativeModules } from 'react-native';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
 import { store } from './store/store';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import de from './locales/de.json';
 import en from './locales/en.json';
 
@@ -44,13 +47,15 @@ const Layout = () => {
   }
 
   return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <BottomTabNavigator />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 
-NativeModules.DevSettings.setIsDebuggingRemotely(false);
 registerRootComponent(App);
 
 export default App;

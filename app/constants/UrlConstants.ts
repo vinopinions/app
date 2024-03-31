@@ -1,5 +1,5 @@
 // base
-export const API_BASE_URL = 'https://api-dev.vinopinions.app/v1';
+export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 // parameter
 export const ID_URL_PARAMETER = ':id';
 export const USERNAME_URL_PARAMETER = ':username';
