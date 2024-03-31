@@ -80,8 +80,8 @@ jobs:
       - release
 
     outputs:
-      iosUrl: ${{ steps.get_urls.outputs.IOS_URL }}
-      androidUrl: ${{ steps.get_urls.outputs.ANDROID_URL }}
+      iosUrl: ${{ steps.build.outputs.IOS_URL }}
+      androidUrl: ${{ steps.build.outputs.ANDROID_URL }}
 
     # check if a new version should be released
     if: needs.release.outputs.version != ''
@@ -113,14 +113,10 @@ jobs:
 
       - name: Build on EAS
         id: build
-        run: echo -n "BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --non-interactive --wait)" >> $GITHUB_OUTPUT
-
-      - name: Get URL's
-        id: get_urls
         run: |
-          echo "IOS_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
-          echo "ANDROID_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
-          echo "ANDROID_URL=$(echo $OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --non-interactive --wait)
+          echo "ANDROID_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          echo "IOS_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
 
   discord:
     name: Notify Discord
