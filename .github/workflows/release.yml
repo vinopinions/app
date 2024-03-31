@@ -118,8 +118,8 @@ jobs:
       - name: Get URL's
         id: get_urls
         run: |
-          echo "IOS_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
-          echo "ANDROID_URL=$(echo ${{ steps.build.outputs.BUILD_OUTPUT }} | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          echo "IOS_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          echo "ANDROID_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
 
   discord:
     name: Notify Discord
