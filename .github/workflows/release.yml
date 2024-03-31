@@ -153,5 +153,5 @@ jobs:
       - name: Send webhook
         uses: ./
         with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
           filename: discord-embed-payload.json
