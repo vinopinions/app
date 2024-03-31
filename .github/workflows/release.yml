@@ -114,7 +114,7 @@ jobs:
       - name: Build on EAS
         id: build
         run: |
-          BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --non-interactive --wait)
+          BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --wait)
           echo -n "IOS_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
           echo -n "ANDROID_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
 
