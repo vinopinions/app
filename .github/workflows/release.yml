@@ -113,7 +113,7 @@ jobs:
 
       - name: Build on EAS
         id: build
-        run: BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --no-wait) >> $GITHUB_OUTPUT
+        run: BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --wait) >> $GITHUB_OUTPUT
 
       - name: Get URL's
         id: get_urls
