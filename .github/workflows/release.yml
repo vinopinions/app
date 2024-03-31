@@ -113,13 +113,15 @@ jobs:
 
       - name: Build on EAS
         id: build
-        run: echo "BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --non-interactive --wait)" >> $GITHUB_OUTPUT
+        run: echo "BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --local --non-interactive --wait)" >> $GITHUB_OUTPUT
 
       - name: Get URL's
         id: get_urls
         run: |
+          echo ${{ steps.build.outputs.BUILD_OUTPUT }}
           echo "IOS_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
           echo "ANDROID_URL=$(echo '${{ steps.build.outputs.BUILD_OUTPUT }}' | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          echo "ANDROID_URL=$(echo $OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
 
   discord:
     name: Notify Discord
