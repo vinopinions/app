@@ -1,6 +1,6 @@
 {
   "name": "vinopinions-app",
-  "version": "1.0.0-dev.5",
+  "version": "1.0.0-dev.6",
   "description": "App for vinopinions",
   "license": "UNLICENSED",
   "main": "./app/App.tsx",
