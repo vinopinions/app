@@ -113,16 +113,10 @@ jobs:
 
       - name: Build on EAS
         id: build
-        # echo -n "IOS_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
         run: |
-          eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --json --non-interactive --wait > output.json
+          eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --json --non-interactive --wait > output.json
           echo "ANDROID_URL=$(cat output.json | jq '.[] | select(.platform == "ANDROID") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
-
-      - name: Send webhook 2
-        uses: tsickert/discord-webhook@v5.5.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          filename: output.json
+          echo "IOS_URL=$(cat output.json | jq '.[] | select(.platform == "IOS") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
 
   discord:
     name: Notify Discord
@@ -142,13 +136,13 @@ jobs:
           ref: ${{ needs.release.outputs.releaseCommitSha }}
 
       - name: Set environment variables
-        # echo "IOS_URL=${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
         run: |
-          echo "CHANGELOG_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "CHANGELOG_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/$( git describe --tags --abbrev=0 )" >> $GITHUB_ENV
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
           echo "IOS_URL=https://github.com" >> $GITHUB_ENV
+          echo "IOS_URL=${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
           echo "ANDROID_URL=${{ needs.publish_expo.outputs.androidUrl }}" >> $GITHUB_ENV
 
       - name: Update template
