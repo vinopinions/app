@@ -142,7 +142,7 @@ jobs:
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
           echo "IOS_URL=https://github.com" >> $GITHUB_ENV
-          echo "IOS_URL=https://expo.dev///accounts/vinopinions/projects/vinopinions/builds/${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
+          echo "IOS_URL=https://expo.dev///accounts/vinopinions/projects/vinopinions/builds/${{ needs.publish_expo.outputs.iosBuildId }}" >> $GITHUB_ENV
           echo "ANDROID_URL=${{ needs.publish_expo.outputs.androidUrl }}" >> $GITHUB_ENV
 
       - name: Update template
