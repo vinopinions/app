@@ -152,4 +152,4 @@ jobs:
         run: |
           curl --location ${{ secrets.DISCORD_WEBHOOK }} \
           --header 'Content-Type: application/json' \
-          --data '$(cat discord-embed-payload.json)'
+          --data @discord-embed-payload.json
