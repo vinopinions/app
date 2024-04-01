@@ -1,9 +1,8 @@
 {
   "main": "./app/App.tsx",
   "expo": {
-    "name": "VinopinionsApp",
+    "name": "Vinopinions",
     "slug": "vinopinions",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "com.laylaoskarschule.vinopinions"
+      "bundleIdentifier": "app.vinopinions"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +23,7 @@
         "backgroundColor": "#ffffff"
       },
       "userInterfaceStyle": "automatic",
-      "package": "com.laylaoskarschule.vinopinions"
+      "package": "app.vinopinions"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,7 +33,7 @@
         "projectId": "4b072a01-ec61-4a03-beb2-ad67258e3e33"
       }
     },
-    "owner": "layla-oskar-schule",
+    "owner": "vinopinions",
     "runtimeVersion": {
       "policy": "appVersion"
     },

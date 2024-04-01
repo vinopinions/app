@@ -1,3 +1,6 @@
+// https://reactnavigation.org/docs/5.x/getting-started/#installing-dependencies-into-a-bare-react-native-project
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import * as Localization from 'expo-localization';
@@ -5,13 +8,14 @@ import * as Notifications from 'expo-notifications';
 import i18n from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
 import { initReactI18next } from 'react-i18next';
-import { NativeModules } from 'react-native';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
 import { store } from './store/store';
 
+import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import de from './locales/de.json';
 import en from './locales/en.json';
 import { registerForPushNotificationsAsync } from './notifications/Notification';
@@ -81,13 +85,20 @@ const Layout = () => {
   }
 
   return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
+    <GestureHandlerRootView style={styles.gestureHandlerRootView}>
+      <NavigationContainer>
+        <BottomTabNavigator />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 
-NativeModules.DevSettings.setIsDebuggingRemotely(false);
 registerRootComponent(App);
 
 export default App;
+
+const styles = StyleSheet.create({
+  gestureHandlerRootView: {
+    flex: 1,
+  },
+});

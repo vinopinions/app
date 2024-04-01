@@ -1,0 +1,33 @@
+{
+  "embeds": [
+    {
+      "title": "New release published ! :tada:",
+      "fields": [
+        {
+          "name": "Repository",
+          "value": "[$REPOSITORY_NAME]($REPOSITORY_URL)",
+          "inline": true
+        },
+        {
+          "name": "Version",
+          "value": "[$RELEASE_VERSION]($CHANGELOG_URL)",
+          "inline": true
+        },
+        {
+          "name": "\t",
+          "value": "\t"
+        },
+        {
+          "name": "iOS",
+          "value": "[Install]($IOS_URL)",
+          "inline": true
+        },
+        {
+          "name": "Android",
+          "value": "[Download APK]($ANDROID_URL)",
+          "inline": true
+        }
+      ]
+    }
+  ]
+}
