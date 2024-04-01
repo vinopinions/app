@@ -115,9 +115,9 @@ jobs:
         id: build
         # echo -n "IOS_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'iOS devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
         run: |
-          BUILD_OUTPUT=$(eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --non-interactive --wait)
-          echo $BUILD_OUTPUT
-          echo -n "ANDROID_URL=$(echo -n $BUILD_OUTPUT | grep -A 1 'Android devices' | grep 'https://expo')" >> $GITHUB_OUTPUT
+          eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform android --json --non-interactive --wait > output.json
+          BUILD_OUTPUT=$(cat output.json)
+          echo "ANDROID_URL=$(echo \"$BUILD_OUTPUT\" | jq -r '.[] | select(.platform == \"ANDROID\") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
 
   discord:
     name: Notify Discord
