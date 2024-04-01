@@ -137,7 +137,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "CHANGELOG_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/$( git describe --tags --abbrev=0 )" >> $GITHUB_ENV
+          echo "CHANGELOG_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/v${{ needs.release.outputs.version }}" >> $GITHUB_ENV
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
@@ -149,13 +149,7 @@ jobs:
         run: envsubst < .github/templates/discord-embed-payload.json > discord-embed-payload.json
 
       - name: Send webhook
-        uses: tsickert/discord-webhook@v5.5.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          filename: discord-embed-payload.json
-
-      - name: Send webhook 2
-        uses: tsickert/discord-webhook@v5.5.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
-          filename: discord-embed-payload.json
+        run: |
+          curl --location ${{ secrets.DISCORD_WEBHOOK }} \
+          --header 'Content-Type: application/json' \
+          --data '$(cat discord-embed-payload.json)'
