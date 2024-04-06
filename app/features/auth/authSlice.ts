@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios, { HttpStatusCode } from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import { fetchCurrentUser, login, signup } from '../../api/api';
-import { Credentials } from '../../auth/AuthContext';
+import { fetchCurrentUser } from '../../api/api';
 
 const TOKEN_KEY = 'api-jwt';
 
@@ -20,25 +19,6 @@ export type AuthState =
       status: 'failed';
       error: string;
     };
-
-export const loginAsync = createAsyncThunk(
-  'auth/login',
-  async (credentials: Credentials): Promise<string> => {
-    const response = await login(credentials);
-    const token = response.data.access_token;
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-    SecureStore.setItemAsync(TOKEN_KEY, token);
-    return token;
-  },
-);
-
-export const signupAsync = createAsyncThunk(
-  'auth/signup',
-  async (credentials: Credentials) => {
-    const response = await signup(credentials);
-    return response.data;
-  },
-);
 
 export const logoutAsync = createAsyncThunk('auth/logout', async () => {
   delete axios.defaults.headers.common.Authorization;
@@ -85,34 +65,6 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loginAsync.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(loginAsync.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        if (state.status === 'succeeded') {
-          state.authenticated = true;
-          state.accessToken = action.payload;
-        }
-      })
-      .addCase(loginAsync.rejected, (state, action) => {
-        state.status = 'failed';
-        if (state.status === 'failed') {
-          state.error = action.error.message;
-        }
-      })
-      .addCase(signupAsync.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(signupAsync.fulfilled, (state) => {
-        state.status = 'succeeded';
-      })
-      .addCase(signupAsync.rejected, (state, action) => {
-        state.status = 'failed';
-        if (state.status === 'failed') {
-          state.error = action.error.message;
-        }
-      })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.status = 'succeeded';
         if (state.status === 'succeeded') {

@@ -3,7 +3,6 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import {
   createStore,
   fetchStoreById,
@@ -14,6 +13,7 @@ import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
 import Store from '../../api/pagination/Store';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import Page from '../../models/Page';
 import CreateStoreDto from '../../models/dtos/Store.dto';
 import { RootState } from './../../store/store';

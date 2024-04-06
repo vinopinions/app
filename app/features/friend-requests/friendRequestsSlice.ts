@@ -3,7 +3,6 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import {
   acceptFriendRequest,
   declineFriendRequest,
@@ -14,10 +13,11 @@ import {
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import FriendRequest from '../../models/FriendRequest';
 import Page from '../../models/Page';
 import { RootState } from '../../store/store';
-import { sendFriendRequest } from './../../api/api';
+import { sendGoogleLoginRequest } from './../../api/api';
 
 type FriendRequestsData = {
   incoming: PaginationState<FriendRequest>;
@@ -62,7 +62,7 @@ export const fetchOutgoingFriendRequestsAsync = (
 export const sendFriendRequestAsync = createAsyncThunk(
   'friendRequests/send',
   async (username: string) => {
-    await sendFriendRequest(username);
+    await sendGoogleLoginRequest(username);
   },
 );
 

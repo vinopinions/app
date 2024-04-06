@@ -3,9 +3,9 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import { fetchFeed } from '../../api/api';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import Page from '../../models/Page';
 import Rating from '../../models/Rating';
 import { RootState } from '../../store/store';
