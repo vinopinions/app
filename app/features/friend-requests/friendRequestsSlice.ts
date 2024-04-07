@@ -9,6 +9,7 @@ import {
   fetchIncomingFriendRequests,
   fetchOutgoingFriendRequests,
   revokeFriendRequest,
+  sendFriendRequest,
 } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
@@ -17,7 +18,6 @@ import ApiResponseState from '../../api/utils/ApiResponseState';
 import FriendRequest from '../../models/FriendRequest';
 import Page from '../../models/Page';
 import { RootState } from '../../store/store';
-import { sendGoogleLoginRequest } from './../../api/api';
 
 type FriendRequestsData = {
   incoming: PaginationState<FriendRequest>;
@@ -62,7 +62,7 @@ export const fetchOutgoingFriendRequestsAsync = (
 export const sendFriendRequestAsync = createAsyncThunk(
   'friendRequests/send',
   async (username: string) => {
-    await sendGoogleLoginRequest(username);
+    await sendFriendRequest(username);
   },
 );
 

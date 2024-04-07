@@ -7,16 +7,16 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import React from 'react';
 import { initReactI18next } from 'react-i18next';
-import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LoginScreen from './screens/login/LoginScreen';
-import { store } from './store/store';
 
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Provider } from 'react-redux';
 import de from './locales/de.json';
 import en from './locales/en.json';
+import { store } from './store/store';
 
 const resources = {
   en: { translation: en },

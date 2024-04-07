@@ -26,6 +26,16 @@ export const logoutAsync = createAsyncThunk('auth/logout', async () => {
   return await SecureStore.deleteItemAsync(TOKEN_KEY);
 });
 
+export const loginGoogleAsync = createAsyncThunk(
+  'auth/loginGoogle',
+  async (idToken: string) => {
+    console.log(idToken);
+    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // return await auth().signInWithCredential(googleCredential);
+  },
+);
+
 export const loadAccessTokenAsync = createAsyncThunk(
   'auth/loadAccessToken',
   async (): Promise<string> => {
@@ -71,6 +81,16 @@ const authSlice = createSlice({
           state.accessToken = null;
           state.authenticated = false;
         }
+      })
+      .addCase(loginGoogleAsync.pending, () => {
+        console.log('pending');
+      })
+      .addCase(loginGoogleAsync.fulfilled, (state, action) => {
+        console.log('fulfilled');
+        console.log(action.payload);
+      })
+      .addCase(loginGoogleAsync.rejected, () => {
+        console.log('rejected');
       })
       .addCase(loadAccessTokenAsync.rejected, (state) => {
         state.status = 'failed';

@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   AuthState,
   loadAccessTokenAsync,
-  loginAsync,
   logoutAsync,
-  signupAsync,
 } from '../features/auth/authSlice';
 import { AppDispatch, RootState } from '../store/store';
 
@@ -17,8 +15,6 @@ export interface Credentials {
 
 interface AuthProps {
   authState: AuthState;
-  signup: (credentials: Credentials) => Promise<void>;
-  login: (credentials: Credentials) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -46,22 +42,12 @@ export const AuthProvider = ({
     }
   }, [dispatch, authState]);
 
-  const login = async (credentials: Credentials) => {
-    await dispatch(loginAsync(credentials));
-  };
-
-  const signup = async (credentials: Credentials) => {
-    await dispatch(signupAsync(credentials));
-  };
-
   const logout = async () => {
     await dispatch(logoutAsync());
   };
 
   const value: AuthProps = {
     authState,
-    signup,
-    login,
     logout,
   };
 

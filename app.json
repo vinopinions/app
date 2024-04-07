@@ -49,6 +49,15 @@
           "photosPermission": "The app accesses your photos to let you share them with others.",
           "cameraPermission": "The app lets you take photos to let you share them with others."
         }
+      ],
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ]
   }
