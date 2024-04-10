@@ -15,7 +15,8 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "app.vinopinions"
+      "bundleIdentifier": "app.vinopinions",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -60,7 +61,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-apple-authentication"
     ]
   }
 }

@@ -99,6 +99,16 @@ const authSlice = createSlice({
       .addCase(loginGoogleAsync.rejected, (state) => {
         state.status = 'failed';
       })
+      .addCase(loginAppleAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(loginAppleAsync.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.firebaseToken = action.payload;
+      })
+      .addCase(loginAppleAsync.rejected, (state) => {
+        state.status = 'failed';
+      })
       .addCase(checkAsync.pending, (state) => {
         state.status = 'loading';
       })

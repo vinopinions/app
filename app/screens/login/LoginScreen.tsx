@@ -3,11 +3,21 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import {
+  AppleAuthenticationButton,
+  AppleAuthenticationButtonStyle,
+  AppleAuthenticationButtonType,
+  AppleAuthenticationScope,
+} from 'expo-apple-authentication';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Text } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
-import { loginGoogleAsync } from '../../features/auth/authSlice';
+import {
+  loginAppleAsync,
+  loginGoogleAsync,
+} from '../../features/auth/authSlice';
 import { AppDispatch } from '../../store/store';
 
 GoogleSignin.configure({
@@ -17,18 +27,35 @@ GoogleSignin.configure({
 
 type IdTokenInfo = {
   idToken: string;
-  provider: 'google';
+  provider: 'google' | 'apple';
 };
 
 const LoginScreen = () => {
   const [idTokenInfo, setIdTokenInfo] = useState<IdTokenInfo | undefined>();
+  useState<boolean>();
   const dispatch: AppDispatch = useDispatch();
+
+  process.env.__DEV__ = 'true';
 
   const googleSignIn = useCallback(async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       setIdTokenInfo({ idToken: userInfo.idToken, provider: 'google' });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const appleSignIn = useCallback(async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthenticationScope.FULL_NAME,
+          AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      setIdTokenInfo({ idToken: credential.identityToken, provider: 'apple' });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -48,6 +75,8 @@ const LoginScreen = () => {
     }
     if (idTokenInfo.provider === 'google') {
       dispatch(loginGoogleAsync(idTokenInfo.idToken));
+    } else if (idTokenInfo.provider === 'apple') {
+      dispatch(loginAppleAsync(idTokenInfo.idToken));
     }
   }, [dispatch, idTokenInfo]);
 
@@ -58,6 +87,12 @@ const LoginScreen = () => {
         size={GoogleSigninButton.Size.Standard}
         color={GoogleSigninButton.Color.Dark}
         onPress={googleSignIn}
+      />
+      <AppleAuthenticationButton
+        buttonType={AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthenticationButtonStyle.BLACK}
+        onPress={appleSignIn}
+        style={styles.authButton}
       />
     </SafeAreaView>
   );
@@ -75,5 +110,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 50,
     marginBottom: 40,
+  },
+  authButton: {
+    width: 200,
+    height: 44,
   },
 });
