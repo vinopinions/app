@@ -3,21 +3,21 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import {
   acceptFriendRequest,
   declineFriendRequest,
   fetchIncomingFriendRequests,
   fetchOutgoingFriendRequests,
   revokeFriendRequest,
+  sendFriendRequest,
 } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import FriendRequest from '../../models/FriendRequest';
 import Page from '../../models/Page';
 import { RootState } from '../../store/store';
-import { sendFriendRequest } from './../../api/api';
 
 type FriendRequestsData = {
   incoming: PaginationState<FriendRequest>;

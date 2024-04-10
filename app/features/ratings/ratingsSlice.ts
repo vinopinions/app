@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import { createWineRating, deleteRating } from '../../api/api';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import Rating from '../../models/Rating';
 import RatingDto from '../../models/dtos/Rating.dto';
 

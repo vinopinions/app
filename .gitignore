@@ -44,3 +44,11 @@ yarn-error.*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.env
+
+android
+ios
+
+google-services.json
+GoogleService-Info.plist

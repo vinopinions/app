@@ -3,11 +3,11 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import { fetchUsers } from '../../api/api';
 import EmptyPaginationState from '../../api/pagination/EmptyPaginationState';
 import FilterFetchPageParams from '../../api/pagination/FilterFetchPageParams';
 import PaginationState from '../../api/pagination/PaginationState';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import Page from '../../models/Page';
 import User from '../../models/User';
 import { RootState } from '../../store/store';

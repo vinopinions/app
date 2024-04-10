@@ -7,8 +7,8 @@ export const FRIEND_USERNAME_URL_PARAMETER = ':friendName';
 
 // auth
 export const AUTH_ENDPOINT_URL = `${API_BASE_URL}/auth`;
-export const AUTH_LOGIN_ENDPOINT_URL = '/login';
 export const AUTH_SIGNUP_ENDPOINT_URL = '/signup';
+export const AUTH_CHECK_ENDPOINT_URL = '/check';
 // friend-requests
 export const FRIEND_REQUESTS_ENDPOINT_URL = `${API_BASE_URL}/friend-requests`;
 export const FRIEND_REQUESTS_INCOMING_ENDPOINT_URL = '/incoming';
