@@ -35,8 +35,6 @@ const LoginScreen = () => {
   useState<boolean>();
   const dispatch: AppDispatch = useDispatch();
 
-  process.env.__DEV__ = 'true';
-
   const googleSignIn = useCallback(async () => {
     try {
       await GoogleSignin.hasPlayServices();

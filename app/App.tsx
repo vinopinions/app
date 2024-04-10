@@ -66,7 +66,11 @@ const Layout = () => {
     return <Text>Loading</Text>;
   }
 
-  if (authState.status === 'succeeded' && !authState.registered) {
+  if (
+    authState.status === 'succeeded' &&
+    authState.firebaseToken &&
+    !authState.registered
+  ) {
     return <SignupScreen />;
   }
 
