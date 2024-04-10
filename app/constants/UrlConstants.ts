@@ -7,12 +7,8 @@ export const FRIEND_USERNAME_URL_PARAMETER = ':friendName';
 
 // auth
 export const AUTH_ENDPOINT_URL = `${API_BASE_URL}/auth`;
-export const AUTH_FACEBOOK_ENDPOINT_URL = '/facebook';
-export const AUTH_FACEBOOK_ENDPOINT_CALLBACK_URL = `${AUTH_FACEBOOK_ENDPOINT_URL}/callback`;
-export const AUTH_GOOGLE_ENDPOINT_URL = '/google';
-export const AUTH_GOOGLE_ENDPOINT_CALLBACK_URL = `${AUTH_GOOGLE_ENDPOINT_URL}/callback`;
-export const AUTH_APPLE_ENDPOINT_URL = '/apple';
-export const AUTH_APPLE_ENDPOINT_CALLBACK_URL = `${AUTH_APPLE_ENDPOINT_URL}/callback`;
+export const AUTH_SIGNUP_ENDPOINT_URL = '/signup';
+export const AUTH_CHECK_ENDPOINT_URL = '/check';
 // friend-requests
 export const FRIEND_REQUESTS_ENDPOINT_URL = `${API_BASE_URL}/friend-requests`;
 export const FRIEND_REQUESTS_INCOMING_ENDPOINT_URL = '/incoming';

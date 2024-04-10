@@ -1,21 +1,23 @@
 // https://reactnavigation.org/docs/5.x/getting-started/#installing-dependencies-into-a-bare-react-native-project
 import 'react-native-gesture-handler';
 
+import auth from '@react-native-firebase/auth';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import React from 'react';
 import { initReactI18next } from 'react-i18next';
-import { AuthProvider, useAuth } from './auth/AuthContext';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import LoginScreen from './screens/login/LoginScreen';
-
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Text } from 'react-native-ui-lib';
 import { Provider } from 'react-redux';
+import { AuthProvider, useAuth } from './auth/AuthContext';
 import de from './locales/de.json';
 import en from './locales/en.json';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+import LoginScreen from './screens/login/LoginScreen';
+import SignupScreen from './screens/login/SignupScreen';
 import { store } from './store/store';
 
 const resources = {
@@ -30,6 +32,13 @@ i18n.use(initReactI18next).init({
   lng: Localization.getLocales()[0].languageCode,
 });
 
+const FIREBASE_AUTH_EMULATOR_URL =
+  process.env.EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_URL;
+
+if (FIREBASE_AUTH_EMULATOR_URL) {
+  auth().useEmulator(FIREBASE_AUTH_EMULATOR_URL);
+}
+
 const App = () => {
   return (
     <Provider store={store}>
@@ -43,17 +52,25 @@ const App = () => {
 const Layout = () => {
   const { authState } = useAuth();
 
-  if (!(authState.status === 'succeeded' && authState.authenticated)) {
-    return <LoginScreen />;
+  if (authState.status === 'succeeded' && authState.registered) {
+    return (
+      <GestureHandlerRootView style={styles.gestureHandlerRootView}>
+        <NavigationContainer>
+          <BottomTabNavigator />
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    );
   }
 
-  return (
-    <GestureHandlerRootView style={styles.gestureHandlerRootView}>
-      <NavigationContainer>
-        <BottomTabNavigator />
-      </NavigationContainer>
-    </GestureHandlerRootView>
-  );
+  if (authState.status === 'loading') {
+    return <Text>Loading</Text>;
+  }
+
+  if (authState.status === 'succeeded' && !authState.registered) {
+    return <SignupScreen />;
+  }
+
+  return <LoginScreen />;
 };
 
 registerRootComponent(App);

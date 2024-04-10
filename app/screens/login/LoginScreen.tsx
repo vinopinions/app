@@ -12,6 +12,7 @@ import { AppDispatch } from '../../store/store';
 
 GoogleSignin.configure({
   iosClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_IOS,
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_OAUTH_CLIENT_ID_WEB,
 });
 
 type IdTokenInfo = {
@@ -25,13 +26,10 @@ const LoginScreen = () => {
 
   const googleSignIn = useCallback(async () => {
     try {
-      console.log('here');
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
       setIdTokenInfo({ idToken: userInfo.idToken, provider: 'google' });
     } catch (error) {
-      console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -48,15 +46,16 @@ const LoginScreen = () => {
     if (!idTokenInfo || !idTokenInfo.idToken) {
       return;
     }
-
-    dispatch(loginGoogleAsync(idTokenInfo.idToken));
+    if (idTokenInfo.provider === 'google') {
+      dispatch(loginGoogleAsync(idTokenInfo.idToken));
+    }
   }, [dispatch, idTokenInfo]);
 
   return (
     <SafeAreaView style={styles.screen}>
       <Text style={styles.title}>Login</Text>
       <GoogleSigninButton
-        size={GoogleSigninButton.Size.Wide}
+        size={GoogleSigninButton.Size.Standard}
         color={GoogleSigninButton.Color.Dark}
         onPress={googleSignIn}
       />

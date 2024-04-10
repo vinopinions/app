@@ -46,13 +46,15 @@ export const createDefaultAxiosInstance = (
       return response;
     },
     (error) => {
-      const message = error.response.data.message;
-
-      console.error(
-        'Response error:',
-        error,
-        Array.isArray(message) ? message.join('. ') : message,
-      );
+      if (error?.response?.data?.message) {
+        const message = error.response.data.message;
+        Alert.alert(
+          error.response.data.error,
+          Array.isArray(message) ? message.join('. ') : message,
+        );
+      } else {
+        console.error('Network error or other issue:', error.message);
+      }
       return Promise.reject(error);
     },
   );
@@ -63,7 +65,7 @@ export const createDefaultAxiosInstance = (
       return response;
     },
     (error) => {
-      if (error.response.data.message) {
+      if (error?.response?.data?.message) {
         const message = error.response.data.message;
         Alert.alert(
           error.response.data.error,

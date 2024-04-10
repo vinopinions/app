@@ -93,7 +93,6 @@ const storesSlice = createSlice({
       })
       .addCase(fetchStoreByIdAsync.fulfilled, (state, action) => {
         state.status = 'succeeded';
-
         const index = state.data.data.findIndex(
           (store) => store.id === action.payload.id,
         );

@@ -14,9 +14,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       infoPlist: {
         CFBundleURLTypes: [
           {
-            CFBundleURLSchemes: [
-              process.env.EXPO_PUBLIC_GOOGLE_OAUTH_URL_SCHEMA_IOS,
-            ],
+            CFBundleURLSchemes: [process.env.GOOGLE_OAUTH_URL_SCHEMA_IOS],
           },
         ],
         ...config.ios.infoPlist,
