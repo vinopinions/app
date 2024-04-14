@@ -81,8 +81,8 @@ jobs:
       - release
 
     outputs:
-      iosUrl: ${{ steps.build.outputs.IOS_URL }}
-      androidUrl: ${{ steps.build.outputs.ANDROID_URL }}
+      iosUrl: ${{ steps.infos.outputs.IOS_URL }}
+      androidUrl: ${{ steps.infos.outputs.ANDROID_URL }}
 
     # check if a new version should be released
     if: needs.release.outputs.version != ''
@@ -123,11 +123,19 @@ jobs:
           grep -v "${{ env.GOOGLE_SERVICE_INFO_PLIST_FILE_NAME }}" .gitignore > tmpfile && mv tmpfile .gitignore
 
       - name: Build on EAS
-        id: build
         run: |
           eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --json --non-interactive --wait > output.json
+
+      - name: Extract Infos
+        id: infos
+        run: |
+          IOS_INFO=$(cat output.json | jq '.[] | select(.platform == "IOS")')
+          OWNER_NAME=$(echo $IOS_INFO | jq -r '.project.ownerAccount.name')
+          PROJECT_SLUG=$(echo $IOS_INFO | jq -r '.project.slug')
+          BUILD_ID=$(echo $IOS_INFO | jq -r '.id')
+
+          echo "IOS_URL=https://expo.dev//accounts/$OWNER_NAME/projects/$PROJECT_SLUG/builds/$BUILD_ID" >> "$GITHUB_OUTPUT"
           echo "ANDROID_URL=$(cat output.json | jq '.[] | select(.platform == "ANDROID") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
-          echo "IOS_URL=$(cat output.json | jq '.[] | select(.platform == "IOS") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
 
   discord:
     name: Notify Discord
@@ -152,7 +160,6 @@ jobs:
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
-          echo "IOS_URL=https://github.com" >> $GITHUB_ENV
           echo "IOS_URL=${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
           echo "ANDROID_URL=${{ needs.publish_expo.outputs.androidUrl }}" >> $GITHUB_ENV
 
