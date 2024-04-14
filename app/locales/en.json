@@ -41,6 +41,7 @@
   "common": {
     "ratings": "Ratings",
     "friends": "Friends",
+    "shelf": "Shelf",
     "users": "Users",
     "search": "Search",
     "signOut": "Sign out",
