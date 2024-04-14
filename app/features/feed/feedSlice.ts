@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 
 type FeedState = ApiResponseState<Page<Rating>>;
 
-export const _fetchFeedAsync = createAsyncThunk<Page<Rating>, FetchPageParams>(
+const _fetchFeedAsync = createAsyncThunk<Page<Rating>, FetchPageParams>(
   'feed',
   async ({ page, take, order }: FetchPageParams) => {
     const response = await fetchFeed(page, take, order);

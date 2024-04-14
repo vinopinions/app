@@ -5,7 +5,10 @@ import {
   USERS_ME_ENDPOINT_URL,
   USERS_USERNAME_FRIENDS_ENDPOINT_URL,
   USERS_USERNAME_RATINGS_ENDPOINT_URL,
+  USERS_USERNAME_SHELF_ENDPOINT_URL,
 } from '../constants/UrlConstants';
+import Wine from '../models/Wine';
+import { USERS_ME_SHELF_ENDPOINT_URL } from './../constants/UrlConstants';
 import { createDefaultAxiosInstance } from './utils/utils';
 
 const apiUsers = createDefaultAxiosInstance({
@@ -66,6 +69,78 @@ export const fetchFriendsForUser = (
       USERNAME_URL_PARAMETER,
       username,
     ),
+    {
+      params: {
+        page,
+        take,
+        order,
+      },
+      ...options,
+    },
+  );
+
+export const fetchShelfForCurrentUser = (
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get(USERS_ME_SHELF_ENDPOINT_URL, {
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const addWineToShelfOfCurrentUser = (
+  wine: Wine,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.post(USERS_ME_SHELF_ENDPOINT_URL, {
+    data: {
+      id: wine.id,
+    },
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const removeWineFromShelfOfCurrentUser = (
+  wine: Wine,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.delete(USERS_ME_SHELF_ENDPOINT_URL, {
+    data: {
+      id: wine.id,
+    },
+    params: {
+      page,
+      take,
+      order,
+    },
+    ...options,
+  });
+
+export const fetchShelfForUser = (
+  username: string,
+  page?: number,
+  take?: number,
+  order?: 'ASC' | 'DESC',
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.get(
+    USERS_USERNAME_SHELF_ENDPOINT_URL.replace(USERNAME_URL_PARAMETER, username),
     {
       params: {
         page,

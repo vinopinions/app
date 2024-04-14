@@ -26,7 +26,7 @@ const AccountScreenHeader = ({
           <Text>{t('common.friends')}</Text>
         </View>
       </View>
-      <Text style={styles.ratingsText}>{t('common.ratings')}</Text>
+      <Text style={styles.ratingsText}>{t('common.shelf')}</Text>
     </View>
   );
 };

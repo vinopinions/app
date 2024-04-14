@@ -137,15 +137,6 @@ export const selectStorePage = createSelector(
   },
 );
 
-export const selectAllStores = createSelector(
-  [selectStores],
-  (stores: Store[]) => stores,
-  // https://github.com/reduxjs/reselect/discussions/662
-  {
-    devModeChecks: { identityFunctionCheck: 'never' },
-  },
-);
-
 export const selectStoreById = createSelector(
   [selectStores, (state: RootState, storeId: string) => storeId],
   (stores: Store[], storeId: string): Store =>
