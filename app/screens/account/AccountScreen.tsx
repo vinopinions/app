@@ -1,14 +1,19 @@
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Text, TouchableOpacity } from 'react-native-ui-lib';
+import { Image, Text, TouchableOpacity } from 'react-native-ui-lib';
 import { TouchableOpacityProps } from 'react-native-ui-lib/src/incubator';
 import { useDispatch, useSelector } from 'react-redux';
-import RatingCard from '../../components/ratings/RatingCard';
 import UserView from '../../components/users/UserView';
-import { ACCOUNT_STACK_NAMES } from '../../constants/RouteNames';
+import {
+  ACCOUNT_STACK_NAMES,
+  BOTTOM_TAB_STACK_NAMES,
+  WINES_STACK_NAMES,
+} from '../../constants/RouteNames';
 import {
   fetchCurrentUserAsync,
   selectCurrentUser,
@@ -21,9 +26,15 @@ import {
   fetchRatingsForUserAsync,
   selectRatingRelationsByUserUsername,
 } from '../../features/users/userRatingsSlice';
+import {
+  fetchShelfForCurrentUserAsync,
+  selectUserShelfPage,
+} from '../../features/users/userShelfSlice';
 import Page from '../../models/Page';
 import Rating from '../../models/Rating';
 import User from '../../models/User';
+import Wine from '../../models/Wine';
+import { BottomTabStackParamList } from '../../navigation/BottomTabNavigator';
 import { AppDispatch, RootState } from '../../store/store';
 import { SettingsIconOutline } from '../../utils/icons';
 import AccountScreenHeader, {
@@ -49,9 +60,15 @@ const renderTitleRight = (props?: TouchableOpacityProps) => {
 
 const AccountScreen = ({
   navigation,
-}: NativeStackScreenProps<
-  AccountStackParamList,
-  ACCOUNT_STACK_NAMES.ACCOUNT_SCREEN
+}: CompositeScreenProps<
+  NativeStackScreenProps<
+    AccountStackParamList,
+    ACCOUNT_STACK_NAMES.ACCOUNT_SCREEN
+  >,
+  BottomTabScreenProps<
+    BottomTabStackParamList,
+    BOTTOM_TAB_STACK_NAMES.ACCOUNT_STACK
+  >
 >) => {
   const [refreshing, setRefreshing] = useState(false);
   const dispatch: AppDispatch = useDispatch();
@@ -61,6 +78,9 @@ const AccountScreen = ({
   );
   const friendsPage: Page<User> = useSelector<RootState, Page<User>>((state) =>
     selectFriendRelationsByUserUsername(state, user?.username),
+  );
+  const shelfPage: Page<Wine> = useSelector<RootState, Page<Wine>>(
+    selectUserShelfPage,
   );
 
   const onRefresh = useCallback(async () => {
@@ -73,6 +93,7 @@ const AccountScreen = ({
     if (user) {
       dispatch(fetchRatingsForUserAsync({ username: user.username }));
       dispatch(fetchFriendsForUserAsync({ username: user.username }));
+      dispatch(fetchShelfForCurrentUserAsync());
     }
   }, [dispatch, user]);
 
@@ -116,9 +137,27 @@ const AccountScreen = ({
             ratingAmount: ratingsPage.meta.itemCount,
           })
         }
-        data={ratingsPage.data}
-        renderItem={({ item }: { item: Rating }) => {
-          return <RatingCard rating={item} />;
+        horizontal={false}
+        numColumns={3}
+        keyExtractor={(item) => item.id}
+        data={shelfPage.data}
+        renderItem={({ item }: { item: Wine }) => {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(BOTTOM_TAB_STACK_NAMES.WINES_STACK, {
+                  screen: WINES_STACK_NAMES.WINE_DETAILS_SCREEN,
+                  params: { wineId: item.id },
+                })
+              }
+              style={styles.listItem}
+            >
+              <Image
+                style={styles.listItemImage}
+                source={{ uri: item.image }}
+              />
+            </TouchableOpacity>
+          );
         }}
       />
     </SafeAreaView>
@@ -128,6 +167,13 @@ const AccountScreen = ({
 export default AccountScreen;
 
 const styles = StyleSheet.create({
+  listItemImage: {
+    flex: 1,
+  },
+  listItem: {
+    width: '33%',
+    aspectRatio: 1,
+  },
   heading: {
     fontWeight: 'bold',
     fontSize: 32,

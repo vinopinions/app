@@ -7,8 +7,8 @@ export const FRIEND_USERNAME_URL_PARAMETER = ':friendName';
 
 // auth
 export const AUTH_ENDPOINT_URL = `${API_BASE_URL}/auth`;
-export const AUTH_LOGIN_ENDPOINT_URL = '/login';
 export const AUTH_SIGNUP_ENDPOINT_URL = '/signup';
+export const AUTH_CHECK_ENDPOINT_URL = '/check';
 // friend-requests
 export const FRIEND_REQUESTS_ENDPOINT_URL = `${API_BASE_URL}/friend-requests`;
 export const FRIEND_REQUESTS_INCOMING_ENDPOINT_URL = '/incoming';
@@ -29,8 +29,10 @@ export const USERS_ENDPOINT_URL = `${API_BASE_URL}/users`;
 export const USERS_USERNAME_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}`;
 export const USERS_USERNAME_RATINGS_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}/ratings`;
 export const USERS_USERNAME_FRIENDS_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}/friends`;
+export const USERS_USERNAME_SHELF_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}/shelf`;
 export const USERS_USERNAME_FRIENDS_FRIENDNAME_ENDPOINT_URL = `/${USERNAME_URL_PARAMETER}/friends/${FRIEND_USERNAME_URL_PARAMETER}`;
 export const USERS_ME_ENDPOINT_URL = '/me';
+export const USERS_ME_SHELF_ENDPOINT_URL = `${USERS_ME_ENDPOINT_URL}/shelf`;
 // winemakers
 export const WINEMAKERS_ENDPOINT_URL = `${API_BASE_URL}/winemakers`;
 export const WINEMAKERS_ID_ENDPOINT_URL = `/${ID_URL_PARAMETER}`;

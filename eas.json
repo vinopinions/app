@@ -10,8 +10,11 @@
     "preview": {
       "extends": "base",
       "distribution": "internal",
+      "releaseChannel": "preview",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api-dev.vinopinions.app/v1"
+        "EXPO_PUBLIC_API_URL": "https://api.dev.vinopinions.app/v1",
+        "GOOGLE_SERVICE_INFO_PLIST": "GoogleService-Info.plist",
+        "GOOGLE_SERVICES_JSON": "google-services.json"
       }
     },
     "development": {
@@ -20,7 +23,7 @@
       "channel": "development",
       "extends": "base",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://api-dev.vinopinions.app/v1"
+        "EXPO_PUBLIC_API_URL": "https://api.dev.vinopinions.app/v1"
       }
     },
     "production": {

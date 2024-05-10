@@ -3,8 +3,8 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import { fetchCurrentUser } from '../../api/api';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import User from '../../models/User';
 import { RootState } from '../../store/store';
 

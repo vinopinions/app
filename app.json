@@ -15,7 +15,8 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
-      "bundleIdentifier": "app.vinopinions"
+      "bundleIdentifier": "app.vinopinions",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -49,7 +50,19 @@
           "photosPermission": "The app accesses your photos to let you share them with others.",
           "cameraPermission": "The app lets you take photos to let you share them with others."
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      "expo-apple-authentication"
     ]
   }
 }

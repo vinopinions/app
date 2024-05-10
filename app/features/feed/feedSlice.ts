@@ -3,16 +3,16 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import ApiResponseState from '../../api/ApiResponseState';
 import { fetchFeed } from '../../api/api';
 import FetchPageParams from '../../api/pagination/FetchPageParams';
+import ApiResponseState from '../../api/utils/ApiResponseState';
 import Page from '../../models/Page';
 import Rating from '../../models/Rating';
 import { RootState } from '../../store/store';
 
 type FeedState = ApiResponseState<Page<Rating>>;
 
-export const _fetchFeedAsync = createAsyncThunk<Page<Rating>, FetchPageParams>(
+const _fetchFeedAsync = createAsyncThunk<Page<Rating>, FetchPageParams>(
   'feed',
   async ({ page, take, order }: FetchPageParams) => {
     const response = await fetchFeed(page, take, order);

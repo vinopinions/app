@@ -7,7 +7,8 @@ permissions:
   contents: read # for checkout
 
 env:
-  SEMANTIC_RELEASE_VERSION: 23
+  GOOGLE_SERVICES_FILE_NAME: google-services.json
+  GOOGLE_SERVICE_INFO_PLIST_FILE_NAME: GoogleService-Info.plist
 
 jobs:
   codeql:
@@ -80,8 +81,8 @@ jobs:
       - release
 
     outputs:
-      iosBuildId: ${{ steps.build.outputs.IOS_BUILD_ID }}
-      androidUrl: ${{ steps.build.outputs.ANDROID_URL }}
+      iosUrl: ${{ steps.infos.outputs.IOS_URL }}
+      androidUrl: ${{ steps.infos.outputs.ANDROID_URL }}
 
     # check if a new version should be released
     if: needs.release.outputs.version != ''
@@ -111,12 +112,30 @@ jobs:
       - name: Install dependencies
         run: yarn install --ignore-scripts
 
+      - name: Create required files
+        run: |
+          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' | base64 -d > ${{ env.GOOGLE_SERVICES_FILE_NAME }}
+          echo '${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}' | base64 -d > ${{ env.GOOGLE_SERVICE_INFO_PLIST_FILE_NAME }}
+
+      - name: Remove required files from gitignore
+        run: |
+          grep -v "${{ env.GOOGLE_SERVICES_FILE_NAME }}" .gitignore > tmpfile && mv tmpfile .gitignore
+          grep -v "${{ env.GOOGLE_SERVICE_INFO_PLIST_FILE_NAME }}" .gitignore > tmpfile && mv tmpfile .gitignore
+
       - name: Build on EAS
-        id: build
         run: |
           eas build --profile ${{ vars.EAS_BUILD_PROFILE }} --platform all --json --non-interactive --wait > output.json
+
+      - name: Extract Infos
+        id: infos
+        run: |
+          IOS_INFO=$(cat output.json | jq '.[] | select(.platform == "IOS")')
+          OWNER_NAME=$(echo $IOS_INFO | jq -r '.project.ownerAccount.name')
+          PROJECT_SLUG=$(echo $IOS_INFO | jq -r '.project.slug')
+          BUILD_ID=$(echo $IOS_INFO | jq -r '.id')
+
+          echo "IOS_URL=https://expo.dev//accounts/$OWNER_NAME/projects/$PROJECT_SLUG/builds/$BUILD_ID" >> "$GITHUB_OUTPUT"
           echo "ANDROID_URL=$(cat output.json | jq '.[] | select(.platform == "ANDROID") | .artifacts.buildUrl')" >> "$GITHUB_OUTPUT"
-          echo "IOS_BUILD_ID=$(cat output.json | jq '.[] | select(.platform == "IOS") | .id')" >> "$GITHUB_OUTPUT"
 
   discord:
     name: Notify Discord
@@ -141,8 +160,7 @@ jobs:
           echo "REPOSITORY_NAME=${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "REPOSITORY_URL=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${{ needs.release.outputs.version }}" >> $GITHUB_ENV
-          echo "IOS_URL=https://github.com" >> $GITHUB_ENV
-          echo "IOS_URL=https://expo.dev///accounts/vinopinions/projects/vinopinions/builds/${{ needs.publish_expo.outputs.iosBuildId }}" >> $GITHUB_ENV
+          echo "IOS_URL=${{ needs.publish_expo.outputs.iosUrl }}" >> $GITHUB_ENV
           echo "ANDROID_URL=${{ needs.publish_expo.outputs.androidUrl }}" >> $GITHUB_ENV
 
       - name: Update template
