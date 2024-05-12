@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
 import * as Localization from 'expo-localization';
+import * as Notifications from 'expo-notifications';
 import i18n from 'i18next';
 import React from 'react';
 import { initReactI18next } from 'react-i18next';
@@ -38,6 +39,14 @@ const FIREBASE_AUTH_EMULATOR_URL =
 if (FIREBASE_AUTH_EMULATOR_URL) {
   auth().useEmulator(FIREBASE_AUTH_EMULATOR_URL);
 }
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const App = () => {
   return (

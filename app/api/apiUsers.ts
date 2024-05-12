@@ -3,6 +3,7 @@ import {
   USERNAME_URL_PARAMETER,
   USERS_ENDPOINT_URL,
   USERS_ME_ENDPOINT_URL,
+  USERS_ME_NOTIFICATIONS_ENDPOINT_URL,
   USERS_USERNAME_FRIENDS_ENDPOINT_URL,
   USERS_USERNAME_RATINGS_ENDPOINT_URL,
   USERS_USERNAME_SHELF_ENDPOINT_URL,
@@ -150,3 +151,26 @@ export const fetchShelfForUser = (
       ...options,
     },
   );
+
+export const addNotificationToken = (
+  token: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.post(
+    USERS_ME_NOTIFICATIONS_ENDPOINT_URL,
+    {
+      token: token,
+    },
+    options,
+  );
+
+export const removeNotificationToken = (
+  token: string,
+  options?: AxiosRequestConfig,
+) =>
+  apiUsers.delete(USERS_ME_NOTIFICATIONS_ENDPOINT_URL, {
+    data: {
+      token,
+    },
+    ...options,
+  });

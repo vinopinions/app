@@ -4,12 +4,14 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Button, Text, View } from 'react-native-ui-lib';
+import { Button, Switch, Text, View } from 'react-native-ui-lib';
 import { useAuth } from '../../auth/AuthContext';
+import { useNotification } from '../../hooks/useNotifications';
 
 const SettingsScreen = () => {
   const { logout } = useAuth();
   const { t, i18n } = useTranslation();
+  const { permissionGranted, requestPermission } = useNotification();
 
   const onSignOutButtonPress = useCallback(() => {
     logout();
@@ -35,6 +37,16 @@ const SettingsScreen = () => {
           ))}
         </Picker>
         <Button label={t('common.signOut')} onPress={onSignOutButtonPress} />
+        <Button label={'test'} onPress={requestPermission} />
+        <Switch
+          value={permissionGranted}
+          onValueChange={async (value: boolean) => {
+            if (value) {
+              console.log('ye');
+              await requestPermission();
+            }
+          }}
+        />
       </View>
       <View style={styles.footer}>
         <Text>version: {Constants.expoConfig.version}</Text>
