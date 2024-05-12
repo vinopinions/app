@@ -1,16 +1,9 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   addNotificationToken,
   removeNotificationToken,
 } from '../../api/apiUsers';
 import ApiResponseState from '../../api/utils/ApiResponseState';
-import Page from '../../models/Page';
-import Wine from '../../models/Wine';
-import { RootState } from '../../store/store';
 
 type NotificationState = ApiResponseState<undefined>;
 
@@ -22,7 +15,7 @@ export const addNotificationTokenAsync = createAsyncThunk(
 );
 
 export const removeNotificationTokenAsync = createAsyncThunk(
-  'notifications/addToken',
+  'notifications/removeToken',
   async (token: string): Promise<void> => {
     await removeNotificationToken(token);
   },
@@ -32,8 +25,8 @@ const initialState: NotificationState = {
   status: 'idle',
 };
 
-const userShelfSlice = createSlice({
-  name: 'userShelf',
+const notificationSlice = createSlice({
+  name: 'notifications',
   initialState: initialState as NotificationState,
   reducers: {},
   extraReducers: (builder) => {
@@ -65,14 +58,4 @@ const userShelfSlice = createSlice({
   },
 });
 
-export default userShelfSlice.reducer;
-
-const _selectUserShelfPage = (state: RootState) => state.userShelf.data;
-
-export const selectUserShelfPage = createSelector(
-  [_selectUserShelfPage],
-  (userShelfPage: Page<Wine>) => userShelfPage,
-  {
-    devModeChecks: { identityFunctionCheck: 'never' },
-  },
-);
+export default notificationSlice.reducer;

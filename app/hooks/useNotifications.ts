@@ -6,6 +6,7 @@ import { AppDispatch } from '../store/store';
 
 export const useNotification = () => {
   const [pushToken, setPushToken] = useState<string | null>(null);
+  const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -14,25 +15,37 @@ export const useNotification = () => {
     }
   }, [dispatch, pushToken]);
 
-  const register = async () => {
+  useEffect(() => {
+    checkPermission();
+  }, []);
+
+  const checkPermission = async () => {
+    setPermissionGranted(
+      (await Notifications.getPermissionsAsync()).status === 'granted',
+    );
+  };
+
+  const requestPermission = async () => {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
-
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
+      setPermissionGranted(false);
       return;
     }
 
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     setPushToken(token);
+    setPermissionGranted(true);
   };
 
   return {
     pushToken,
-    register,
+    permissionGranted,
+    requestPermission,
   };
 };

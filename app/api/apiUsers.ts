@@ -153,15 +153,16 @@ export const fetchShelfForUser = (
   );
 
 export const addNotificationToken = (
-  token: String,
+  token: string,
   options?: AxiosRequestConfig,
 ) =>
-  apiUsers.post(USERS_ME_NOTIFICATIONS_ENDPOINT_URL, {
-    data: {
-      token,
+  apiUsers.post(
+    USERS_ME_NOTIFICATIONS_ENDPOINT_URL,
+    {
+      token: token,
     },
-    ...options,
-  });
+    options,
+  );
 
 export const removeNotificationToken = (
   token: string,
