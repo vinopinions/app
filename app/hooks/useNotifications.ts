@@ -15,14 +15,19 @@ export const useNotification = () => {
     }
   }, [dispatch, pushToken]);
 
-  useEffect(() => {
-    checkPermission();
-  }, []);
-
+  /**
+   * returns true or false and also set's the pushToken
+   */
   const checkPermission = async () => {
-    setPermissionGranted(
-      (await Notifications.getPermissionsAsync()).status === 'granted',
-    );
+    const granted =
+      (await Notifications.getPermissionsAsync()).status === 'granted';
+
+    setPermissionGranted(granted);
+
+    if (granted) {
+      const token = (await Notifications.getExpoPushTokenAsync()).data;
+      setPushToken(token);
+    }
   };
 
   const requestPermission = async () => {
@@ -38,14 +43,15 @@ export const useNotification = () => {
       return;
     }
 
+    setPermissionGranted(true);
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     setPushToken(token);
-    setPermissionGranted(true);
   };
 
   return {
     pushToken,
     permissionGranted,
     requestPermission,
+    checkPermission,
   };
 };

@@ -7,27 +7,31 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Switch, Text, View } from 'react-native-ui-lib';
 import { useAuth } from '../../auth/AuthContext';
 import { useNotification } from '../../hooks/useNotifications';
+import { useSettings } from '../../hooks/useSettings';
 
 const SettingsScreen = () => {
   const { logout } = useAuth();
   const { t, i18n } = useTranslation();
   const { permissionGranted, requestPermission } = useNotification();
-
+  const { updateLanguageSettings, settings } = useSettings();
   const onSignOutButtonPress = useCallback(() => {
     logout();
   }, [logout]);
 
   const onLanguageChange = useCallback(
     (language: string) => {
-      i18n.changeLanguage(language);
+      updateLanguageSettings(language);
     },
-    [i18n],
+    [updateLanguageSettings],
   );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Picker selectedValue={i18n.language} onValueChange={onLanguageChange}>
+        <Picker
+          selectedValue={settings.language}
+          onValueChange={onLanguageChange}
+        >
           {Object.keys(i18n.options.resources).map((languageCode) => (
             <Picker.Item
               key={languageCode}
@@ -42,7 +46,6 @@ const SettingsScreen = () => {
           value={permissionGranted}
           onValueChange={async (value: boolean) => {
             if (value) {
-              console.log('ye');
               await requestPermission();
             }
           }}

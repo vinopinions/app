@@ -2,8 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import feedSlice from '../features/feed/feedSlice';
 import friendRequestsSlice from '../features/friend-requests/friendRequestsSlice';
-import notificationSlice from '../features/notifications/notificationSlice';
+import notificationsSlice from '../features/notifications/notificationSlice';
 import ratingsSlice from '../features/ratings/ratingsSlice';
+import settingsSlice from '../features/settings/settingsSlice';
 import storeWinesReducer from '../features/stores/storeWinesSlice';
 import storesReducer from '../features/stores/storesSlice';
 import currentUserReducer from '../features/users/currentUserSlice';
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   userFriends: userFriendsSlice,
   userShelf: userShelfSlice,
   friendRequests: friendRequestsSlice,
-  notifications: notificationSlice,
+  notifications: notificationsSlice,
+  settings: settingsSlice,
 });
 
 export const store = configureStore({

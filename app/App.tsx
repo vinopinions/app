@@ -7,13 +7,14 @@ import { registerRootComponent } from 'expo';
 import * as Localization from 'expo-localization';
 import * as Notifications from 'expo-notifications';
 import i18n from 'i18next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { initReactI18next } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-ui-lib';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
+import { useNotification } from './hooks/useNotifications';
 import de from './locales/de.json';
 import en from './locales/en.json';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -48,18 +49,28 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const App = () => {
+const AppWrapper = () => {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <Layout />
+        <App />
       </AuthProvider>
     </Provider>
   );
 };
 
-const Layout = () => {
+const App = () => {
   const { authState } = useAuth();
+  const { checkPermission } = useNotification();
+
+  useEffect(() => {
+    async () => {
+      if (authState.status === 'succeeded' && authState.registered) {
+        // if the user is registered we check the notification permission. This also sends the pushToken to the server
+        await checkPermission();
+      }
+    };
+  }, [authState.status, authState.registered, checkPermission]);
 
   if (authState.status === 'succeeded' && authState.registered) {
     return (
@@ -86,9 +97,9 @@ const Layout = () => {
   return <LoginScreen />;
 };
 
-registerRootComponent(App);
+registerRootComponent(AppWrapper);
 
-export default App;
+export default AppWrapper;
 
 const styles = StyleSheet.create({
   gestureHandlerRootView: {

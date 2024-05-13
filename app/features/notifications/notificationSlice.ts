@@ -25,7 +25,7 @@ const initialState: NotificationState = {
   status: 'idle',
 };
 
-const notificationSlice = createSlice({
+const notificationsSlice = createSlice({
   name: 'notifications',
   initialState: initialState as NotificationState,
   reducers: {},
@@ -58,4 +58,4 @@ const notificationSlice = createSlice({
   },
 });
 
-export default notificationSlice.reducer;
+export default notificationsSlice.reducer;
