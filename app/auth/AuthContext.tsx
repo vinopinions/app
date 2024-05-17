@@ -11,11 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AuthState, checkAsync, logoutAsync } from '../features/auth/authSlice';
 import { AppDispatch, RootState } from '../store/store';
 
-export interface Credentials {
-  username: string;
-  password: string;
-}
-
 interface AuthProps {
   authState: AuthState;
   logout: () => Promise<void>;

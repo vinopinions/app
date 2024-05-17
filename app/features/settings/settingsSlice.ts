@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type SettingsState = {
-  language: string;
+  language: string | undefined;
   notificationsEnabled: boolean;
 };
 
 const initialState: SettingsState = {
-  language: 'en',
+  language: undefined,
   notificationsEnabled: false,
 };
 
@@ -17,7 +17,7 @@ const settingsSlice = createSlice({
     updateLanguage: (state, action: PayloadAction<string>) => {
       state.language = action.payload;
     },
-    setNotificationEnabled: (state, action: PayloadAction<boolean>) => {
+    setNotificationsEnabled: (state, action: PayloadAction<boolean>) => {
       state.notificationsEnabled = action.payload;
     },
     toggleNotifications: (state) => {
@@ -26,6 +26,6 @@ const settingsSlice = createSlice({
   },
 });
 
-export const { updateLanguage, toggleNotifications, setNotificationEnabled } =
+export const { updateLanguage, toggleNotifications, setNotificationsEnabled } =
   settingsSlice.actions;
 export default settingsSlice.reducer;

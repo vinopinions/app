@@ -4,7 +4,6 @@ import 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import { NavigationContainer } from '@react-navigation/native';
 import { registerRootComponent } from 'expo';
-import * as Localization from 'expo-localization';
 import * as Notifications from 'expo-notifications';
 import i18n from 'i18next';
 import React, { useEffect } from 'react';
@@ -14,25 +13,19 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-ui-lib';
 import { Provider } from 'react-redux';
 import { AuthProvider, useAuth } from './auth/AuthContext';
-import { useNotification } from './hooks/useNotifications';
 import de from './locales/de.json';
 import en from './locales/en.json';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
+import { useNotification } from './notifications/useNotifications';
 import LoginScreen from './screens/login/LoginScreen';
 import SignupScreen from './screens/login/SignupScreen';
+import { SettingsProvider } from './settings/SettingsContext';
 import { store } from './store/store';
 
 const resources = {
   en: { translation: en },
   de: { translation: de },
 };
-
-i18n.use(initReactI18next).init({
-  fallbackLng: 'en',
-  compatibilityJSON: 'v3',
-  resources,
-  lng: Localization.getLocales()[0].languageCode,
-});
 
 const FIREBASE_AUTH_EMULATOR_URL =
   process.env.EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_URL;
@@ -49,12 +42,20 @@ Notifications.setNotificationHandler({
   }),
 });
 
+i18n.use(initReactI18next).init({
+  fallbackLng: 'en',
+  compatibilityJSON: 'v3',
+  resources,
+});
+
 const AppWrapper = () => {
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <SettingsProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </SettingsProvider>
     </Provider>
   );
 };
